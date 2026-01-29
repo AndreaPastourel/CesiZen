@@ -1,0 +1,39 @@
+# ========================
+# Global / OS / IDE
+# ========================
+.DS_Store
+Thumbs.db
+
+# VS Code / JetBrains
+.vscode/
+.idea/
+*.iml
+
+# ========================
+# Symfony (API)
+# ========================
+api-symfony/vendor/
+api-symfony/var/
+api-symfony/.env.local
+api-symfony/.env.*.local
+
+# ========================
+# React (Vite)
+# ========================
+web-react/node_modules/
+web-react/dist/
+web-react/.env.local
+web-react/.env.*.local
+
+# ========================
+# Android / Kotlin
+# ========================
+mobile-kotlin/.idea/
+mobile-kotlin/**/build/
+mobile-kotlin/.gradle/
+mobile-kotlin/local.properties
+
+# ========================
+# Logs
+# ========================
+*.log
