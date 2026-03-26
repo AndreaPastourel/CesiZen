@@ -1,0 +1,47 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+### Symfony ###
+/vendor/
+/var/
+/public/bundles/
+
+### Environnement ###
+.env.local
+.env.local.php
+.env.*.local
+
+### Logs ###
+*.log
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### IDE ###
+/.idea/
+/.vscode/
+
+### Node (si React dans le même repo un jour) ###
+/node_modules/
+
+### Build ###
+/public/build/
