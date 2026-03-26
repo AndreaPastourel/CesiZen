@@ -199,3 +199,4 @@ class EMOTIONS
         return $this;
     }
 }
+

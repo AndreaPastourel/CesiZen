@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UTILISATEURSRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UTILISATEURSRepository::class)]
-#[ApiResource]
-class UTILISATEURS
+class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,70 +21,45 @@ class UTILISATEURS
     #[ORM\Column(length: 100)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $pseudo = null;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, nullable: true)]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $mot_de_passe = null;
+    private ?string $motDePasse = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $photo_profil = null;
+    private ?string $photoProfil = null;
 
     #[ORM\Column]
-    private ?bool $est_actif = null;
+    private ?bool $estActif = true;
 
     #[ORM\Column]
-    private ?bool $email_verifie = null;
+    private ?bool $emailVerifie = false;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $date_derniere_connexion = null;
+    private ?\DateTimeImmutable $dateDerniereConnexion = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'utilisateurs')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ROLES $role = null;
 
-    /**
-     * @var Collection<int, REINITIALISATIONSMDP>
-     */
-    #[ORM\OneToMany(targetEntity: REINITIALISATIONSMDP::class, mappedBy: 'utilisateur')]
-    private Collection $reinitialisation_mdp;
-
-    /**
-     * @var Collection<int, REFRESHTOKEN>
-     */
-    #[ORM\OneToMany(targetEntity: REFRESHTOKEN::class, mappedBy: 'utilisateur')]
-    private Collection $refresh_token;
-
-    /**
-     * @var Collection<int, RESSOURCES>
-     */
-    #[ORM\OneToMany(targetEntity: RESSOURCES::class, mappedBy: 'auteur')]
-    private Collection $ressources;
-
-    /**
-     * @var Collection<int, ENTREEJOURNAL>
-     */
-    #[ORM\OneToMany(targetEntity: ENTREEJOURNAL::class, mappedBy: 'utilisateur')]
-    private Collection $entreeJournals;
-
     public function __construct()
     {
-        $this->reinitialisation_mdp = new ArrayCollection();
-        $this->refresh_token = new ArrayCollection();
-        $this->ressources = new ArrayCollection();
-        $this->entreeJournals = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->estActif = true;
+        $this->emailVerifie = false;
     }
 
     public function getId(): ?int
@@ -102,7 +75,6 @@ class UTILISATEURS
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -114,7 +86,6 @@ class UTILISATEURS
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -126,7 +97,6 @@ class UTILISATEURS
     public function setPseudo(string $pseudo): static
     {
         $this->pseudo = $pseudo;
-
         return $this;
     }
 
@@ -138,7 +108,6 @@ class UTILISATEURS
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -147,226 +116,119 @@ class UTILISATEURS
         return $this->telephone;
     }
 
-    public function setTelephone(string $telephone): static
+    public function setTelephone(?string $telephone): static
     {
         $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    public function getMotDePasse(): ?string
-    {
-        return $this->mot_de_passe;
-    }
-
-    public function setMotDePasse(string $mot_de_passe): static
-    {
-        $this->mot_de_passe = $mot_de_passe;
-
         return $this;
     }
 
     public function getPhotoProfil(): ?string
     {
-        return $this->photo_profil;
+        return $this->photoProfil;
     }
 
-    public function setPhotoProfil(?string $photo_profil): static
+    public function setPhotoProfil(?string $photoProfil): static
     {
-        $this->photo_profil = $photo_profil;
-
+        $this->photoProfil = $photoProfil;
         return $this;
     }
 
     public function isEstActif(): ?bool
     {
-        return $this->est_actif;
+        return $this->estActif;
     }
 
-    public function setEstActif(bool $est_actif): static
+    public function setEstActif(bool $estActif): static
     {
-        $this->est_actif = $est_actif;
-
+        $this->estActif = $estActif;
         return $this;
     }
 
     public function isEmailVerifie(): ?bool
     {
-        return $this->email_verifie;
+        return $this->emailVerifie;
     }
 
-    public function setEmailVerifie(bool $email_verifie): static
+    public function setEmailVerifie(bool $emailVerifie): static
     {
-        $this->email_verifie = $email_verifie;
-
+        $this->emailVerifie = $emailVerifie;
         return $this;
     }
 
     public function getDateDerniereConnexion(): ?\DateTimeImmutable
     {
-        return $this->date_derniere_connexion;
+        return $this->dateDerniereConnexion;
     }
 
-    public function setDateDerniereConnexion(?\DateTimeImmutable $date_derniere_connexion): static
+    public function setDateDerniereConnexion(?\DateTimeImmutable $dateDerniereConnexion): static
     {
-        $this->date_derniere_connexion = $date_derniere_connexion;
-
+        $this->dateDerniereConnexion = $dateDerniereConnexion;
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
-
+        $this->createdAt = $createdAt;
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
-        $this->updated_at = $updated_at;
-
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
-    public function getRole(): ?ROLES
+    public function getRoleEntity(): ?ROLES
     {
         return $this->role;
     }
 
-    public function setRole(?ROLES $role): static
+    public function setRoleEntity(?ROLES $role): static
     {
         $this->role = $role;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, REINITIALISATIONSMDP>
-     */
-    public function getReinitialisationMdp(): Collection
+    public function getUserIdentifier(): string
     {
-        return $this->reinitialisation_mdp;
+        return $this->email ?? '';
     }
 
-    public function addReinitialisationMdp(REINITIALISATIONSMDP $reinitialisationMdp): static
+    public function getRoles(): array
     {
-        if (!$this->reinitialisation_mdp->contains($reinitialisationMdp)) {
-            $this->reinitialisation_mdp->add($reinitialisationMdp);
-            $reinitialisationMdp->setUtilisateur($this);
+        $roles = [];
+
+        if ($this->role && $this->role->getCode()) {
+            $roles[] = $this->role->getCode();
         }
 
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function getPassword(): string
+    {
+        return $this->motDePasse ?? '';
+    }
+
+    public function setMotDePasse(string $motDePasse): static
+    {
+        $this->motDePasse = $motDePasse;
         return $this;
     }
 
-    public function removeReinitialisationMdp(REINITIALISATIONSMDP $reinitialisationMdp): static
+    public function eraseCredentials(): void
     {
-        if ($this->reinitialisation_mdp->removeElement($reinitialisationMdp)) {
-            // set the owning side to null (unless already changed)
-            if ($reinitialisationMdp->getUtilisateur() === $this) {
-                $reinitialisationMdp->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, REFRESHTOKEN>
-     */
-    public function getRefreshToken(): Collection
-    {
-        return $this->refresh_token;
-    }
-
-    public function addRefreshToken(REFRESHTOKEN $refreshToken): static
-    {
-        if (!$this->refresh_token->contains($refreshToken)) {
-            $this->refresh_token->add($refreshToken);
-            $refreshToken->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRefreshToken(REFRESHTOKEN $refreshToken): static
-    {
-        if ($this->refresh_token->removeElement($refreshToken)) {
-            // set the owning side to null (unless already changed)
-            if ($refreshToken->getUtilisateur() === $this) {
-                $refreshToken->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, RESSOURCES>
-     */
-    public function getRessources(): Collection
-    {
-        return $this->ressources;
-    }
-
-    public function addRessource(RESSOURCES $ressource): static
-    {
-        if (!$this->ressources->contains($ressource)) {
-            $this->ressources->add($ressource);
-            $ressource->setAuteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRessource(RESSOURCES $ressource): static
-    {
-        if ($this->ressources->removeElement($ressource)) {
-            // set the owning side to null (unless already changed)
-            if ($ressource->getAuteur() === $this) {
-                $ressource->setAuteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ENTREEJOURNAL>
-     */
-    public function getEntreeJournals(): Collection
-    {
-        return $this->entreeJournals;
-    }
-
-    public function addEntreeJournal(ENTREEJOURNAL $entreeJournal): static
-    {
-        if (!$this->entreeJournals->contains($entreeJournal)) {
-            $this->entreeJournals->add($entreeJournal);
-            $entreeJournal->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEntreeJournal(ENTREEJOURNAL $entreeJournal): static
-    {
-        if ($this->entreeJournals->removeElement($entreeJournal)) {
-            // set the owning side to null (unless already changed)
-            if ($entreeJournal->getUtilisateur() === $this) {
-                $entreeJournal->setUtilisateur(null);
-            }
-        }
-
-        return $this;
     }
 }
