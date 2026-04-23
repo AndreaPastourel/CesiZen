@@ -8,6 +8,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UTILISATEURSRepository::class)]
+
+
+
 class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -230,5 +233,7 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
+        // Cette méthode est vide par design car les données sensibles (mot de passe haché)
+        // sont gérées par Symfony's PasswordHasher et ne doivent pas être effacées de l'entity
     }
 }

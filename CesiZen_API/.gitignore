@@ -19,16 +19,6 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-### Symfony ###
-/vendor/
-/var/
-/public/bundles/
-
-### Environnement ###
-.env.local
-.env.local.php
-.env.*.local
-
 ### Logs ###
 *.log
 
@@ -45,3 +35,6 @@ Thumbs.db
 
 ### Build ###
 /public/build/
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
