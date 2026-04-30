@@ -1,20 +1,26 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import styles from "./module.loginStyle.module.css";
 
-export default function LoginMessage ({message}){
-    if (!message){
-        return null;
-    }
+export default function LoginMessage({ message }) {
+  if (!message) {
+    return null;
+  }
 
-    return (
-        <p className = {`login-message login-message-${message.type}`} role = "alert">
-            {message.text}
-        </p>
-    )
+  const typeClass =
+    message.type === "error"
+      ? styles.loginMessageError
+      : styles.loginMessageSuccess;
+
+  return (
+    <p className={`${styles.loginMessage} ${typeClass}`} role="alert">
+      {message.text}
+    </p>
+  );
 }
 
 LoginMessage.propTypes = {
-    message: PropTypes.shape({
-        type: PropTypes.string,
-        text: PropTypes.string,
-    })
+  message: PropTypes.shape({
+    type: PropTypes.string,
+    text: PropTypes.string,
+  }),
 };

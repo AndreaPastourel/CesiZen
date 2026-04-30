@@ -1,0 +1,158 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.loginHeader {
+  margin-bottom: 10px;
+}
+
+.authTitle {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 2.45rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.authIntro {
+  margin: 14px 0 0;
+  color: #756e64;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formLabel {
+  color: var(--color-text);
+  font-weight: 850;
+  font-size: 0.92rem;
+}
+
+.formInput {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 1px solid #ddd3c5;
+  border-radius: 18px;
+  background: rgba(255, 250, 242, 0.9);
+  color: var(--color-text);
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.formInput::placeholder {
+  color: #9b9388;
+}
+
+.formInput:hover {
+  background: white;
+  border-color: #cabda9;
+}
+
+.formInput:focus {
+  outline: none;
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 4px rgba(227, 205, 139, 0.5),
+    0 12px 26px rgba(106, 100, 90, 0.1);
+  transform: translateY(-1px);
+}
+
+.loginActions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.authButton {
+  width: 100%;
+  min-height: 58px;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--color-accent), #d79a57);
+  color: white;
+  font-size: 1rem;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 16px 34px rgba(193, 136, 69, 0.28);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.authButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 42px rgba(193, 136, 69, 0.34);
+  filter: brightness(0.98);
+}
+
+.authButton:focus {
+  outline: 4px solid rgba(227, 205, 139, 0.75);
+  outline-offset: 4px;
+}
+
+.authButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.authLinkButton {
+  width: fit-content;
+  margin: 0 auto;
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 900;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.authLinkButton:hover {
+  background: rgba(93, 112, 82, 0.08);
+}
+
+.authLinkButton:focus {
+  outline: 4px solid rgba(227, 205, 139, 0.75);
+  outline-offset: 3px;
+}
+
+.loginMessage {
+  padding: 14px 16px;
+  border-radius: 16px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.loginMessageError {
+  background: #f9e1df;
+  color: var(--color-error);
+  border: 1px solid rgba(159, 45, 45, 0.22);
+  box-shadow: inset 5px 0 0 var(--color-error);
+}
+
+.loginMessageSuccess {
+  background: #e4f3df;
+  color: #2f6b3b;
+  border: 1px solid rgba(47, 107, 59, 0.22);
+  box-shadow: inset 5px 0 0 #2f6b3b;
+}

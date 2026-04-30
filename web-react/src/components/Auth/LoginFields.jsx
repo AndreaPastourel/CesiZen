@@ -1,49 +1,51 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import styles from "./module.loginStyle.module.css";
 
-export default function LoginFields({
-    email,
-    password,
-    setEmail,
-    setPassword,
-}){
-    return (
-        <>
-            <div className="form-group">
-                <label htmlFor="email">Adresse email</label>
+export default function LoginFields({ email, password, setEmail, setPassword }) {
+  return (
+    <>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel} htmlFor="email">
+          Adresse email
+        </label>
 
-                <input 
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={(event)=>setEmail(event.target.value)}
-                    placeholder="exemple@email.com"
-                    autoComplete="email"
-                    required/>
+        <input
+          className={styles.formInput}
+          id="email"
+          name="email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="exemple@email.com"
+          autoComplete="email"
+          required
+        />
+      </div>
 
-            </div>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel} htmlFor="password">
+          Mot de passe
+        </label>
 
-
-            <div className="form-group">
-                <label htmlFor="password">Mot de passe</label>
-
-                <input 
-                    id="password"
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={(event)=>setPassword(event.target.value)}
-                    placeholder="******"
-                    autoComplete="current-password"
-                    required/>
-            </div>
-        </>
-    )
+        <input
+          className={styles.formInput}
+          id="password"
+          name="password"
+          type="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="Votre mot de passe"
+          autoComplete="current-password"
+          required
+        />
+      </div>
+    </>
+  );
 }
 
 LoginFields.propTypes = {
-    email: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-    setEmail: PropTypes.func.isRequired,
-    setPassword: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
 };
