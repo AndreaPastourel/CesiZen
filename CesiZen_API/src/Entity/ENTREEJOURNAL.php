@@ -5,9 +5,23 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ENTREEJOURNALRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+
 
 #[ORM\Entity(repositoryClass: ENTREEJOURNALRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/entree-journal'),
+        new Post(uriTemplate: '/entree-journal'),
+        new Get(uriTemplate: '/entree-journal/{id}'),
+        new Patch(uriTemplate: '/entree-journal/{id}'),
+        new Delete(uriTemplate: '/entree-journal/{id}'),
+    ]
+)]
 class ENTREEJOURNAL
 {
     #[ORM\Id]

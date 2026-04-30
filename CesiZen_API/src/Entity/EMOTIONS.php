@@ -8,9 +8,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+
 
 #[ORM\Entity(repositoryClass: EMOTIONSRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/emotions'),
+        new Post(uriTemplate: '/emotions'),
+        new Get(uriTemplate: '/emotions/{id}'),
+        new Patch(uriTemplate: '/emotions/{id}'),
+        new Delete(uriTemplate: '/emotions/{id}'),
+    ]
+)]
+
 class EMOTIONS
 {
     #[ORM\Id]

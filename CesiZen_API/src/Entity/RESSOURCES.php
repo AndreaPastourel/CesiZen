@@ -6,9 +6,23 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RESSOURCESRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+
 
 #[ORM\Entity(repositoryClass: RESSOURCESRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/ressources'),
+        new Post(uriTemplate: '/ressources'),
+        new Get(uriTemplate: '/ressources/{id}'),
+        new Patch(uriTemplate: '/ressources{id}'),
+        new Delete(uriTemplate: '/ressources/{id}'),
+    ]
+)]
 class RESSOURCES
 {
     #[ORM\Id]

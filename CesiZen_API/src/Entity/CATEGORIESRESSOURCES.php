@@ -8,9 +8,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: CATEGORIESRESSOURCESRepository::class)]
-#[ApiResource]
+
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/categories-ressources'),
+        new Post(uriTemplate: '/categories-ressources'),
+        new Get(uriTemplate: '/categories-ressources/{id}'),
+        new Patch(uriTemplate: '/categories-ressources/{id}'),
+        new Delete(uriTemplate: '/categories-ressources/{id}'),
+    ]
+)]
+
+
 class CATEGORIESRESSOURCES
 {
     #[ORM\Id]

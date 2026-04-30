@@ -7,9 +7,22 @@ use App\Repository\TYPESRESSOURCESRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 
 #[ORM\Entity(repositoryClass: TYPESRESSOURCESRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/types-ressources'),
+        new Post(uriTemplate: '/types-ressources'),
+        new Get(uriTemplate: '/types-ressources/{id}'),
+        new Patch(uriTemplate: '/types-ressources{id}'),
+        new Delete(uriTemplate: '/types-ressources/{id}'),
+    ]
+)]
 class TYPESRESSOURCES
 {
     #[ORM\Id]
