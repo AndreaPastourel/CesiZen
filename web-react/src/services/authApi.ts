@@ -2,21 +2,33 @@ import { User } from "../types/users";
 import { httpRequest } from "./httpClient";
 
 type LoginPayload = {
-  email: string;
-  password: string;
+  email: string,
+  password: string,
 };
 
 type AuthResponse = {
-  message?: string;
+  message?: string,
   data?: {
-    token?: string;
-    user?: unknown;
-  };
+    token?: string,
+    user?: unknown,
+  },
 };
 
+
+export type RegisterPayload = {
+  email: string,
+  motDePasse: string,
+  nom?: string | null,
+  prenom?: string | null,
+  pseudo: string ,
+  telephone?: string | null,
+  photo_profil?: string |null,
+};
+
+
 type RegisterResponse = {
-  message: string;
-  user?: unknown;
+  message: string,
+  user?: unknown,
 };
 
 export async function apiLogin({
@@ -34,7 +46,7 @@ export async function apiLogin({
 }
 
 export async function apiRegister(
-  payload: Partial<User>
+  payload: RegisterPayload
 ): Promise<RegisterResponse> {
   return httpRequest<RegisterResponse>({
     method: "POST",

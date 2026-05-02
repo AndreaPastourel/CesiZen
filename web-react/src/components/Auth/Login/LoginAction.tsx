@@ -1,4 +1,5 @@
-import styles from "./loginStyle.module.css";
+import { useNavigate } from "react-router-dom";
+import styles from "../module.loginStyle.module.css";
 
 type Props = {
   isLoading: boolean;
@@ -6,6 +7,7 @@ type Props = {
 
 
 export default function LoginAction({ isLoading }: Readonly<Props>) {
+   const navigate = useNavigate();
  
   return (
  
@@ -21,6 +23,7 @@ export default function LoginAction({ isLoading }: Readonly<Props>) {
       <button
         type="button"
         className={styles.authLinkButton}
+        onClick={() => navigate("/register")}
       >
         Créer un compte
       </button>

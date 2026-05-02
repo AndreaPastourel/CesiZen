@@ -1,11 +1,12 @@
-import styles from "./module.loginStyle.module.css";
+import styles from "../module.loginStyle.module.css";
+
 
 type Props = {
   title: string;
   subtitle: string;
 };
 
-export default function LoginHeader({ title, subtitle }: Props) {
+export default function LoginHeader({ title, subtitle }: Readonly<Props>) {
   return (
     <div className={styles.loginHeader}>
       <h1 className={styles.authTitle}>{title}</h1>

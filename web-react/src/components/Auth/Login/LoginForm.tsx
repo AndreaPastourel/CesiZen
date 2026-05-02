@@ -3,8 +3,8 @@ import LoginAction from "./LoginAction";
 import LoginFields from "./LoginFields";
 import LoginHeader from "./LoginHeader";
 import LoginMessage from "./LoginMessage";
-import styles from "./module.loginStyle.module.css";
-import { apiLogin } from "../../services/authApi";
+import styles from "../module.loginStyle.module.css";
+import { apiLogin } from "../../../services/authApi";
 
 type LoginMessageState = {
   type: "success" | "error";

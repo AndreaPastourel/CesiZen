@@ -1,4 +1,5 @@
-import styles from "./module.loginStyle.module.css";
+import styles from "../module.loginStyle.module.css";
+
 
 type Props = {
   email: string;
