@@ -1,7 +1,15 @@
-import PropTypes from "prop-types";
 import styles from "./module.loginStyle.module.css";
 
-export default function LoginMessage({ message }) {
+type Message = {
+  type: "success" | "error";
+  text: string;
+};
+
+type Props = {
+  message: Message | null;
+};
+
+export default function LoginMessage({ message }: Readonly<Props>) {
   if (!message) {
     return null;
   }
@@ -17,10 +25,3 @@ export default function LoginMessage({ message }) {
     </p>
   );
 }
-
-LoginMessage.propTypes = {
-  message: PropTypes.shape({
-    type: PropTypes.string,
-    text: PropTypes.string,
-  }),
-};

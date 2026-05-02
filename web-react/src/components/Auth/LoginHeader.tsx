@@ -1,7 +1,11 @@
-import PropTypes from "prop-types";
 import styles from "./module.loginStyle.module.css";
 
-export default function LoginHeader({ title, subtitle }) {
+type Props = {
+  title: string;
+  subtitle: string;
+};
+
+export default function LoginHeader({ title, subtitle }: Props) {
   return (
     <div className={styles.loginHeader}>
       <h1 className={styles.authTitle}>{title}</h1>
@@ -10,7 +14,3 @@ export default function LoginHeader({ title, subtitle }) {
   );
 }
 
-LoginHeader.propTypes = {
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
-};

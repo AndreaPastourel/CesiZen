@@ -1,7 +1,18 @@
-import PropTypes from "prop-types";
 import styles from "./module.loginStyle.module.css";
 
-export default function LoginFields({ email, password, setEmail, setPassword }) {
+type Props = {
+  email: string;
+  password: string;
+  setEmail: (value: string) => void;
+  setPassword: (value: string) => void;
+};
+
+export default function LoginFields({
+  email,
+  password,
+  setEmail,
+  setPassword,
+}: Readonly<Props>) {
   return (
     <>
       <div className={styles.formGroup}>
@@ -42,10 +53,3 @@ export default function LoginFields({ email, password, setEmail, setPassword }) 
     </>
   );
 }
-
-LoginFields.propTypes = {
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-};

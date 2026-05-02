@@ -38,6 +38,7 @@ export default function LoginPage() {
         <aside className={styles.authPanel} aria-label="Formulaire de connexion">
           <div className={styles.logoBox}>
             <div className={styles.logoShape}>◇</div>
+
             <div>
               <p className={styles.logoTitle}>CESI</p>
               <p className={styles.logoSubtitle}>ZEN</p>

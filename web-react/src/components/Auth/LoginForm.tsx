@@ -1,19 +1,24 @@
-import { useState } from "react";
-import { apiLogin } from "../../services/authApi";
+import { FormEvent, useState } from "react";
 import LoginAction from "./LoginAction";
 import LoginFields from "./LoginFields";
 import LoginHeader from "./LoginHeader";
 import LoginMessage from "./LoginMessage";
 import styles from "./module.loginStyle.module.css";
+import { apiLogin } from "../../services/authApi";
+
+type LoginMessageState = {
+  type: "success" | "error";
+  text: string;
+} | null;
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<LoginMessageState>(null);
 
-  async function handleLogin(event) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setMessage(null);
@@ -42,9 +47,14 @@ export default function LoginForm() {
         text: "Connexion réussie ✅",
       });
     } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Impossible de se connecter.";
+
       setMessage({
         type: "error",
-        text: error.message || "Impossible de se connecter.",
+        text: errorMessage,
       });
     } finally {
       setIsLoading(false);
