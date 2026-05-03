@@ -22,7 +22,7 @@ export type RegisterPayload = {
   prenom?: string | null,
   pseudo: string ,
   telephone?: string | null,
-  photo_profil?: string |null,
+  photo_profil?: string | null,
 };
 
 
