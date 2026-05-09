@@ -14,9 +14,12 @@ export async function httpRequest<T>({
   body,
 }: RequestOptions): Promise<T> {
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    Accept: "application/json, application/ld+json",
   };
+
+  if (body) {
+    headers["Content-Type"] = "application/json";
+  }
 
   const res = await fetch(`${API_BASE_URL}${path}`, {
     method,
@@ -26,13 +29,13 @@ export async function httpRequest<T>({
   });
 
   const text = await res.text();
-
   const data = text ? JSON.parse(text) : null;
 
   if (!res.ok) {
     const msg =
       data?.message ||
       data?.error ||
+      data?.detail ||
       `Erreur API (${res.status})`;
 
     throw new Error(msg);

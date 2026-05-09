@@ -10,7 +10,7 @@ type AuthResponse = {
   message?: string,
   data?: {
     token?: string,
-    user?: unknown,
+    user?: User,
   },
 };
 
@@ -28,8 +28,13 @@ export type RegisterPayload = {
 
 type RegisterResponse = {
   message: string,
-  user?: unknown,
+  user?: User,
 };
+
+
+export type MeResponse = {
+  user:User,
+}
 
 export async function apiLogin({
   email,
@@ -52,5 +57,13 @@ export async function apiRegister(
     method: "POST",
     path: "/register",
     body: payload,
+  });
+}
+
+
+export async function apiMe(): Promise<MeResponse> {
+  return httpRequest<MeResponse>({
+    method: "GET",
+    path: "/api/me",
   });
 }
