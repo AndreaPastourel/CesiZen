@@ -11,6 +11,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Attribute\Groups;
+
 
 
 #[ORM\Entity(repositoryClass: RESSOURCESRepository::class)]
@@ -19,67 +21,87 @@ use ApiPlatform\Metadata\Delete;
         new GetCollection(uriTemplate: '/ressources'),
         new Post(uriTemplate: '/ressources'),
         new Get(uriTemplate: '/ressources/{id}'),
-        new Patch(uriTemplate: '/ressources{id}'),
+        new Patch(uriTemplate: '/ressources/{id}'),
         new Delete(uriTemplate: '/ressources/{id}'),
-    ]
+    ],
+    normalizationContext: ['groups' => ['ressource:read']],
+    denormalizationContext: ['groups' => ['ressource:write']]
 )]
 class RESSOURCES
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['ressource:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $resume = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $contenu_texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $chemin_media = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?string $nom_fichier = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?int $taille_fichier_ko = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?int $duree_seconde = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?int $largeur_px = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?int $hauteur_px = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?bool $est_actif = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?\DateTimeImmutable $date_publication = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read'])]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['ressource:read'])]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ressources')]
+   #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?UTILISATEURS $auteur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ressources')]
+    #[ORM\ManyToOne]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?CATEGORIESRESSOURCES $categorie = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ressources')]
+    #[ORM\ManyToOne]
+    #[Groups(['ressource:read', 'ressource:write'])]
     private ?TYPESRESSOURCES $type = null;
 
     public function getId(): ?int

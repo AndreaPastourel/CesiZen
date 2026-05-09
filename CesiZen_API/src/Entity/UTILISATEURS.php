@@ -6,6 +6,8 @@ use App\Repository\UTILISATEURSRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
+
 
 #[ORM\Entity(repositoryClass: UTILISATEURSRepository::class)]
 
@@ -16,6 +18,7 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['ressource:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100,nullable: true)]
@@ -25,6 +28,7 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(length: 100, unique: true)]
+    #[Groups(['ressource:read'])]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 180, unique: true)]

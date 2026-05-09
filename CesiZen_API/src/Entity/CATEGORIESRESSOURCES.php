@@ -13,6 +13,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Attribute\Groups;
+
 
 #[ORM\Entity(repositoryClass: CATEGORIESRESSOURCESRepository::class)]
 
@@ -32,15 +34,19 @@ class CATEGORIESRESSOURCES
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['ressource:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['ressource:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Groups(['ressource:read'])]
     private ?string $couleur = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['ressource:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
