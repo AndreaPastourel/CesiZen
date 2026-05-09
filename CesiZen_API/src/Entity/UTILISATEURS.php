@@ -18,10 +18,10 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100,nullable: true)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100,nullable: true)]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 100, unique: true)]
@@ -75,23 +75,24 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-        return $this;
-    }
+   public function setNom(?string $nom): static
+{
+    $this->nom = $nom;
+
+    return $this;
+}
 
     public function getPrenom(): ?string
     {
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
-    {
-        $this->prenom = $prenom;
-        return $this;
-    }
+   public function setPrenom(?string $prenom): static
+{
+    $this->prenom = $prenom;
 
+    return $this;
+}
     public function getPseudo(): ?string
     {
         return $this->pseudo;

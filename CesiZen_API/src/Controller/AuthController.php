@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AuthController extends AbstractController
 {
-    #[Route('/api/register', name: 'api_register', methods: ['Post'])]
+   #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     public function register(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -48,7 +48,7 @@ final class AuthController extends AbstractController
     private function validateRegistrationData(array $data, UTILISATEURSRepository $repository): ?JsonResponse
     {
         // Vérification des champs obligatoires
-        if (empty($data['nom']) || empty($data['prenom']) || empty($data['email']) || empty($data['mot_de_passe']) || empty($data['pseudo'])) {
+        if ( empty($data['email']) || empty($data['motDePasse']) || empty($data['pseudo'])) {
             return $this->json(['message' => 'Champs obligatoires manquant'], 400);
         }
 
@@ -67,15 +67,26 @@ final class AuthController extends AbstractController
     private function createUtilisateur(array $data, $role_user, UserPasswordHasherInterface $passwordHasher): UTILISATEURS
     {
         $utilisateur = new UTILISATEURS();
+        if (!empty($data['nom'])) {
         $utilisateur->setNom($data['nom']);
-        $utilisateur->setPrenom($data['prenom']);
-        $utilisateur->setEmail($data['email']);
-        $utilisateur->setPseudo($data['pseudo']);
-        $utilisateur->setTelephone($data['telephone'] ?? null);
-        $utilisateur->setPhotoProfil($data['photo_profil'] ?? null);
-        $utilisateur->setRoleEntity($role_user);
+    }
 
-        $hashedPassword = $passwordHasher->hashPassword($utilisateur, $data['mot_de_passe']);
+    if (!empty($data['prenom'])) {
+        $utilisateur->setPrenom($data['prenom']);
+    }
+
+    if (!empty($data['telephone'])) {
+        $utilisateur->setTelephone($data['telephone']);
+    }
+
+    if (!empty($data['photoProfil'])) {
+        $utilisateur->setPhotoProfil($data['photoProfil']);
+    }
+           
+        $utilisateur->setPseudo($data['pseudo']);
+        $utilisateur->setEmail($data['email'] ?? null);
+        $utilisateur->setRoleEntity($role_user);
+        $hashedPassword = $passwordHasher->hashPassword($utilisateur, $data['motDePasse']);
         $utilisateur->setMotDePasse($hashedPassword);
 
         return $utilisateur;
@@ -87,4 +98,32 @@ final class AuthController extends AbstractController
             'controller_name' => 'AuthController',
         ]);
     }
+
+
+    #[Route('/api/me', name: 'api_me', methods: ['GET'])]
+public function me(): JsonResponse
+{
+    $user = $this->getUser();
+
+    if (!$user instanceof UTILISATEURS) {
+        return $this->json([
+            'message' => 'Utilisateur non connecté',
+        ], 401);
+    }
+
+    return $this->json([
+        'user' => [
+            'id' => $user->getId(),
+            'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'pseudo' => $user->getPseudo(),
+            'email' => $user->getEmail(),
+            'telephone' => $user->getTelephone(),
+            'photo_profil' => $user->getPhotoProfil(),
+            'est_actif' => $user->isEstActif(),
+            'role' => $user->getRoleEntity()?->getCode(),
+        ],
+    ]);
+}
+
 }
