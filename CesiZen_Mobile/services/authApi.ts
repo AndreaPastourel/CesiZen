@@ -3,14 +3,15 @@ import { User } from "@/types/users";
 
 export type AuthResponse = {
   data: {
-    token:string;
-    user: User;
+    token:string,
+    user: User,
+    message:string,
   }
 };
 
 export type RegisterResponse = {
-  message: string;
-  user: User;
+  message: string,
+  user: User,
 };
 
 export async function apiLogin(payload: { email: string; motDePasse: string }): Promise<AuthResponse> {

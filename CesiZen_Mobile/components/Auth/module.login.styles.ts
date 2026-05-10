@@ -273,4 +273,34 @@ export const loginStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "900",
   },
+
+  inputWrapper: {
+  minHeight: 54,
+  backgroundColor: "#F3F6FF",
+  borderWidth: 1,
+  borderColor: "rgba(106, 100, 90, 0.22)",
+  borderRadius: 16,
+  flexDirection: "row",
+  alignItems: "center",
+  paddingHorizontal: 16,
+},
+
+inputWithIcon: {
+  flex: 1,
+  minHeight: 54,
+  color: "#2F2D29",
+  fontSize: 15,
+  paddingVertical: 0,
+},
+
+passwordToggle: {
+  paddingLeft: 12,
+  paddingVertical: 8,
+},
+
+passwordToggleText: {
+  color: "#5D7052",
+  fontSize: 13,
+  fontWeight: "900",
+},
 });

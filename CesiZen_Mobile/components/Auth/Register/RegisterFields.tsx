@@ -68,21 +68,20 @@ export default function RegisterFields({
       />
 
       <AppInput
-        label="Mot de passe"
-        placeholder="••••••••"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      label="Mot de passe"
+      placeholder="••••••••"
+      value={password}
+      onChangeText={setPassword}
+      isPassword
+    />
 
       <AppInput
         label="Confirmer le mot de passe"
         placeholder="••••••••"
         value={confirm}
         onChangeText={setConfirm}
-        secureTextEntry
+        isPassword
       />
-
       <Text style={styles.sectionTitle}>Informations du profil</Text>
 
       <AppInput

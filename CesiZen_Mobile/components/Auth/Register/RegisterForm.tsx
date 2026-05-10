@@ -114,7 +114,12 @@ export default function RegisterForm({ styles }: Props) {
       setMessageType("success");
 
       setTimeout(() => {
-        router.replace("/login");
+        router.replace({
+          pathname:"/login",
+          params:{
+            registered:"1",
+          }
+        });
       }, 800);
     } catch (e: any) {
       setMessage(e?.message || "Une erreur est survenue.");

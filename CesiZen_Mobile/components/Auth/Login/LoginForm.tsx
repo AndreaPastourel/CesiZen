@@ -2,7 +2,7 @@
 import { apiLogin } from "@/services/authApi";
 import { saveAccessToken } from "@/services/authStorage";
 import { isEmailValid, isPasswordValid } from "@/utils/validators";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { Text, View } from "react-native";
 import LoginAction from "./LoginAction";
@@ -15,11 +15,22 @@ type Props = {
 };
 
 export default function LoginForm({ styles }: Readonly<Props>) {
+  //validatioon de la creation de compte
+  const params = useLocalSearchParams();
+  const initialMessage =
+  params.registered === "1"
+    ? "Inscription réussie ✅ Vous pouvez maintenant vous connecter."
+    : null;
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+ const [message, setMessage] = useState<string | null>(initialMessage);
+
+
+
 
   const handleLogin = useCallback(async () => {
     setMessage(null);
@@ -42,7 +53,7 @@ export default function LoginForm({ styles }: Readonly<Props>) {
 
     if (!isPasswordValid(cleanPassword)) {
       setLoading(false);
-      setMessage("Mot de passe trop court, minimum 8 caractères.");
+      setMessage("Mot de passe trop court, minimum 6 caractères.");
       return;
     }
 

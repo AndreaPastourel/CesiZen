@@ -10,7 +10,7 @@ export function LoginMessage({ styles, message }: Readonly<Props>) {
     return null;
   }
 
-  const isSuccess = message.includes("OK");
+  const isSuccess = message.includes("OK") || message.includes("réussie");
 
   return (
     <View style={isSuccess ? styles.successBox : styles.errorBox}>

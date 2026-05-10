@@ -26,12 +26,12 @@ export function LoginFields({
       />
 
       <AppInput
-        label="Mot de passe"
-        placeholder="••••••••"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      label="Mot de passe"
+      placeholder="••••••••"
+      value={password}
+      onChangeText={setPassword}
+      isPassword
+    />
     </>
   );
 }
