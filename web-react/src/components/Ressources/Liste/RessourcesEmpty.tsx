@@ -1,6 +1,6 @@
 
 import styles from "./module.ressourcesList.module.css";
-import { Ressource } from "../../types/ressources";
+import { Ressource } from "../../../types/ressources";
 
 
 type Message = {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { apiGetAllRessources } from "../../services/ressourcesApi";
-import { Ressource } from "../../types/ressources";
+import { apiGetAllRessources } from "../../../services/ressourcesApi";
+import { Ressource } from "../../../types/ressources";
 import styles from "./module.ressourcesList.module.css";
 import RessourcesHeader from "./RessourcesHeader";
 import RessourcesMessage from "./RessourcesMessage";

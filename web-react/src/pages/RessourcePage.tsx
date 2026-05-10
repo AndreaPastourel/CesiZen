@@ -1,4 +1,4 @@
-import RessourcesList from "../components/Ressources/RessourceList";
+import RessourcesList from "../components/Ressources/Liste/RessourceList";
 
 
 

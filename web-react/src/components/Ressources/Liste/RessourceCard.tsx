@@ -1,7 +1,9 @@
 
 import styles from "./module.ressourcesList.module.css";
-import { Ressource } from "../../types/ressources";
-import formatDate from "../../config/FormatDate";
+import { Ressource } from "../../../types/ressources";
+import { formatDate } from "../../../config/Format";
+import { Link } from "react-router-dom";
+
 
 type Props={
     ressource : Ressource,
@@ -54,9 +56,9 @@ export default function RessourceCard({ressource}:Readonly<Props>){
                   <p className={styles.fileInfo}>{ressource.nom_fichier}</p>
                 )}
 
-                <button className={styles.cardButton} type="button">
-                  Voir la ressource
-                </button>
+                <Link to={`/ressources/${ressource.slug}`} className={styles.cardButton}>
+                Voir la ressource
+              </Link>
               </div>
             </article>
     )   
