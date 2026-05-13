@@ -44,25 +44,20 @@ export default function DetailMedia({ressource}:Readonly<Props>){
         </a>
       </div>
 
-     {isImage && (
-    <div
-        className={styles.imageWrapper}
-        style={{
-        aspectRatio:
-            ressource.largeur_px && ressource.hauteur_px
-            ? `${ressource.largeur_px} / ${ressource.hauteur_px}`
-            : "auto",
-        }}
-    >
-        <img
-        src={mediaUrl}
-        alt={`Illustration de la ressource : ${ressource.titre}`}
-        className={styles.mediaImage}
-        width={ressource.largeur_px ?? undefined}
-        height={ressource.hauteur_px ?? undefined}
-        />
-    </div>
-    )}
+      {isImage && (
+        <div className={styles.imageWrapper}>
+          <img
+            src={mediaUrl}
+            alt={`Illustration de la ressource : ${ressource.titre}`}
+            className={styles.mediaImage}
+          />
+
+          <p className={styles.mediaInfo}>
+            Dimensions : {ressource.largeur_px ?? "?"} ×{" "}
+            {ressource.hauteur_px ?? "?"} px
+          </p>
+        </div>
+      )}
 
       {isVideo && (
         <div className={styles.videoWrapper}>

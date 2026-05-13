@@ -94,7 +94,7 @@ export default function RegisterForm(){
                   })
 
 
-                  setPrenom("");
+                setPrenom("");
                 setNom("");
                 setPseudo("");
                 setEmail("");

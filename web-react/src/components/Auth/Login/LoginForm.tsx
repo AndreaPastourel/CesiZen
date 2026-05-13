@@ -5,6 +5,8 @@ import LoginHeader from "./LoginHeader";
 import LoginMessage from "./LoginMessage";
 import styles from "../module.loginStyle.module.css";
 import { apiLogin } from "../../../services/authApi";
+import { useNavigate } from "react-router-dom";
+
 
 type LoginMessageState = {
   type: "success" | "error";
@@ -17,6 +19,7 @@ export default function LoginForm() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<LoginMessageState>(null);
+    const navigate = useNavigate();
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,6 +28,8 @@ export default function LoginForm() {
 
     const cleanEmail = email.trim();
     const cleanPassword = password.trim();
+
+  
 
     if (!cleanEmail || !cleanPassword) {
       setMessage({
@@ -45,7 +50,10 @@ export default function LoginForm() {
       setMessage({
         type: "success",
         text: "Connexion réussie ✅",
+      
       });
+
+      navigate("/profil", { replace: true });
     } catch (error) {
       const errorMessage =
         error instanceof Error

@@ -32,9 +32,11 @@ type RegisterResponse = {
 };
 
 
-export type MeResponse = {
-  user:User,
-}
+
+
+type LogoutResponse = {
+  message: string;
+};
 
 export async function apiLogin({
   email,
@@ -61,9 +63,11 @@ export async function apiRegister(
 }
 
 
-export async function apiMe(): Promise<MeResponse> {
-  return httpRequest<MeResponse>({
-    method: "GET",
-    path: "/api/me",
-  });
+export async function apiLogOut():Promise<LogoutResponse>{
+  return httpRequest<LogoutResponse>({
+      method: "POST",
+      path: "/logout",
+  })
+
 }
+
