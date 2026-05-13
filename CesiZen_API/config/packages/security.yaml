@@ -36,9 +36,23 @@ security:
             jwt: ~
 
     access_control:
-        - { path: ^/api/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api/ressources, roles: PUBLIC_ACCESS }
-        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        - { path: ^/api$, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: "^/api/register$", roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: "^/api/login_check$", roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: "^/api/docs", roles: PUBLIC_ACCESS }
+        - { path: "^/api$", roles: PUBLIC_ACCESS }
+
+        - { path: "^/api/ressources$", roles: PUBLIC_ACCESS, methods: [GET] }
+
+        - {
+              path: "^/api/ressource/id/[0-9]+$",
+              roles: PUBLIC_ACCESS,
+              methods: [GET],
+          }
+
+        - {
+              path: "^/api/ressource/[^/]+$",
+              roles: PUBLIC_ACCESS,
+              methods: [GET],
+          }
+
+        - { path: "^/api", roles: IS_AUTHENTICATED_FULLY }

@@ -100,7 +100,7 @@ final class AuthController extends AbstractController
     }
 
 
-    #[Route('/api/me', name: 'api_me', methods: ['GET'])]
+#[Route('/api/me', name: 'api_me', methods: ['GET'])]
 public function me(): JsonResponse
 {
     $user = $this->getUser();
@@ -108,11 +108,13 @@ public function me(): JsonResponse
     if (!$user instanceof UTILISATEURS) {
         return $this->json([
             'message' => 'Utilisateur non connecté',
+            'data' => null,
         ], 401);
     }
 
     return $this->json([
-        'user' => [
+        'message' => 'Utilisateur récupéré avec succès.',
+        'data' => [
             'id' => $user->getId(),
             'nom' => $user->getNom(),
             'prenom' => $user->getPrenom(),
@@ -121,9 +123,146 @@ public function me(): JsonResponse
             'telephone' => $user->getTelephone(),
             'photo_profil' => $user->getPhotoProfil(),
             'est_actif' => $user->isEstActif(),
+            'email_verifie' => $user->isEmailVerifie(),
             'role' => $user->getRoleEntity()?->getCode(),
         ],
+    ], 200);
+}
+
+
+
+#[Route('/api/me', name: 'api_me_update', methods: ['PATCH'])]
+public function updateMe(
+    Request $request,
+    EntityManagerInterface $entityManager
+): JsonResponse {
+    $user = $this->getUser();
+
+    if (!$user instanceof UTILISATEURS) {
+        return $this->json([
+            'message' => 'Utilisateur non connecté',
+            'data' => null,
+        ], 401);
+    }
+
+    $data = json_decode($request->getContent(), true);
+
+    if (!$data) {
+        return $this->json([
+            'message' => 'Aucune donnée envoyée.',
+            'data' => null,
+        ], 400);
+    }
+
+    if (array_key_exists('nom', $data)) {
+        $user->setNom($data['nom']);
+    }
+
+    if (array_key_exists('prenom', $data)) {
+        $user->setPrenom($data['prenom']);
+    }
+
+    if (array_key_exists('pseudo', $data)) {
+        $user->setPseudo($data['pseudo']);
+    }
+
+    if (array_key_exists('telephone', $data)) {
+        $user->setTelephone($data['telephone']);
+    }
+
+    if (array_key_exists('photo_profil', $data)) {
+        $user->setPhotoProfil($data['photo_profil']);
+    }
+
+    $user->setUpdatedAt(new \DateTimeImmutable());
+
+    $entityManager->flush();
+
+    return $this->json([
+        'message' => 'Profil mis à jour avec succès.',
+        'data' => [
+            'id' => $user->getId(),
+            'nom' => $user->getNom(),
+            'prenom' => $user->getPrenom(),
+            'pseudo' => $user->getPseudo(),
+            'email' => $user->getEmail(),
+            'telephone' => $user->getTelephone(),
+            'photo_profil' => $user->getPhotoProfil(),
+            'est_actif' => $user->isEstActif(),
+            'email_verifie' => $user->isEmailVerifie(),
+            'role' => $user->getRoleEntity()?->getCode(),
+        ],
+    ], 200);
+}
+
+
+#[Route('/api/me/password', name: 'api_me_update_password', methods: ['PATCH'])]
+public function updatePassword(
+    Request $request,
+    UserPasswordHasherInterface $passwordHasher,
+    EntityManagerInterface $entityManager
+): JsonResponse {
+    $user = $this->getUser();
+    $status = 200;
+    $message = 'Mot de passe modifié avec succès.';
+    $dataResponse = null;
+
+    if (!$user instanceof UTILISATEURS) {
+        $status = 401;
+        $message = 'Utilisateur non connecté.';
+    } else {
+        $data = json_decode($request->getContent(), true);
+
+        $currentPassword = $data['ancien_motDePasse'] ?? null;
+        $newPassword = $data['nouveau_motDePasse'] ?? null;
+       
+
+        if (!$currentPassword || !$newPassword ) {
+            $status = 400;
+            $message = 'Tous les champs sont obligatoires.';
+        } elseif (!$passwordHasher->isPasswordValid($user, $currentPassword)) {
+            $status = 400;
+            $message = 'Le mot de passe actuel est incorrect.';
+       
+        } elseif (strlen($newPassword) < 8) {
+            $status = 400;
+            $message = 'Le nouveau mot de passe doit contenir au moins 8 caractères.';
+        } elseif ($passwordHasher->isPasswordValid($user, $newPassword)) {
+            $status = 400;
+            $message = 'Le nouveau mot de passe doit être différent de l’ancien.';
+        } else {
+            $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+            $user->setMotDePasse($hashedPassword);
+            $user->setUpdatedAt(new \DateTimeImmutable());
+            $entityManager->flush();
+        }
+    }
+
+    return $this->json([
+        'message' => $message,
+        'data' => $dataResponse,
+    ], $status);
+}
+
+#[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
+public function logout(): JsonResponse
+{
+    $response = $this->json([
+        'message' => 'Déconnexion réussie.',
+        'data' => null,
     ]);
+
+    $response->headers->clearCookie(
+        'AUTH_TOKEN',
+        '/',
+        null,
+        false,
+        true,
+        'lax'
+    );
+
+    return $response;
 }
 
 }
+

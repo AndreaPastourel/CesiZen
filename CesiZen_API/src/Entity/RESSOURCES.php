@@ -11,6 +11,9 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use App\Controller\RessourceByIdController;
+use App\Controller\RessourceBySlugController;
+use App\Controller\RessourcesListController;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 
@@ -18,15 +21,38 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: RESSOURCESRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(uriTemplate: '/ressources'),
-        new Post(uriTemplate: '/ressources'),
-        new Get(uriTemplate: '/ressources/{id}'),
-        new Patch(uriTemplate: '/ressources/{id}'),
-        new Delete(uriTemplate: '/ressources/{id}'),
-    ],
-    normalizationContext: ['groups' => ['ressource:read']],
-    denormalizationContext: ['groups' => ['ressource:write']]
+    new GetCollection(
+        uriTemplate: '/ressources',
+        controller: RessourcesListController::class,
+        read: false,
+        output: false,
+        name: 'api_ressources_list'
+    ),
+
+    new Get(
+        uriTemplate: '/ressource/{slug}',
+        controller: RessourceBySlugController::class,
+        read: false,
+        output: false,
+        name: 'api_ressource_by_slug'
+    ),
+
+    new Get(
+        uriTemplate: '/ressource/id/{id}',
+        controller: RessourceByIdController::class,
+        read: false,
+        output: false,
+        name: 'api_ressource_by_id'
+    ),
+
+    new Post(uriTemplate: '/ressource'),
+    new Patch(uriTemplate: '/ressource/{id}'),
+    new Delete(uriTemplate: '/ressource/{id}'),
+],
 )]
+
+
+
 class RESSOURCES
 {
     #[ORM\Id]
