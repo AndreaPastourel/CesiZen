@@ -1,33 +1,52 @@
-
+import { API_BASE_URL } from "../../../config/api";
 import { formatDuration, formatFileSize } from "../../../config/Format";
 import { Ressource } from "../../../types/ressources";
 import styles from "./module.ressourcesDetail.module.css";
 
-type Props={
-    ressource:Ressource
-}
+type Props = {
+  ressource: Ressource;
+};
 
-export default function DetailMedia({ressource}:Readonly<Props>){
-    if (!ressource.chemin_media) return null ;
+export default function DetailMedia({ ressource }: Readonly<Props>) {
 
-    const mediaUrl = ressource.chemin_media
-    
-    const isVideo = ressource.duree_seconde !== null
-    const isImage = ressource.duree_seconde === null &&(ressource.largeur_px !== null || ressource.hauteur_px !== null);
-    const isDocument = !isVideo && !isImage;
+  if (!ressource.chemin_media) return null;
 
-    const formattedDuration = formatDuration(ressource.duree_seconde);
-    const formattedSize = formatFileSize(ressource.taille_fichier_ko);
+  const backendBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "").replace(/\/$/, "");
+
+  // On construit l’URL complète du média.
+  const mediaPath = ressource.chemin_media.startsWith("/")
+    ? ressource.chemin_media
+    : `/${ressource.chemin_media}`;
+  const mediaUrl = ressource.chemin_media.startsWith("http")
+    ? ressource.chemin_media
+    : `${backendBaseUrl}${mediaPath}`;
+
+  const fileName = ressource.nom_fichier ?? "Fichier associé";
 
 
-    return (
-     
-            <section className={styles.mediaBox}>
+  const isVideo = ressource.duree_seconde !== null;
+
+  const isImage =
+    !isVideo &&
+    (ressource.largeur_px !== null || ressource.hauteur_px !== null);
+
+
+  const isDocument = !isVideo && !isImage;
+  const formattedDuration = formatDuration(ressource.duree_seconde);
+  const formattedSize = formatFileSize(ressource.taille_fichier_ko);
+
+  const imageAspectRatio =
+    ressource.largeur_px && ressource.hauteur_px
+      ? `${ressource.largeur_px} / ${ressource.hauteur_px}`
+      : "auto";
+
+  return (
+    <section className={styles.mediaBox}>
       <div className={styles.mediaHeader}>
         <div>
           <p className={styles.mediaTitle}>Média associé</p>
 
-          <p className={styles.fileName}>{ressource.nom_fichier}</p>
+          <p className={styles.fileName}>{fileName}</p>
 
           {formattedSize && (
             <p className={styles.mediaInfo}>Taille : {formattedSize}</p>
@@ -45,17 +64,15 @@ export default function DetailMedia({ressource}:Readonly<Props>){
       </div>
 
       {isImage && (
-        <div className={styles.imageWrapper}>
+        <div
+          className={styles.imageWrapper}
+          style={{ aspectRatio: imageAspectRatio }}
+        >
           <img
             src={mediaUrl}
             alt={`Illustration de la ressource : ${ressource.titre}`}
             className={styles.mediaImage}
           />
-
-          <p className={styles.mediaInfo}>
-            Dimensions : {ressource.largeur_px ?? "?"} ×{" "}
-            {ressource.hauteur_px ?? "?"} px
-          </p>
         </div>
       )}
 
@@ -87,5 +104,5 @@ export default function DetailMedia({ressource}:Readonly<Props>){
         </div>
       )}
     </section>
-    )
+  );
 }

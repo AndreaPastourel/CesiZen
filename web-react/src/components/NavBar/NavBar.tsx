@@ -6,6 +6,8 @@ import styles from "./module.NavBar.module.css";
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -14,11 +16,22 @@ export default function Navbar() {
 
   async function checkAuthentication() {
     try {
-      await apiGetProfile();
+      const response = await apiGetProfile();
+
+      const user = response.data ?? response.data;
 
       setIsAuthenticated(true);
+
+      const roleCode = user.role?.code;
+
+      const userIsAdmin =
+        roleCode === "ROLE_ADMIN";
+
+      setIsAdmin(userIsAdmin);
     } catch {
       setIsAuthenticated(false);
+
+      setIsAdmin(false);
     }
   }
 
@@ -37,6 +50,17 @@ export default function Navbar() {
         >
           Ressources
         </NavLink>
+
+        {isAdmin && (
+          <NavLink
+            to="/ressources/create"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Créer une ressource
+          </NavLink>
+        )}
 
         {isAuthenticated ? (
           <NavLink

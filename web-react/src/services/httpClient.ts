@@ -17,18 +17,27 @@ export async function httpRequest<T>({
     Accept: "application/json, application/ld+json",
   };
 
-  if (body) {
+  const isFormData = body instanceof FormData;
+
+  if (body && !isFormData) {
     headers["Content-Type"] = "application/json";
+  }
+
+  let requestBody: BodyInit | undefined;
+
+  if (body !== undefined && body !== null) {
+    requestBody = isFormData ? body : JSON.stringify(body);
   }
 
   const res = await fetch(`${API_BASE_URL}${path}`, {
     method,
     headers,
     credentials: "include",
-    body: body ? JSON.stringify(body) : undefined,
+    body: requestBody,
   });
 
   const text = await res.text();
+
   const data = text ? JSON.parse(text) : null;
 
   if (!res.ok) {

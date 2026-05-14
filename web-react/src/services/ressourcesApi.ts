@@ -1,31 +1,44 @@
-import { Ressource } from "../types/ressources"
-import { httpRequest } from "./httpClient"
+import { Ressource } from "../types/ressources";
+import { httpRequest } from "./httpClient";
 
 type RessourcesResponse = {
-    data : Ressource[],
-    message : string |null,
+  data: Ressource[];
+  message: string | null;
+};
+
+type RessourceResponse = {
+  data: Ressource;
+  message: string | null;
+};
+
+export async function apiGetAllRessources(): Promise<RessourcesResponse> {
+  const rep = await httpRequest<RessourcesResponse>({
+    method: "GET",
+    path: "/ressources",
+  });
+
+  return rep;
 }
-type RessourceDetailResponse={
-    data:Ressource,
-    message : string |null,
+
+export async function apiGetRessourceBySlug(
+  slug: string
+): Promise<RessourceResponse> {
+  const rep = await httpRequest<RessourceResponse>({
+    method: "GET",
+    path: `/ressource/${slug}`,
+  });
+
+  return rep;
 }
 
-export async function apiGetAllRessources() : Promise<RessourcesResponse> {
-    const res = await httpRequest<RessourcesResponse>({
-        method:"GET",
-        path:"/ressources",
-    });
+export async function apiCreateRessource(
+  formData: FormData
+): Promise<RessourceResponse> {
+  const rep = await httpRequest<RessourceResponse>({
+    method: "POST",
+    path: "/ressource",
+    body: formData,
+  });
 
-    return res
-}
-
-
-export async function apiGetRessourceBySlug(slug:string) : Promise<RessourceDetailResponse>{
-    
-    const res = await httpRequest<RessourceDetailResponse>({
-        method:"GET",
-        path:`/ressource/${slug}` ,
-    });
-
-    return res
+  return rep;
 }

@@ -1,4 +1,4 @@
-export type Type ={
+export type TypeResources ={
     id : number,
     code : string, 
     couleur : string |null,

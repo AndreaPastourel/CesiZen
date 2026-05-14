@@ -5,6 +5,7 @@ import RessourcesPage from "./pages/RessourcePage";
 import RessourceDetailPage from "./pages/RessourceDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import Navbar from "./components/NavBar/NavBar";
+import CreateRessourcePage from "./pages/CreateRessourcePage";
 
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
 
       <Route path="/ressources" element={<RessourcesPage />} />
       <Route path="/ressources/:slug" element={<RessourceDetailPage/>} />
+      <Route path="/ressources/create" element={<CreateRessourcePage />} />
 
     </Routes>
     </>

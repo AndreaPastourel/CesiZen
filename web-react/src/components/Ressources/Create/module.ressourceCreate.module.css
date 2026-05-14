@@ -1,0 +1,255 @@
+.createPage {
+  min-height: 100vh;
+  width: 100%;
+  padding: clamp(28px, 5vw, 72px);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(240, 190, 134, 0.25), transparent 28%),
+    radial-gradient(circle at 90% 0%, rgba(227, 205, 139, 0.25), transparent 28%),
+    linear-gradient(135deg, #fbf7ef 0%, #f4efe6 48%, #eef3ea 100%);
+  color: var(--color-text);
+}
+
+.header {
+  max-width: 900px;
+  margin-bottom: 42px;
+}
+
+.eyebrow {
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(3rem, 6vw, 5.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-weight: 950;
+}
+
+.subtitle {
+  max-width: 680px;
+  margin: 24px 0 0;
+  color: #716b61;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.card {
+  width: min(100%, 1100px);
+  padding: 32px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 50px rgba(106, 100, 90, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formGroup label,
+.checkboxGroup label {
+  color: var(--color-text);
+  font-weight: 850;
+  font-size: 0.92rem;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid #ddd3c5;
+  border-radius: 18px;
+  background: rgba(255, 250, 242, 0.9);
+  color: var(--color-text);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.formGroup select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+.formGroup input[type="file"] {
+  min-height: auto;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.formGroup textarea {
+  min-height: 130px;
+  padding: 16px 18px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.formGroup input::placeholder,
+.formGroup textarea::placeholder {
+  color: #9b9388;
+}
+
+.formGroup input:hover,
+.formGroup textarea:hover,
+.formGroup select:hover {
+  background: white;
+  border-color: #cabda9;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 0 4px rgba(227, 205, 139, 0.5),
+    0 12px 26px rgba(106, 100, 90, 0.1);
+}
+
+.formGroup select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.formGroup input[readonly] {
+  opacity: 0.8;
+  cursor: default;
+}
+
+.fileInfo {
+  margin: 8px 0 0;
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 18px;
+  border: 1px solid rgba(93, 112, 82, 0.12);
+  border-radius: 18px;
+  background: rgba(93, 112, 82, 0.06);
+  box-sizing: border-box;
+}
+
+.checkboxGroup input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.primaryButton {
+  width: fit-content;
+  min-height: 54px;
+  margin-top: 28px;
+  border: none;
+  border-radius: 18px;
+  padding: 0 22px;
+  background: linear-gradient(135deg, var(--color-accent), #d79a57);
+  color: white;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(193, 136, 69, 0.26);
+}
+
+.primaryButton:hover {
+  filter: brightness(0.98);
+}
+
+.primaryButton:focus {
+  outline: 4px solid rgba(227, 205, 139, 0.75);
+  outline-offset: 4px;
+}
+
+.primaryButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.errorMessage,
+.successMessage,
+.loadingMessage {
+  max-width: 720px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  font-weight: 800;
+  line-height: 1.45;
+  margin-bottom: 28px;
+}
+
+.errorMessage {
+  background: #f9e1df;
+  color: var(--color-error);
+  border: 1px solid rgba(159, 45, 45, 0.22);
+  box-shadow: inset 5px 0 0 var(--color-error);
+}
+
+.successMessage {
+  background: #e4f3df;
+  color: #2f6b3b;
+  border: 1px solid rgba(47, 107, 59, 0.22);
+  box-shadow: inset 5px 0 0 #2f6b3b;
+}
+
+.loadingMessage {
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-text);
+  box-shadow: 0 14px 34px rgba(106, 100, 90, 0.08);
+}
+
+@media (max-width: 780px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fullWidth {
+    grid-column: auto;
+  }
+
+  .primaryButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .createPage {
+    padding: 28px 18px;
+  }
+
+  .card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+}

@@ -1,5 +1,5 @@
 import { Categorie } from "./categories"
-import { Type } from "./types"
+import { TypeResources } from "./types"
 import { User } from "./users"
 
 export type Ressource= {
@@ -22,7 +22,7 @@ export type Ressource= {
 
     auteur: User,
     categorie : Categorie,
-    type : Type,
+    type : TypeResources,
 
 
 
