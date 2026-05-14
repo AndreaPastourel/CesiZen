@@ -1,6 +1,7 @@
 import { httpRequest } from "@/services/httpClient";
 import { User } from "@/types/users";
 
+
 export type AuthResponse = {
   data: {
     token:string,
@@ -38,7 +39,6 @@ export async function apiRegister(payload: {nom: string | null;
     auth: false,
   });
 }
-
 
 
 

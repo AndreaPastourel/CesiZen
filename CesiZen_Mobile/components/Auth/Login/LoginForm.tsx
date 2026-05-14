@@ -1,6 +1,7 @@
 
 import { apiLogin } from "@/services/authApi";
 import { saveAccessToken } from "@/services/authStorage";
+import { saveCurrentUser } from "@/services/userStorage";
 import { isEmailValid, isPasswordValid } from "@/utils/validators";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -59,15 +60,19 @@ export default function LoginForm({ styles }: Readonly<Props>) {
 
     try {
       const result = await apiLogin({
-        email: cleanEmail,
-        motDePasse: cleanPassword,
-      });
+      email: cleanEmail,
+      motDePasse: cleanPassword,
+    });
 
-      await saveAccessToken(result.data.token);
+    await saveAccessToken(result.data.token);
 
-      setMessage("Connexion OK ✅");
+    if (result.data.user) {
+      await saveCurrentUser(result.data.user);
+    }
 
-      router.replace("/(tabs)");
+    setMessage("Connexion OK ✅");
+
+router.replace("/(tabs)/ressourcesList");
     } catch (e: any) {
       setMessage(e?.message ?? "Impossible de se connecter.");
     } finally {
