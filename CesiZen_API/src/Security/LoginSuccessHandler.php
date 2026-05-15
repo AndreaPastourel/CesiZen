@@ -32,6 +32,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
         $response = new JsonResponse([
             'message' => 'Connexion réussie.',
             'data' => [
+                'token' => $jwt,
                 'user' => [
                     'id' => $user->getId(),
                     'nom' => $user->getNom(),

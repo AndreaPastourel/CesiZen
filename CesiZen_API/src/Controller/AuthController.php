@@ -104,6 +104,7 @@ final class AuthController extends AbstractController
 public function me(): JsonResponse
 {
     $user = $this->getUser();
+   
 
     if (!$user instanceof UTILISATEURS) {
         return $this->json([
@@ -111,7 +112,8 @@ public function me(): JsonResponse
             'data' => null,
         ], 401);
     }
-
+    
+     $role = $user->getRoleEntity();
     return $this->json([
         'message' => 'Utilisateur récupéré avec succès.',
         'data' => [
@@ -124,7 +126,12 @@ public function me(): JsonResponse
             'photo_profil' => $user->getPhotoProfil(),
             'est_actif' => $user->isEstActif(),
             'email_verifie' => $user->isEmailVerifie(),
-            'role' => $user->getRoleEntity()?->getCode(),
+            'role' => $role ? [
+                'id' => $role->getId(),
+                'code' => $role->getCode(),
+                'libelle' => $role->getLibelle(),
+                'description' => $role->getDescription(),
+            ] : null,
         ],
     ], 200);
 }

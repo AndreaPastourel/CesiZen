@@ -12,13 +12,22 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use App\Controller\TypesRessourcesController;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 
 #[ORM\Entity(repositoryClass: TYPESRESSOURCESRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(uriTemplate: '/types-ressources'),
+        new GetCollection(
+        uriTemplate: '/types-ressources',
+        controller: TypesRessourcesController::class,
+        read: false,
+        output: false,
+        name: 'api_types_ressources_list_custom'
+    ),
+
         new Post(uriTemplate: '/types-ressources'),
         new Get(uriTemplate: '/types-ressources/{id}'),
         new Patch(uriTemplate: '/types-ressources{id}'),
@@ -59,6 +68,7 @@ class TYPESRESSOURCES
      * @var Collection<int, RESSOURCES>
      */
     #[ORM\OneToMany(targetEntity: RESSOURCES::class, mappedBy: 'type')]
+    #[Ignore]
     private Collection $ressources;
 
     public function __construct()
@@ -146,6 +156,7 @@ class TYPESRESSOURCES
     /**
      * @return Collection<int, RESSOURCES>
      */
+    #[Ignore]
     public function getRessources(): Collection
     {
         return $this->ressources;

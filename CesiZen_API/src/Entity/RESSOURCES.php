@@ -11,9 +11,12 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use App\Controller\CreateRessourceController;
 use App\Controller\RessourceByIdController;
 use App\Controller\RessourceBySlugController;
 use App\Controller\RessourcesListController;
+use App\Controller\UpdateRessourceActiveController;
+use App\Controller\UpdateRessourceController;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 
@@ -21,7 +24,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: RESSOURCESRepository::class)]
 #[ApiResource(
     operations: [
-    new GetCollection(
+     new GetCollection(
         uriTemplate: '/ressources',
         controller: RessourcesListController::class,
         read: false,
@@ -45,8 +48,38 @@ use Symfony\Component\Serializer\Attribute\Groups;
         name: 'api_ressource_by_id'
     ),
 
-    new Post(uriTemplate: '/ressource'),
-    new Patch(uriTemplate: '/ressource/{id}'),
+    new Post(
+        uriTemplate: '/ressource',
+        controller: CreateRessourceController::class,
+        read: false,
+        deserialize: false,
+        output: false,
+        inputFormats: [
+            'multipart' => ['multipart/form-data'],
+        ],
+        name: 'api_ressources_create_custom'
+    ),
+
+    new Patch(
+    uriTemplate: '/ressource/{id}/active',
+    controller: UpdateRessourceActiveController::class,
+    read: false,
+    deserialize: false,
+    output: false,
+    name: 'api_ressource_update_active'
+),
+
+new Post(
+    uriTemplate: '/ressource/{id}',
+    controller: UpdateRessourceController::class,
+    read: false,
+    deserialize: false,
+    output: false,
+    inputFormats: [
+        'multipart' => ['multipart/form-data'],
+    ],
+    name: 'api_ressource_update_custom'
+),
     new Delete(uriTemplate: '/ressource/{id}'),
 ],
 )]

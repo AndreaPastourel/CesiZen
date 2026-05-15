@@ -13,14 +13,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use App\Controller\CategoriesRessourcesController;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 
 #[ORM\Entity(repositoryClass: CATEGORIESRESSOURCESRepository::class)]
 
 #[ApiResource(
     operations: [
-        new GetCollection(uriTemplate: '/categories-ressources'),
+     new GetCollection(
+        uriTemplate: '/categories-ressources',
+        controller: CategoriesRessourcesController::class,
+        read: false,
+        output: false,
+        name: 'api_categories_ressources_list_custom'
+    ),
+
         new Post(uriTemplate: '/categories-ressources'),
         new Get(uriTemplate: '/categories-ressources/{id}'),
         new Patch(uriTemplate: '/categories-ressources/{id}'),
@@ -58,7 +67,8 @@ class CATEGORIESRESSOURCES
     /**
      * @var Collection<int, RESSOURCES>
      */
-    #[ORM\OneToMany(targetEntity: RESSOURCES::class, mappedBy: 'categorie')]
+    #[Ignore]
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: RESSOURCES::class)]
     private Collection $ressources;
 
     public function __construct()
