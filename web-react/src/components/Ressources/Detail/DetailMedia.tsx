@@ -79,6 +79,12 @@ export default function DetailMedia({ ressource }: Readonly<Props>) {
       {isVideo && (
         <div className={styles.videoWrapper}>
           <video className={styles.mediaVideo} controls>
+            <track
+              kind="captions"
+              srcLang="fr"
+              label="Français"
+              src="data:text/vtt;charset=utf-8,WEBVTT"
+            />
             <source src={mediaUrl} />
             Votre navigateur ne peut pas lire cette vidéo.
           </video>

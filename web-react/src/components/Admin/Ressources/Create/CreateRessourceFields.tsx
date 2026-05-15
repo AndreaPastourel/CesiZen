@@ -1,7 +1,8 @@
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
-import { Categorie } from "../../../types/categories";
-import { TypeResources } from "../../../types/types";
+
 import styles from "./module.ressourceCreate.module.css";
+import { Categorie } from "../../../../types/categories";
+import { TypeResources } from "../../../../types/types";
 
 type Props = {
   titre: string;

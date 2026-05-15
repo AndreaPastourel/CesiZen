@@ -72,32 +72,3 @@ export async function apiLogOut():Promise<LogoutResponse>{
 }
 
 
-
-async function checkAdminAccess() {
-  try {
-    const response = await apiGetProfile();
-
-    const connectedUser = response.data;
-
-    console.log("Utilisateur connecté :", connectedUser);
-    console.log("Rôle utilisateur :", connectedUser.role);
-
-    const isAdmin =
-      connectedUser.role?.code === "ROLE_ADMIN" ||
-      connectedUser.role?.code === "ROLE_SUPER_ADMIN";
-
-    console.log("Est admin ?", isAdmin);
-
-    if (!isAdmin) {
-      setRedirectTo("/ressources");
-      return;
-    }
-
-    setUser(connectedUser);
-  } catch (error) {
-    console.log("Erreur vérification admin :", error);
-    setRedirectTo("/login");
-  } finally {
-    setIsLoading(false);
-  }
-}

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-
-import CreateRessourceForm from "../components/Ressources/Create/CreateRessourceForm";
 import { apiGetProfile } from "../services/profilApi";
 import { User } from "../types/users";
 
-export default function CreateRessourcePage() {
+
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function RequireAdmin({ children }: Readonly<Props>) {
   const [user, setUser] = useState<User | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -23,10 +26,6 @@ export default function CreateRessourcePage() {
       const connectedUser = response.data;
 
       const isAdmin = connectedUser.role?.code === "ROLE_ADMIN";
-
-      console.log("Utilisateur connecté :", connectedUser);
-      console.log("Rôle utilisateur :", connectedUser.role);
-      console.log("Est admin ?", isAdmin);
 
       if (!isAdmin) {
         setRedirectTo("/ressources");
@@ -55,5 +54,5 @@ export default function CreateRessourcePage() {
     return <Navigate to="/ressources" replace />;
   }
 
-  return <CreateRessourceForm />;
+  return <>{children}</>;
 }

@@ -52,14 +52,26 @@ export default function Navbar() {
         </NavLink>
 
         {isAdmin && (
+          <>
           <NavLink
-            to="/ressources/create"
+            to="/admin/ressources"
             className={({ isActive }) =>
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
             }
           >
-            Créer une ressource
+            CRUD Ressources
           </NavLink>
+
+           <NavLink
+            to="/admin/users"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            CRUD Utilisateur
+          </NavLink>
+          </>
+          
         )}
 
         {isAuthenticated ? (

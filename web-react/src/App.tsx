@@ -1,11 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import RessourcesPage from "./pages/RessourcePage";
 import RessourceDetailPage from "./pages/RessourceDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import Navbar from "./components/NavBar/NavBar";
-import CreateRessourcePage from "./pages/CreateRessourcePage";
+
+import RequireAdmin from "./components/RequireAdmin";
+import AdminRessourcesPage from "./pages/admin/Ressources/AdminRessourcesPage";
+import CreateRessourcePage from "./pages/admin/Ressources/CreateRessourcePage";
+import RessourcesPage from "./pages/RessourcePage";
+import AdminRessourceUpdatePage from "./pages/admin/Ressources/AdminRessourcesUpdatePage";
+import UsersPage from "./pages/admin/Users/UsersPage";
 
 
 export default function App() {
@@ -22,7 +27,35 @@ export default function App() {
 
       <Route path="/ressources" element={<RessourcesPage />} />
       <Route path="/ressources/:slug" element={<RessourceDetailPage/>} />
-      <Route path="/ressources/create" element={<CreateRessourcePage />} />
+
+
+     <Route path="admin/ressources/create" element={ 
+       <RequireAdmin>
+      <CreateRessourcePage />
+      </RequireAdmin>
+      }
+      />
+      <Route path="admin/ressources" element={ 
+       <RequireAdmin>
+      <AdminRessourcesPage />
+      </RequireAdmin>
+      }
+      />
+
+      <Route path="admin/ressource/update/:id" element={ 
+       <RequireAdmin>
+      <AdminRessourceUpdatePage />
+      </RequireAdmin>
+      }
+      />
+
+      <Route path="admin/users" element={ 
+       <RequireAdmin>
+      <UsersPage />
+      </RequireAdmin>
+      }
+      />
+
 
     </Routes>
     </>
