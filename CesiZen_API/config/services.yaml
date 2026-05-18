@@ -28,3 +28,13 @@ services:
         autowire: true
         autoconfigure: true
         public: true
+
+    App\Controller\TypesEmotionsController:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\Controller\EmotionsController:
+        autowire: true
+        autoconfigure: true
+        public: true

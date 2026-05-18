@@ -13,12 +13,16 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
-
+use App\Controller\EmotionsController;
 
 #[ORM\Entity(repositoryClass: EMOTIONSRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(uriTemplate: '/emotions'),
+        new GetCollection(  uriTemplate: '/emotions',
+            controller: EmotionsController::class,
+            read: false,
+            output: false,
+            name: 'api_emotions_list'),
         new Post(uriTemplate: '/emotions'),
         new Get(uriTemplate: '/emotions/{id}'),
         new Patch(uriTemplate: '/emotions/{id}'),

@@ -2,16 +2,18 @@
 
 namespace App\Security;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationFailureHandler as LexikAuthenticationFailureHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 
-class AuthenticationFailureHandler extends LexikAuthenticationFailureHandler
+class AuthenticationFailureHandler implements AuthenticationFailureHandlerInterface
 {
-    public function onAuthenticationFailure($request, AuthenticationException $exception): JsonResponse
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         return new JsonResponse([
             'message' => 'Adresse email ou mot de passe incorrect.',
-        ], JsonResponse::HTTP_UNAUTHORIZED);
+            'data' => null,
+        ], 401);
     }
 }
