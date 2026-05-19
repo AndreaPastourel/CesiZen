@@ -1,0 +1,341 @@
+.adminPage {
+  min-height: 100vh;
+  width: 100%;
+  padding: clamp(28px, 5vw, 72px);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(240, 190, 134, 0.25), transparent 28%),
+    radial-gradient(circle at 90% 0%, rgba(227, 205, 139, 0.25), transparent 28%),
+    linear-gradient(135deg, #fbf7ef 0%, #f4efe6 48%, #eef3ea 100%);
+  color: var(--color-text);
+}
+
+.header {
+  width: min(100%, 1450px);
+  margin: 0 auto 42px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(3rem, 6vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-weight: 950;
+}
+
+.subtitle {
+  max-width: 780px;
+  margin: 24px 0 0;
+  color: #716b61;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.addButton,
+.secondaryButton,
+.smallButton {
+  border: none;
+  border-radius: 16px;
+  padding: 13px 18px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.addButton {
+  background: linear-gradient(135deg, var(--color-accent), #d79a57);
+  color: white;
+  box-shadow: 0 14px 30px rgba(193, 136, 69, 0.26);
+}
+
+.secondaryButton,
+.smallButton {
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+}
+
+.addButton:hover,
+.secondaryButton:hover,
+.smallButton:hover {
+  filter: brightness(0.98);
+}
+
+.addButton:focus,
+.secondaryButton:focus,
+.smallButton:focus {
+  outline: 4px solid rgba(227, 205, 139, 0.75);
+  outline-offset: 4px;
+}
+
+.errorMessage,
+.successMessage,
+.loadingMessage,
+.emptyMessage {
+  width: min(100%, 720px);
+  padding: 16px 18px;
+  border-radius: 18px;
+  font-weight: 800;
+  line-height: 1.45;
+  margin: 0 auto 28px;
+}
+
+.errorMessage {
+  background: #f9e1df;
+  color: var(--color-error);
+  border: 1px solid rgba(159, 45, 45, 0.22);
+  box-shadow: inset 5px 0 0 var(--color-error);
+}
+
+.successMessage {
+  background: #e4f3df;
+  color: #2f6b3b;
+  border: 1px solid rgba(47, 107, 59, 0.22);
+  box-shadow: inset 5px 0 0 #2f6b3b;
+}
+
+.loadingMessage,
+.emptyMessage {
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--color-text);
+  box-shadow: 0 14px 34px rgba(106, 100, 90, 0.08);
+}
+
+.typeGrid {
+  width: min(100%, 1450px);
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+.typeCard {
+  padding: 26px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 20px 50px rgba(106, 100, 90, 0.12);
+  backdrop-filter: blur(16px);
+}
+
+.typeHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.typeTitleBlock {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.colorDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  margin-top: 7px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(106, 100, 90, 0.18);
+}
+
+.typeTitleBlock h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.6rem;
+  font-weight: 950;
+}
+
+.typeTitleBlock p {
+  margin: 8px 0 0;
+  color: #756e64;
+  line-height: 1.5;
+}
+
+.typeActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.emotionList {
+  margin-top: 22px;
+  display: grid;
+  gap: 12px;
+}
+
+.emotionItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 250, 242, 0.75);
+  border: 1px solid rgba(221, 211, 197, 0.6);
+}
+
+.emotionInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+.iconBox {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(93, 112, 82, 0.1);
+  border: 1px solid rgba(93, 112, 82, 0.12);
+}
+
+.emotionIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.iconFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 950;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.emotionTitleLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.emotionTitleLine strong {
+  color: var(--color-text);
+  font-weight: 950;
+  font-size: 1.05rem;
+}
+
+.emotionColorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.emotionInfo small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-primary);
+  font-weight: 900;
+}
+
+.emotionInfo p {
+  margin: 6px 0 0;
+  color: #756e64;
+  line-height: 1.5;
+}
+
+.noEmotion {
+  margin: 20px 0 0;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(93, 112, 82, 0.06);
+  color: #756e64;
+  font-weight: 800;
+}
+
+@media (max-width: 980px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+
+  .addButton,
+  .secondaryButton {
+    flex: 1;
+  }
+
+  .typeHeader,
+  .emotionItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .typeActions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .smallButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .adminPage {
+    padding: 28px 18px;
+  }
+
+  .typeCard {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .emotionInfo {
+    flex-direction: column;
+  }
+
+  .iconBox {
+    width: 64px;
+    height: 64px;
+  }
+
+  .addButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}

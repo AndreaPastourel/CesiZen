@@ -9,7 +9,7 @@ type Props={
 
 export default function AdminRessourcesEmpty({isLoading,ressources}:Readonly<Props>){
 
-        if (!isLoading && ressources.length === 0) return null;
+        if (!isLoading && ressources.length !== 0) return null;
 
     return(
           

@@ -70,6 +70,16 @@ export default function Navbar() {
           >
             CRUD Utilisateur
           </NavLink>
+
+          
+           <NavLink
+            to="/admin/emotions"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            CRUD Emotions
+          </NavLink>
           </>
           
         )}

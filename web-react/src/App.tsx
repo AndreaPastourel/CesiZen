@@ -11,6 +11,7 @@ import CreateRessourcePage from "./pages/admin/Ressources/CreateRessourcePage";
 import RessourcesPage from "./pages/RessourcePage";
 import AdminRessourceUpdatePage from "./pages/admin/Ressources/AdminRessourcesUpdatePage";
 import UsersPage from "./pages/admin/Users/UsersPage";
+import EmotionListPage from "./pages/admin/Emotions/EmotionListPage";
 
 
 export default function App() {
@@ -52,6 +53,13 @@ export default function App() {
       <Route path="admin/users" element={ 
        <RequireAdmin>
       <UsersPage />
+      </RequireAdmin>
+      }
+      />
+
+       <Route path="admin/emotions" element={ 
+       <RequireAdmin>
+      <EmotionListPage />
       </RequireAdmin>
       }
       />
