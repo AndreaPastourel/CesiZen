@@ -29,7 +29,6 @@ class AppFixtures extends Fixture
         $rolesData = [
             ['code' => 'ROLE_USER', 'libelle' => 'Utilisateur', 'description' => 'Utilisateur classique de la plateforme.'],
             ['code' => 'ROLE_ADMIN', 'libelle' => 'Administrateur', 'description' => 'Administrateur de la plateforme.'],
-            ['code' => 'ROLE_MODERATOR', 'libelle' => 'Modérateur', 'description' => 'Utilisateur pouvant modérer certains contenus.'],
         ];
 
         $roles = [];

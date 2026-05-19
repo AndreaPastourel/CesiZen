@@ -5,6 +5,7 @@ import RessourceDetailPage from "./pages/RessourceDetailPage";
 import ProfilePage from "./pages/ProfilePage";
 import Navbar from "./components/NavBar/NavBar";
 
+
 import RequireAdmin from "./components/RequireAdmin";
 import AdminRessourcesPage from "./pages/admin/Ressources/AdminRessourcesPage";
 import CreateRessourcePage from "./pages/admin/Ressources/CreateRessourcePage";
@@ -12,6 +13,7 @@ import RessourcesPage from "./pages/RessourcePage";
 import AdminRessourceUpdatePage from "./pages/admin/Ressources/AdminRessourcesUpdatePage";
 import UsersPage from "./pages/admin/Users/UsersPage";
 import EmotionListPage from "./pages/admin/Emotions/EmotionListPage";
+import CreateTypeEmotionPage from "./pages/admin/Emotions/CreateTypeEmotionPage";
 
 
 export default function App() {
@@ -63,6 +65,13 @@ export default function App() {
       </RequireAdmin>
       }
       />
+       <Route path="/admin/emotions/types/create" element={ 
+       <RequireAdmin>
+      <CreateTypeEmotionPage />
+      </RequireAdmin>
+      }
+      />
+
 
 
     </Routes>

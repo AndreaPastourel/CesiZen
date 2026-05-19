@@ -23,7 +23,14 @@ use App\Controller\TypesEmotionsController;
             read: false,
             output: false,
             name: 'api_types_emotions_list'),
-        new Post(uriTemplate: '/types-emotions'),
+       new Post(
+            uriTemplate: '/types-emotions',
+            controller: \App\Controller\CreateTypeEmotionController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            name: 'api_types_emotions_create_custom'
+        ),
         new Get(uriTemplate: '/types-emotions/{id}'),
         new Patch(uriTemplate: '/types-emotions{id}'),
         new Delete(uriTemplate: '/types-emotions/{id}'),

@@ -47,7 +47,7 @@ export async function apiCreateTypeEmotion(
 ): Promise<TypeEmotionResponse> {
   return httpRequest<TypeEmotionResponse>({
     method: "POST",
-    path: "/types-emotion",
+    path: "/types-emotions",
     body: payload,
   });
 }
