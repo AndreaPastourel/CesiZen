@@ -16,9 +16,15 @@ use ApiPlatform\Metadata\Delete;
 #[ApiResource(
     operations: [
         new GetCollection(uriTemplate: '/entree-journal'),
-        new Post(uriTemplate: '/entree-journal'),
-        new Get(uriTemplate: '/entree-journal/{id}'),
-        new Patch(uriTemplate: '/entree-journal/{id}'),
+        new Post(
+            uriTemplate: '/entree-journal',
+            controller: \App\Controller\CreateEntreeJournalController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            name: 'api_entree_journal_create_custom'
+        ),
+    
         new Delete(uriTemplate: '/entree-journal/{id}'),
     ]
 )]
