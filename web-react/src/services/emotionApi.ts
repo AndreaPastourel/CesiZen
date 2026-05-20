@@ -35,10 +35,23 @@ export async function apiGetAllTypesEmotion(): Promise<TypesEmotionResponse> {
   });
 }
 
+export async function apiGetTypeEmotionById(id : number): Promise <TypeEmotionResponse>{
+  return httpRequest<TypeEmotionResponse>({
+    method: "GET",
+    path: `/types-emotions/${id}`,
+  });
+}
+
 export async function apiGetAllEmotions(): Promise<EmotionsResponse> {
   return httpRequest<EmotionsResponse>({
     method: "GET",
     path: "/emotions",
+  });
+}
+export async function apiGetEmotionById(id : number): Promise<EmotionResponse> {
+  return httpRequest<EmotionResponse>({
+    method: "GET",
+    path: `/emotions/${id}`,
   });
 }
 
@@ -58,10 +71,11 @@ export async function apiUpdateTypeEmotion(
 ): Promise<TypeEmotionResponse> {
   return httpRequest<TypeEmotionResponse>({
     method: "PATCH",
-    path: `/types-emotion/${id}`,
+    path: `/types-emotions/${id}`,
     body: payload,
   });
 }
+
 
 export async function apiCreateEmotion(
   formData: FormData

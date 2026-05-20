@@ -2,14 +2,11 @@ import { useNavigate } from "react-router-dom";
 import styles from "../module.createEmotion.module.css";
 
 type Props = {
-  isLoading: boolean;
-  isEditMode: boolean;
+  isLoading: boolean,
+  isEditMode: boolean,
 };
 
-export default function CreateTypeEmotionAction({
-  isLoading,
-  isEditMode,
-}: Readonly<Props>) {
+export default function CreateEmotionAction({isLoading,isEditMode,}: Readonly<Props>) {
   const navigate = useNavigate();
 
   return (
@@ -22,8 +19,8 @@ export default function CreateTypeEmotionAction({
         {isLoading
           ? "Enregistrement..."
           : isEditMode
-            ? "Modifier le type"
-            : "Créer le type"}
+            ? "Modifier l’émotion"
+            : "Créer l’émotion"}
       </button>
 
       <button

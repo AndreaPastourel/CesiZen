@@ -120,7 +120,7 @@ export default function EmotionList (){
                     </Link>
 
                     <Link
-                      to={`/admin/emotions/create?type=${typeEmotion.id}`}
+                      to={`/admin/emotions/create/${typeEmotion.id}`}
                       className={styles.smallButton}
                     >
                       Ajouter une émotion
