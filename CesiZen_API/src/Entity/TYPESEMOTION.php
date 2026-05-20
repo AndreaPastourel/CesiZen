@@ -31,8 +31,21 @@ use App\Controller\TypesEmotionsController;
             output: false,
             name: 'api_types_emotions_create_custom'
         ),
-        new Get(uriTemplate: '/types-emotions/{id}'),
-        new Patch(uriTemplate: '/types-emotions{id}'),
+        new Get(
+            uriTemplate: '/types-emotions/{id}',
+            controller: \App\Controller\TypeEmotionByIdController::class,
+            read: false,
+            output: false,
+            name: 'api_type_emotion_by_id'
+        ),
+        new Patch(
+            uriTemplate: '/types-emotions/{id}',
+            controller: \App\Controller\UpdateTypeEmotionController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            name: 'api_type_emotion_update_custom'
+        ),
         new Delete(uriTemplate: '/types-emotions/{id}'),
     ]
 )]

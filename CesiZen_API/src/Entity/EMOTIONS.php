@@ -23,8 +23,35 @@ use App\Controller\EmotionsController;
             read: false,
             output: false,
             name: 'api_emotions_list'),
-        new Post(uriTemplate: '/emotions'),
-        new Get(uriTemplate: '/emotions/{id}'),
+        new Post(
+            uriTemplate: '/emotions',
+            controller: \App\Controller\CreateEmotionController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            inputFormats: [
+                'multipart' => ['multipart/form-data'],
+            ],
+            name: 'api_emotions_create_custom'
+        ),
+        new Post(
+            uriTemplate: '/emotions/{id}/update',
+            controller: \App\Controller\UpdateEmotionController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            inputFormats: [
+                'multipart' => ['multipart/form-data'],
+            ],
+            name: 'api_emotions_update_custom'
+        ),
+        new Get(
+            uriTemplate: '/emotions/{id}',
+            controller: \App\Controller\EmotionByIdController::class,
+            read: false,
+            output: false,
+            name: 'api_emotion_by_id'
+        ),
         new Patch(uriTemplate: '/emotions/{id}'),
         new Delete(uriTemplate: '/emotions/{id}'),
     ]
