@@ -6,10 +6,7 @@ type Props = {
   isEditMode: boolean;
 };
 
-export default function CreateTypeEmotionAction({
-  isLoading,
-  isEditMode,
-}: Readonly<Props>) {
+export default function CreateTypeEmotionAction({isLoading,isEditMode,}: Readonly<Props>) {
   const navigate = useNavigate();
 
   return (

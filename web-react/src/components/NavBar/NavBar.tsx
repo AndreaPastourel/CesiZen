@@ -83,8 +83,17 @@ export default function Navbar() {
           </>
           
         )}
+      {isAuthenticated ? (
+        <>
+          <NavLink
+            to="/journal"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Journal
+          </NavLink>
 
-        {isAuthenticated ? (
           <NavLink
             to="/profil"
             className={({ isActive }) =>
@@ -93,16 +102,17 @@ export default function Navbar() {
           >
             Mon profil
           </NavLink>
-        ) : (
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-            Connexion
-          </NavLink>
-        )}
+        </>
+      ) : (
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+          }
+        >
+          Connexion
+        </NavLink>
+)}
       </nav>
     </header>
   );

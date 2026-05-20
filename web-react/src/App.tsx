@@ -17,6 +17,7 @@ import CreateTypeEmotionPage from "./pages/admin/Emotions/CreateTypeEmotionPage"
 import CreateEmotionPage from "./pages/admin/Emotions/CreateEmotionPage";
 import EditTypeEmotionPage from "./pages/admin/Emotions/EditTypeEmotionPage";
 import UpdateEmotionPage from "./pages/admin/Emotions/UpdateEmotionPage";
+import JournalStatsPage from "./pages/JournalStats";
 
 
 export default function App() {
@@ -25,7 +26,8 @@ export default function App() {
      <Navbar />
 
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/ressources" replace />} />
+
 
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -33,6 +35,8 @@ export default function App() {
 
       <Route path="/ressources" element={<RessourcesPage />} />
       <Route path="/ressources/:slug" element={<RessourceDetailPage/>} />
+
+       <Route path="/journal" element={<JournalStatsPage />} />
 
 
      <Route path="admin/ressources/create" element={ 
