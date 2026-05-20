@@ -10,7 +10,11 @@ export default function TabsLayout() {
     <View style={{ flex: 1 }}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ressourcesList" />
-        <Stack.Screen name="profile" />
+        <Stack.Screen name="trackerEmotion" />
+         <Stack.Screen name="profile" />
+        <Stack.Screen name="addTracker" />
+         <Stack.Screen name="UpdateTracker/[id]" />
+
       </Stack>
 
       <PrivateBottomBar />

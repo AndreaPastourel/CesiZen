@@ -9,7 +9,7 @@ export default function PrivateBottomBar() {
 
 
   const isRessourcesActive = pathname === "/ressourcesList" || pathname === "/(tabs)/ressourcesList";
-
+  const isTrackerEmotionActive = pathname === "/TrackerEmotion" || pathname === "/(tabs)/TrackerEmotion";
   const isProfileActive = pathname === "/profile" || pathname === "/(tabs)/profile";
 
 
@@ -34,6 +34,28 @@ export default function PrivateBottomBar() {
             ]}
           >
             Ressources
+          </Text>
+        </Pressable>
+
+
+          <Pressable
+          onPress={() => router.replace("/(tabs)/trackerEmotion")}
+          style={navigationStyles.privateBarItem}
+        >
+          <View
+            style={[
+              navigationStyles.privateIconDot,
+              isTrackerEmotionActive ? navigationStyles.privateIconDotActive : null,
+            ]}
+          />
+
+          <Text
+            style={[
+              navigationStyles.privateBarText,
+              isTrackerEmotionActive ? navigationStyles.privateBarTextActive : null,
+            ]}
+          >
+            Journal des emotions
           </Text>
         </Pressable>
 
