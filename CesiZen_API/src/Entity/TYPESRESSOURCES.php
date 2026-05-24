@@ -20,17 +20,40 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 #[ORM\Entity(repositoryClass: TYPESRESSOURCESRepository::class)]
 #[ApiResource(
     operations: [
-        new GetCollection(
-        uriTemplate: '/types-ressources',
-        controller: TypesRessourcesController::class,
-        read: false,
-        output: false,
-        name: 'api_types_ressources_list_custom'
-    ),
+       new GetCollection(
+            uriTemplate: '/types-ressources',
+            controller: \App\Controller\TypesRessourcesController::class,
+            read: false,
+            output: false,
+            name: 'api_types_ressources_list'
+        ),
 
-        new Post(uriTemplate: '/types-ressources'),
-        new Get(uriTemplate: '/types-ressources/{id}'),
-        new Patch(uriTemplate: '/types-ressources{id}'),
+        new Get(
+            uriTemplate: '/types-ressources/{id}',
+            controller: \App\Controller\TypeRessourceByIdController::class,
+            read: false,
+            output: false,
+            name: 'api_type_ressource_by_id'
+        ),
+
+        new Post(
+            uriTemplate: '/types-ressources',
+            controller: \App\Controller\CreateTypeRessourceController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            name: 'api_types_ressources_create_custom'
+        ),
+
+        new Patch(
+            uriTemplate: '/types-ressources/{id}',
+            controller: \App\Controller\UpdateTypeRessourceController::class,
+            read: false,
+            deserialize: false,
+            output: false,
+            name: 'api_types_ressources_update_custom'
+        ),
+
         new Delete(uriTemplate: '/types-ressources/{id}'),
     ]
 )]
