@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "./api";
+
 export function formatDate(date: string | null) {
     if (!date) {
       return "Date non renseignée";
@@ -31,3 +33,40 @@ export function formatDate(date: string | null) {
 
     return `${sizeMo.toFixed(1)} Mo`;
   }
+
+
+  export function createImageFileFromUri(uri: string) {
+  const fileName = uri.split("/").pop() || "photo-profil.jpg";
+
+  const extension = fileName.split(".").pop()?.toLowerCase();
+
+  const mimeType =
+    extension === "png"
+      ? "image/png"
+      : extension === "webp"
+        ? "image/webp"
+        : "image/jpeg";
+
+  return {
+    uri,
+    name: fileName,
+    type: mimeType,
+  } as any;
+}
+
+
+
+
+export function buildPhotoUrl(photoPath: string | null | undefined) {
+  if (!photoPath) {
+    return "";
+  }
+
+  if (photoPath.startsWith("http")) {
+    return photoPath;
+  }
+
+  const backendBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "");
+
+  return `${backendBaseUrl}${photoPath.startsWith("/") ? photoPath : `/${photoPath}`}`;
+}

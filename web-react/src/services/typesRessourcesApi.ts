@@ -33,7 +33,7 @@ export async function apiGetTypeRessourceById(
 ): Promise<TypeResponse> {
   const response = await httpRequest<TypeResponse>({
     method: "GET",
-    path: `/api/types-ressources/${id}`,
+    path: `/types-ressources/${id}`,
   });
 
   return response;
@@ -45,7 +45,7 @@ export async function apiCreateTypeRessource(
 ): Promise<TypeResponse> {
   return httpRequest<TypeResponse>({
     method: "POST",
-    path: "/api/types-ressources",
+    path: "/types-ressources",
     body: payload,
   });
 }
@@ -56,7 +56,7 @@ export async function apiUpdateTypeRessource(
 ): Promise<TypeResponse> {
   return httpRequest<TypeResponse>({
     method: "PATCH",
-    path: `/api/types-ressources/${id}`,
+    path: `/types-ressources/${id}`,
     body: payload,
   });
 }

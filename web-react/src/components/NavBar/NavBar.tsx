@@ -83,7 +83,7 @@ export default function Navbar() {
 
 
            <NavLink
-            to="/admin/types-ressources"
+            to="/admin/ressources/types"
             className={({ isActive }) =>
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
             }

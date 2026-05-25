@@ -3,6 +3,7 @@ import { httpRequest } from "./httpClient";
 
 type ProfileResponse = {
     data: User,
+    message :string |null,
 }
 
 
@@ -43,14 +44,12 @@ export async function apiGetProfile():Promise<ProfileResponse> {
 
 
 
-export async function apiUpdateProfile (payload :UpdateProfilePayload) : Promise <UpdateProfilResponse>{
-
-    return httpRequest<UpdateProfilResponse>({
-        method:"PATCH",
-        path:"/me",
-        body:payload,
-    })
-    
+export async function apiUpdateProfile(formData: FormData): Promise<ProfileResponse> {
+  return httpRequest<ProfileResponse>({
+    method: "POST",
+    path: "/me/update",
+    body: formData,
+  });
 }
 
 

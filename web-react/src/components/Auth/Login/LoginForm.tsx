@@ -46,7 +46,8 @@ export default function LoginForm() {
         email: cleanEmail,
         password: cleanPassword,
       });
-
+      
+      
       setMessage({
         type: "success",
         text: "Connexion réussie ✅",

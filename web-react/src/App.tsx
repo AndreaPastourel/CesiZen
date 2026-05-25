@@ -18,6 +18,9 @@ import CreateEmotionPage from "./pages/admin/Emotions/CreateEmotionPage";
 import EditTypeEmotionPage from "./pages/admin/Emotions/EditTypeEmotionPage";
 import UpdateEmotionPage from "./pages/admin/Emotions/UpdateEmotionPage";
 import JournalStatsPage from "./pages/JournalStats";
+import UpdateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/UpdateTypesRessourcesPage';
+import AdminTypesRessourcesPage from "./pages/admin/Ressources/TypesRessources/AdminTypesRessourcesPage";
+import CreateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/CreateTypesRessourcesPage';
 
 
 export default function App() {
@@ -110,26 +113,26 @@ export default function App() {
   }
 />
       <Route
-  path="/admin/types-ressources/update/:id"
+  path="/admin/ressources/types/update/:id"
   element={
     <RequireAdmin>
-      <UpdateEmotionPage />
+      <UpdateTypesRessourcesPage />
     </RequireAdmin>
   }
 />
   <Route
-  path="/admin/types-ressources"
+  path="/admin/ressources/types"
   element={
     <RequireAdmin>
-      <UpdateEmotionPage />
+      <AdminTypesRessourcesPage />
     </RequireAdmin>
   }
 />
   <Route
-  path="/admin/types-ressources/create"
+  path="/admin/ressources/types/create"
   element={
     <RequireAdmin>
-      <UpdateEmotionPage />
+      <CreateTypesRessourcesPage />
     </RequireAdmin>
   }
 />
