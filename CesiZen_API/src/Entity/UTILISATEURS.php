@@ -62,6 +62,9 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?ROLES $role = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $date_alerte_inactivite = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -240,5 +243,17 @@ class UTILISATEURS implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // Cette méthode est vide par design car les données sensibles (mot de passe haché)
         // sont gérées par Symfony's PasswordHasher et ne doivent pas être effacées de l'entity
+    }
+
+    public function getDateAlerteInactivite(): ?\DateTimeImmutable
+    {
+        return $this->date_alerte_inactivite;
+    }
+
+    public function setDateAlerteInactivite(?\DateTimeImmutable $date_alerte_inactivite): static
+    {
+        $this->date_alerte_inactivite = $date_alerte_inactivite;
+
+        return $this;
     }
 }

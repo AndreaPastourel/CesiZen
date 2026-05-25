@@ -28,6 +28,10 @@ security:
                 password_path: motDePasse
                 success_handler: App\Security\LoginSuccessHandler
                 failure_handler: App\Security\AuthenticationFailureHandler
+        refresh:
+            pattern: ^/api/token/refresh
+            stateless: true
+            refresh_jwt: ~
 
         api:
             pattern: ^/api
@@ -36,6 +40,7 @@ security:
             jwt: ~
 
     access_control:
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         - { path: ^/api/logout, roles: PUBLIC_ACCESS }

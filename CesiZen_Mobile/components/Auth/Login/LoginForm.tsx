@@ -1,6 +1,6 @@
 
 import { apiLogin } from "@/services/authApi";
-import { saveAccessToken } from "@/services/authStorage";
+import { saveAccessToken, saveRefreshToken } from "@/services/authStorage";
 import { saveCurrentUser } from "@/services/userStorage";
 import { isEmailValid, isPasswordValid } from "@/utils/validators";
 import { router, useLocalSearchParams } from "expo-router";
@@ -10,6 +10,7 @@ import LoginAction from "./LoginAction";
 import { LoginFields } from "./LoginFields";
 import LoginHeader from "./LoginHeader";
 import { LoginMessage } from "./LoginMessage";
+import { scheduleDailyEmotionReminder } from "@/services/notificationService";
 
 type Props = {
   styles: any;
@@ -66,9 +67,16 @@ export default function LoginForm({ styles }: Readonly<Props>) {
 
     await saveAccessToken(result.data.token);
 
+    if (result.data.refresh_token) {
+      await saveRefreshToken(result.data.refresh_token);
+    }
+
     if (result.data.user) {
       await saveCurrentUser(result.data.user);
     }
+
+    await scheduleDailyEmotionReminder();
+    
 
     setMessage("Connexion OK ✅");
 

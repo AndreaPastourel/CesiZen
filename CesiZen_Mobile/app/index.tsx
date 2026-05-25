@@ -12,11 +12,11 @@ export default function Index() {
     const user = await getCurrentUser();
 
     if (token && user) {
-      setInitialRoute("/(tabs)/ressourcesList");
+      setInitialRoute("/(tabs)/home");
       return;
     }
 
-    setInitialRoute("/ressourcesList");
+    setInitialRoute("/home");
   }
 
   useEffect(() => {

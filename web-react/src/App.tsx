@@ -109,7 +109,30 @@ export default function App() {
     </RequireAdmin>
   }
 />
-
+      <Route
+  path="/admin/types-ressources/update/:id"
+  element={
+    <RequireAdmin>
+      <UpdateEmotionPage />
+    </RequireAdmin>
+  }
+/>
+  <Route
+  path="/admin/types-ressources"
+  element={
+    <RequireAdmin>
+      <UpdateEmotionPage />
+    </RequireAdmin>
+  }
+/>
+  <Route
+  path="/admin/types-ressources/create"
+  element={
+    <RequireAdmin>
+      <UpdateEmotionPage />
+    </RequireAdmin>
+  }
+/>
     </Routes>
     </>
   );

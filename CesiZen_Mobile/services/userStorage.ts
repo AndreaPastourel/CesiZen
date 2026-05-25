@@ -1,7 +1,8 @@
 import { User } from "@/types/users";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { removeAccessToken } from "./authStorage";
+import { clearAuthTokens, removeAccessToken } from "./authStorage";
+import { cancelDailyEmotionReminder } from "./notificationService";
 
 //Cle pour le stockage de l'utilisateur 
 const CURRENT_USER_KEY="current_user";
@@ -43,8 +44,9 @@ export async function isUserLoggedIn():Promise<boolean> {
 export async function doLogout() {
 
         //Supprimer le token d'acces
-        await removeAccessToken();
+        await clearAuthTokens();
         await removeCurrentUser();
+        await cancelDailyEmotionReminder();
 
         //Redirection sur la page de login
         router.replace("/login");

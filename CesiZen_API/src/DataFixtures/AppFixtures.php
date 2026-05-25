@@ -45,37 +45,158 @@ class AppFixtures extends Fixture
             $roles[] = $role;
         }
 
-        /*
-         * 2. Utilisateurs
-         */
-        $utilisateurs = [];
+       /*
+ * 2. Utilisateurs
+ */
+$utilisateurs = [];
 
-        for ($i = 1; $i <= 10; $i++) {
-            $utilisateur = new UTILISATEURS();
+$utilisateursData = [
+    [
+        'nom' => 'Admin',
+        'prenom' => 'Principal',
+        'pseudo' => 'admin',
+        'email' => 'admin@cesizen.fr',
+        'telephone' => '0600000001',
+        'role' => $roles[1],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-5 days'),
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom2',
+        'prenom' => 'Prenom2',
+        'pseudo' => 'user2',
+        'email' => 'user2@cesizen.fr',
+        'telephone' => '0600000002',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-10 days'),
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom3',
+        'prenom' => 'Prenom3',
+        'pseudo' => 'user3',
+        'email' => 'user3@cesizen.fr',
+        'telephone' => '0600000003',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-1 month'),
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom4',
+        'prenom' => 'Prenom4',
+        'pseudo' => 'user4',
+        'email' => 'user4@cesizen.fr',
+        'telephone' => '0600000004',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-75 days'),
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom5',
+        'prenom' => 'Prenom5',
+        'pseudo' => 'user5',
+        'email' => 'user5@cesizen.fr',
+        'telephone' => '0600000005',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-80 days'),
+        'dateAlerteInactivite' => new \DateTimeImmutable('-5 days'),
+    ],
+    [
+        'nom' => 'Nom6',
+        'prenom' => 'Prenom6',
+        'pseudo' => 'user6',
+        'email' => 'user6@cesizen.fr',
+        'telephone' => '0600000006',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-100 days'),
+        'dateAlerteInactivite' => new \DateTimeImmutable('-25 days'),
+    ],
+    [
+        'nom' => 'Nom7',
+        'prenom' => 'Prenom7',
+        'pseudo' => 'user7',
+        'email' => 'user7@cesizen.fr',
+        'telephone' => '0600000007',
+        'role' => $roles[0],
+        'estActif' => false,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-120 days'),
+        'dateAlerteInactivite' => new \DateTimeImmutable('-40 days'),
+    ],
+    [
+        'nom' => 'Nom8',
+        'prenom' => 'Prenom8',
+        'pseudo' => 'user8',
+        'email' => 'user8@cesizen.fr',
+        'telephone' => '0600000008',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => false,
+        'dateDerniereConnexion' => null,
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom9',
+        'prenom' => 'Prenom9',
+        'pseudo' => 'user9',
+        'email' => 'user9@cesizen.fr',
+        'telephone' => '0600000009',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-2 days'),
+        'dateAlerteInactivite' => null,
+    ],
+    [
+        'nom' => 'Nom10',
+        'prenom' => 'Prenom10',
+        'pseudo' => 'user10',
+        'email' => 'user10@cesizen.fr',
+        'telephone' => '0600000010',
+        'role' => $roles[0],
+        'estActif' => true,
+        'emailVerifie' => true,
+        'dateDerniereConnexion' => new \DateTimeImmutable('-20 days'),
+        'dateAlerteInactivite' => null,
+    ],
+];
 
-            $utilisateur->setNom('Nom' . $i);
-            $utilisateur->setPrenom('Prenom' . $i);
-            $utilisateur->setPseudo('user' . $i);
-            $utilisateur->setEmail('user' . $i . '@cesizen.fr');
-            $utilisateur->setTelephone('060000000' . $i);
-            $utilisateur->setMotDePasse(
-                $this->passwordHasher->hashPassword($utilisateur, 'Password123!')
-            );
-            $utilisateur->setPhotoProfil(null);
-            $utilisateur->setEstActif(true);
-            $utilisateur->setEmailVerifie(true);
-            $utilisateur->setCreatedAt(new \DateTimeImmutable());
-            $utilisateur->setUpdatedAt(new \DateTimeImmutable());
+foreach ($utilisateursData as $utilisateurData) {
+    $utilisateur = new UTILISATEURS();
 
-            if ($i === 1) {
-                $utilisateur->setRoleEntity($roles[1]);
-            } else {
-                $utilisateur->setRoleEntity($roles[0]);
-            }
+    $utilisateur->setNom($utilisateurData['nom']);
+    $utilisateur->setPrenom($utilisateurData['prenom']);
+    $utilisateur->setPseudo($utilisateurData['pseudo']);
+    $utilisateur->setEmail($utilisateurData['email']);
+    $utilisateur->setTelephone($utilisateurData['telephone']);
+    $utilisateur->setMotDePasse(
+        $this->passwordHasher->hashPassword($utilisateur, 'Password123!')
+    );
+    $utilisateur->setPhotoProfil(null);
+    $utilisateur->setEstActif($utilisateurData['estActif']);
+    $utilisateur->setEmailVerifie($utilisateurData['emailVerifie']);
+    $utilisateur->setDateDerniereConnexion($utilisateurData['dateDerniereConnexion']);
+    $utilisateur->setDateAlerteInactivite($utilisateurData['dateAlerteInactivite']);
+    $utilisateur->setCreatedAt(new \DateTimeImmutable('-4 months'));
+    $utilisateur->setUpdatedAt(new \DateTimeImmutable());
+    $utilisateur->setRoleEntity($utilisateurData['role']);
 
-            $manager->persist($utilisateur);
-            $utilisateurs[] = $utilisateur;
-        }
+    $manager->persist($utilisateur);
+    $utilisateurs[] = $utilisateur;
+}
+        
 
         /*
          * 3. Catégories de ressources
