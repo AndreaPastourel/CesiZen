@@ -5,13 +5,9 @@
         "This file is @generated automatically"
     ],
 <<<<<<< Updated upstream
-    "content-hash": "e061ae1bb1a8f62bf9580a57b1315883",
-=======
-<<<<<<< Updated upstream
     "content-hash": "7b008423fdd2acf8e10829d267a29206",
 =======
     "content-hash": "152e3b41ba3d56290eaec8e97c677058",
->>>>>>> Stashed changes
 >>>>>>> Stashed changes
     "packages": [
         {
