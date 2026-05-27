@@ -4,42 +4,35 @@ namespace App\Controller;
 
 use App\Entity\TYPESRESSOURCES;
 use App\Repository\TYPESRESSOURCESRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Attribute\Route;
 
-class TypesRessourcesController
+class TypesRessourcesController extends AbstractController
 {
     public function __construct(
-        private TYPESRESSOURCESRepository $typesRepository
+        private TYPESRESSOURCESRepository $typesRessourcesRepository
     ) {
     }
 
-    #[Route('/api/types-ressources', name: 'api_types_ressources_list_custom', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function __invoke(): JsonResponse
     {
-        $types = $this->typesRepository->findAll();
+        $types = $this->typesRessourcesRepository->findAll();
 
-        $data = array_map(
-            fn (TYPESRESSOURCES $type) => $this->formatType($type),
-            $types
-        );
+        $data = array_map(function (TYPESRESSOURCES $type) {
+            return [
+                'id' => $type->getId(),
+                'code' => $type->getCode(),
+                'libelle' => $type->getLibelle(),
+                'couleur' => $type->getCouleur(),
+                'description' => $type->getDescription(),
+                'created_at' => $type->getCreatedAt()?->format('Y-m-d H:i:s'),
+                'updated_at' => $type->getUpdatedAt()?->format('Y-m-d H:i:s'),
+            ];
+        }, $types);
 
-        return new JsonResponse([
+        return $this->json([
             'message' => 'Liste des types de ressources récupérée avec succès.',
             'data' => $data,
         ], 200);
-    }
-
-    private function formatType(TYPESRESSOURCES $type): array
-    {
-        return [
-            'id' => $type->getId(),
-            'code' => $type->getCode(),
-            'libelle' => $type->getLibelle(),
-            'couleur' => $type->getCouleur(),
-            'description' => $type->getDescription(),
-            'created_at' => $type->getCreatedAt()?->format('Y-m-d H:i:s'),
-            'updated_at' => $type->getUpdatedAt()?->format('Y-m-d H:i:s'),
-        ];
     }
 }

@@ -45,7 +45,7 @@ security:
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         - { path: ^/api/logout, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-
+    
         - { path: ^/api/ressources$, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/ressource/id, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/ressources/slug, roles: PUBLIC_ACCESS, methods: [GET] }
