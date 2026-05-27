@@ -1,0 +1,186 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 24px;
+  background: rgba(45, 41, 36, 0.18);
+  backdrop-filter: blur(4px);
+}
+
+.popup {
+  width: min(100%, 760px);
+  padding: 28px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 70px rgba(66, 60, 50, 0.22);
+  color: var(--color-text);
+}
+
+.header {
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  width: fit-content;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.header p {
+  margin: 16px 0 0;
+  color: #716b61;
+  line-height: 1.6;
+}
+
+.infoBox {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(93, 112, 82, 0.08);
+  border: 1px solid rgba(93, 112, 82, 0.12);
+  color: #625d55;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.infoBox p {
+  margin: 0;
+}
+
+.settingsList {
+  display: grid;
+  gap: 14px;
+}
+
+.cookieOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 250, 242, 0.9);
+  border: 1px solid rgba(221, 211, 197, 0.75);
+}
+
+.cookieOption strong {
+  color: var(--color-text);
+  font-weight: 950;
+}
+
+.cookieOption p {
+  margin: 8px 0 0;
+  color: #716b61;
+  line-height: 1.5;
+}
+
+.cookieOption input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.requiredBadge {
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+.primaryButton,
+.secondaryButton,
+.settingsButton {
+  min-height: 48px;
+  border: none;
+  border-radius: 16px;
+  padding: 0 18px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, var(--color-accent), #d79a57);
+  color: white;
+  box-shadow: 0 14px 30px rgba(193, 136, 69, 0.22);
+}
+
+.secondaryButton {
+  background: #f9e1df;
+  color: var(--color-error);
+  border: 1px solid rgba(159, 45, 45, 0.18);
+}
+
+.settingsButton {
+  background: rgba(93, 112, 82, 0.12);
+  color: var(--color-primary);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.settingsButton:hover {
+  filter: brightness(0.98);
+}
+
+.primaryButton:focus,
+.secondaryButton:focus,
+.settingsButton:focus {
+  outline: 4px solid rgba(227, 205, 139, 0.75);
+  outline-offset: 4px;
+}
+
+@media (max-width: 620px) {
+  .overlay {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .popup {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .cookieOption {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .settingsButton {
+    width: 100%;
+  }
+}

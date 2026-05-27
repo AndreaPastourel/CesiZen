@@ -21,6 +21,7 @@ import JournalStatsPage from "./pages/JournalStats";
 import UpdateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/UpdateTypesRessourcesPage';
 import AdminTypesRessourcesPage from "./pages/admin/Ressources/TypesRessources/AdminTypesRessourcesPage";
 import CreateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/CreateTypesRessourcesPage';
+import CookieConsentPopup from "./components/Cookies/CookieConsentPopup";
 
 
 export default function App() {
@@ -137,6 +138,8 @@ export default function App() {
   }
 />
     </Routes>
+
+    <CookieConsentPopup />
     </>
   );
 }

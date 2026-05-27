@@ -1,5 +1,5 @@
+import { useState } from "react";
 import styles from "../module.loginStyle.module.css";
-
 
 type Props = {
   email: string;
@@ -14,6 +14,8 @@ export default function LoginFields({
   setEmail,
   setPassword,
 }: Readonly<Props>) {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <>
       <div className={styles.formGroup}>
@@ -39,17 +41,32 @@ export default function LoginFields({
           Mot de passe
         </label>
 
-        <input
-          className={styles.formInput}
-          id="password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="Votre mot de passe"
-          autoComplete="current-password"
-          required
-        />
+        <div className={styles.passwordWrapper}>
+          <input
+            className={styles.formInput}
+            id="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Votre mot de passe"
+            autoComplete="current-password"
+            required
+          />
+
+          <button
+            type="button"
+            className={styles.passwordToggle}
+            onClick={() => setShowPassword((previous) => !previous)}
+            aria-label={
+              showPassword
+                ? "Masquer le mot de passe"
+                : "Afficher le mot de passe"
+            }
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
       </div>
     </>
   );

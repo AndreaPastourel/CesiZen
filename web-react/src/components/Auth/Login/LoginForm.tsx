@@ -1,12 +1,15 @@
 import { FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import LoginAction from "./LoginAction";
 import LoginFields from "./LoginFields";
 import LoginHeader from "./LoginHeader";
 import LoginMessage from "./LoginMessage";
-import styles from "../module.loginStyle.module.css";
-import { apiLogin } from "../../../services/authApi";
-import { useNavigate } from "react-router-dom";
+import Captcha from "../../Captcha/Captcha";
 
+import styles from "../module.loginStyle.module.css";
+
+import { apiLogin } from "../../../services/authApi";
 
 type LoginMessageState = {
   type: "success" | "error";
@@ -17,9 +20,12 @@ export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [isCaptchaValid, setIsCaptchaValid] = useState<boolean>(false);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<LoginMessageState>(null);
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -29,13 +35,21 @@ export default function LoginForm() {
     const cleanEmail = email.trim();
     const cleanPassword = password.trim();
 
-  
-
     if (!cleanEmail || !cleanPassword) {
       setMessage({
         type: "error",
         text: "Email et mot de passe obligatoires.",
       });
+
+      return;
+    }
+
+    if (!isCaptchaValid) {
+      setMessage({
+        type: "error",
+        text: "Veuillez valider la vérification anti-robot.",
+      });
+
       return;
     }
 
@@ -46,12 +60,10 @@ export default function LoginForm() {
         email: cleanEmail,
         password: cleanPassword,
       });
-      
-      
+
       setMessage({
         type: "success",
         text: "Connexion réussie ✅",
-      
       });
 
       navigate("/profil", { replace: true });
@@ -85,6 +97,8 @@ export default function LoginForm() {
         setEmail={setEmail}
         setPassword={setPassword}
       />
+
+      <Captcha onValidationChange={setIsCaptchaValid} />
 
       <LoginAction isLoading={isLoading} />
     </form>
