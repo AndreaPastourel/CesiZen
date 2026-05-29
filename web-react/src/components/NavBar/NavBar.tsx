@@ -51,6 +51,15 @@ export default function Navbar() {
           Ressources
         </NavLink>
 
+        <NavLink
+          to="/mentionLegal"
+          className={({ isActive }) =>
+            isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+          }
+        >
+          Mentions légales
+        </NavLink>
+
         {isAdmin && (
           <>
           <NavLink

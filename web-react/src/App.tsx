@@ -22,6 +22,7 @@ import UpdateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/
 import AdminTypesRessourcesPage from "./pages/admin/Ressources/TypesRessources/AdminTypesRessourcesPage";
 import CreateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/CreateTypesRessourcesPage';
 import CookieConsentPopup from "./components/Cookies/CookieConsentPopup";
+import MentionLegalPage from "./pages/mentionLegalPage";
 
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
       <Route path="/ressources/:slug" element={<RessourceDetailPage/>} />
 
        <Route path="/journal" element={<JournalStatsPage />} />
+       <Route path="/mentionLegal" element={<MentionLegalPage />} />
 
 
      <Route path="admin/ressources/create" element={ 
