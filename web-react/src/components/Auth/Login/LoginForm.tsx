@@ -24,6 +24,7 @@ export default function LoginForm() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<LoginMessageState>(null);
+  const [captchaResetKey, setCaptchaResetKey] = useState<number>(0);
 
   const navigate = useNavigate();
 
@@ -50,6 +51,8 @@ export default function LoginForm() {
         text: "Veuillez valider la vérification anti-robot.",
       });
 
+      setCaptchaResetKey((previousKey) => previousKey + 1);
+      setIsCaptchaValid(false);
       return;
     }
 
@@ -77,6 +80,9 @@ export default function LoginForm() {
         type: "error",
         text: errorMessage,
       });
+      setCaptchaResetKey((previousKey) => previousKey + 1);
+      setIsCaptchaValid(false);
+
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +104,7 @@ export default function LoginForm() {
         setPassword={setPassword}
       />
 
-      <Captcha onValidationChange={setIsCaptchaValid} />
+      <Captcha onValidationChange={setIsCaptchaValid}  resetKey={captchaResetKey} />
 
       <LoginAction isLoading={isLoading} />
     </form>

@@ -2,28 +2,25 @@ import { useEffect, useState } from "react";
 
 import styles from "./module.Captcha.module.css";
 
-
 type Props = {
   onValidationChange: (isValid: boolean) => void;
+  resetKey: number;
 };
 
-
-export default function Captcha({ onValidationChange }: Readonly<Props>) {
-  
+export default function Captcha({
+  onValidationChange,
+  resetKey,
+}: Readonly<Props>) {
   const [firstNumber, setFirstNumber] = useState<number>(0);
   const [secondNumber, setSecondNumber] = useState<number>(0);
   const [answer, setAnswer] = useState<string>("");
 
-    useEffect(() => {
-    
-    generateCaptcha();
-  }, []);
-
- 
   useEffect(() => {
-   
-    const expectedAnswer = firstNumber + secondNumber;
+    generateCaptcha();
+  }, [resetKey]);
 
+  useEffect(() => {
+    const expectedAnswer = firstNumber + secondNumber;
     const userAnswer = Number(answer);
 
     const isValid =
@@ -31,25 +28,20 @@ export default function Captcha({ onValidationChange }: Readonly<Props>) {
       !Number.isNaN(userAnswer) &&
       userAnswer === expectedAnswer;
 
-    
     onValidationChange(isValid);
   }, [answer, firstNumber, secondNumber, onValidationChange]);
 
-  
   function generateCaptcha() {
- 
     const randomFirstNumber = Math.floor(Math.random() * 9) + 1;
     const randomSecondNumber = Math.floor(Math.random() * 9) + 1;
 
     setFirstNumber(randomFirstNumber);
     setSecondNumber(randomSecondNumber);
-
     setAnswer("");
 
     onValidationChange(false);
   }
 
- 
   return (
     <div className={styles.captchaBox}>
       <div className={styles.captchaHeader}>

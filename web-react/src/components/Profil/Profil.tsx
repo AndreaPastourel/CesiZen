@@ -29,35 +29,25 @@ export default function Profil() {
   }, []);
 
 
-  async function loadProfile() {
+ async function loadProfile() {
+  setIsLoading(true);
+  setMessage(null);
 
-    setIsLoading(true);
+  try {
+    const response = await apiGetProfile();
 
-
-    setMessage(null);
-
-    try {
-      const response = await apiGetProfile();
-
-   
-      setUser(response.data);
-    } catch (error) {
-     
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer le profil.";
-
-    
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      
-      setIsLoading(false);
+    if (!response.data) {
+      navigate("/login", { replace: true });
+      return;
     }
+
+    setUser(response.data);
+  } catch (error) {
+    navigate("/login", { replace: true });
+  } finally {
+    setIsLoading(false);
   }
+}
 
 
 

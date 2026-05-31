@@ -11,11 +11,8 @@ import DetailMedia from "./DetailMedia";
 import DetailText from "./DetailText";
 import { Ressource } from "../../../types/ressources";
 import { apiGetRessourceBySlug } from "../../../services/ressourcesApi";
+import { Message } from '../../../types/message';
 
-type Message = {
-  type: "success" | "error";
-  text: string;
-}|null;
 
 type Props ={
     slug : string |null; 

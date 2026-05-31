@@ -1,5 +1,5 @@
 export type Message = {
-  type: "error" | "success";
+  type: "error" | "success",
 
-  text: string;
-} | null;
+  text: string,
+} | null
