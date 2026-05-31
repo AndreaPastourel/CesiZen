@@ -11,21 +11,20 @@ type RessourceDetailResponse={
     message : string |null,
 }
 
-export async function apiGetAllRessources() : Promise<RessourcesResponse> {
-    const res = await httpRequest<RessourcesResponse>({
-        method:"GET",
-        path:"/ressources",
-    });
-
-    return res
+export async function apiGetAllRessources(): Promise<RessourcesResponse> {
+  return httpRequest<RessourcesResponse>({
+    method: "GET",
+    path: "/ressources",
+    skipAuthRefresh: true,
+  });
 }
-
 
 export async function apiGetRessourceById(id:number) : Promise<RessourceDetailResponse>{
     
     const res = await httpRequest<RessourceDetailResponse>({
         method:"GET",
         path:`/ressource/id/${id}` ,
+        skipAuthRefresh: true,
     });
 
     return res

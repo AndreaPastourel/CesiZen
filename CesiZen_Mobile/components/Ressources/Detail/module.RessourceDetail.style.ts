@@ -203,10 +203,7 @@ imageWrapper: {
   backgroundColor: "rgba(93, 112, 82, 0.12)",
 },
 
-mediaImage: {
-  width: "100%",
-  height: "100%",
-},
+
 
 videoBox: {
   flexDirection: "row",
@@ -254,5 +251,28 @@ documentText: {
   color: "#7D766B",
   fontSize: 14,
   lineHeight: 21,
+},
+mediaImage: {
+  width: "100%",
+  height: 220,
+  borderRadius: 18,
+  marginTop: 14,
+  marginBottom: 14,
+  backgroundColor: "rgba(106, 100, 90, 0.08)",
+},
+
+mediaButton: {
+  minHeight: 46,
+  borderRadius: 15,
+  backgroundColor: "#D99A55",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 12,
+},
+
+mediaButtonText: {
+  color: "#FFFFFF",
+  fontSize: 14,
+  fontWeight: "900",
 },
 });

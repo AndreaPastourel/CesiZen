@@ -1,19 +1,29 @@
+import { API_BASE_URL } from "@/config/api";
 import { httpRequest } from "@/services/httpClient";
 import { User } from "@/types/users";
 
-
 export type AuthResponse = {
- message?: string | null,
+  message?: string | null;
   data: {
-    token: string,
-    refresh_token?: string,
-    user?: User,
+    token: string;
+    refresh_token?: string;
+    user?: User;
+  };
 };
-}
+
+export type RegisterPayload = {
+  nom: string | null;
+  prenom: string | null;
+  pseudo: string;
+  email: string;
+  telephone: string | null;
+  photo_profil: string | null;
+  motDePasse: string;
+};
 
 export type RegisterResponse = {
-  message: string,
-  user: User,
+  message: string;
+  user: User;
 };
 
 type LoginPayload = {
@@ -21,11 +31,37 @@ type LoginPayload = {
   motDePasse: string;
 };
 
-
 type RefreshTokenResponse = {
   token: string;
   refresh_token?: string;
 };
+
+function isLocalImageUri(uri: string | null) {
+  if (!uri) {
+    return false;
+  }
+
+  return uri.startsWith("file://") || uri.startsWith("content://");
+}
+
+function createImageFileFromUri(uri: string) {
+  const fileName = uri.split("/").pop() || "photo-profil.jpg";
+
+  const extension = fileName.split(".").pop()?.toLowerCase();
+
+  const mimeType =
+    extension === "png"
+      ? "image/png"
+      : extension === "webp"
+        ? "image/webp"
+        : "image/jpeg";
+
+  return {
+    uri,
+    name: fileName,
+    type: mimeType,
+  } as any;
+}
 
 export async function apiLogin(payload: LoginPayload): Promise<AuthResponse> {
   return httpRequest<AuthResponse>({
@@ -49,21 +85,46 @@ export async function apiRefreshToken(
   });
 }
 
-export async function apiRegister(payload: {
-  nom: string | null;
-  prenom: string | null;
-  pseudo: string;
-  email: string;
-  telephone: string | null;
-  photo_profil: string | null;
-  motDePasse: string;
-}): Promise<RegisterResponse> {
-  return httpRequest<RegisterResponse>({
+export async function apiRegister(
+  payload: RegisterPayload
+): Promise<RegisterResponse> {
+  const formData = new FormData();
+
+  formData.append("nom", payload.nom ?? "");
+  formData.append("prenom", payload.prenom ?? "");
+  formData.append("pseudo", payload.pseudo);
+  formData.append("email", payload.email);
+  formData.append("telephone", payload.telephone ?? "");
+  formData.append("motDePasse", payload.motDePasse);
+
+  if (isLocalImageUri(payload.photo_profil)) {
+    formData.append(
+      "photo_profil",
+      createImageFileFromUri(payload.photo_profil as string)
+    );
+  }
+
+  const response = await fetch(`${API_BASE_URL}/register`, {
     method: "POST",
-    path: "/register",
-    body: payload,
-    skipAuthRefresh: true,
+    headers: {
+      Accept: "application/json",
+    },
+    body: formData,
   });
+
+  const text = await response.text();
+
+  let data: any = null;
+
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    throw new Error("Réponse API invalide.");
+  }
+
+  if (!response.ok) {
+    throw new Error(data?.message || "Impossible de créer le compte.");
+  }
+
+  return data as RegisterResponse;
 }
-
-

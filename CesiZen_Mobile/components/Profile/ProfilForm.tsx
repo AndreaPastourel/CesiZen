@@ -24,7 +24,6 @@ import ProfilMessage from "./ProfilMessage";
 import { profileStyles } from "./module.profil.style";
 
 export default function ProfilForm() {
-
   const [user, setUser] = useState<User | null>(null);
 
   const [nom, setNom] = useState("");
@@ -34,13 +33,11 @@ export default function ProfilForm() {
   const [telephone, setTelephone] = useState("");
   const [photoProfil, setPhotoProfil] = useState<string | null>(null);
 
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(false);
 
-
   const [message, setMessage] = useState<Message | null>(null);
-
 
   function fillFieldsWithUser(currentUser: User) {
     setNom(currentUser.nom ?? "");
@@ -50,7 +47,6 @@ export default function ProfilForm() {
     setTelephone(currentUser.telephone ?? "");
     setPhotoProfil(currentUser.photo_profil ?? null);
   }
-
 
   function getInitials(currentUser: User | null) {
     const firstInitial = currentUser?.pseudo?.charAt(0)?.toUpperCase() ?? "";
@@ -72,9 +68,15 @@ export default function ProfilForm() {
       return photo;
     }
 
-    return `${API_BASE_URL}${photo}`;
-  }
+    const backendBaseUrl = API_BASE_URL.replace(/\/api\/?$/, "").replace(
+      /\/$/,
+      ""
+    );
 
+    const formattedPhoto = photo.startsWith("/") ? photo : `/${photo}`;
+
+    return `${backendBaseUrl}${formattedPhoto}`;
+  }
 
   async function loadUser() {
     setLoading(true);
@@ -93,7 +95,6 @@ export default function ProfilForm() {
     setLoading(false);
   }
 
-  
   async function pickProfilePhoto() {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -126,7 +127,6 @@ export default function ProfilForm() {
     setMessage(null);
   }
 
- 
   async function saveProfile() {
     if (!user) {
       return;
@@ -195,17 +195,14 @@ export default function ProfilForm() {
     }
   }
 
-
   useEffect(() => {
     loadUser();
   }, []);
-
 
   if (loading) {
     return <ProfilLoading />;
   }
 
- 
   const photoUrl = getProfilePhotoUrl(photoProfil);
 
   return (

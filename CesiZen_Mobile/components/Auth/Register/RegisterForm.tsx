@@ -1,5 +1,4 @@
 import { apiRegister } from "@/services/authApi";
-import { saveCurrentUser } from "@/services/userStorage";
 import { isEmailValid, isPasswordValid } from "@/utils/validators";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
@@ -42,11 +41,12 @@ export default function RegisterForm({ styles }: Props) {
         "Autorisation requise",
         "Il faut autoriser l'accès à la galerie pour choisir une photo."
       );
+
       return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
+      mediaTypes: ["images"],
       allowsEditing: true,
       quality: 0.8,
     });
@@ -96,7 +96,7 @@ export default function RegisterForm({ styles }: Props) {
     try {
       setLoading(true);
 
-      const authResponse = await apiRegister({
+      await apiRegister({
         nom: cleanName || null,
         prenom: cleanFirstname || null,
         pseudo: cleanPseudo,
@@ -106,19 +106,15 @@ export default function RegisterForm({ styles }: Props) {
         motDePasse: cleanPassword,
       });
 
-      if (authResponse.user) {
-        await saveCurrentUser(authResponse.user);
-      }
-
       setMessage("Compte créé ✅ Tu peux maintenant te connecter.");
       setMessageType("success");
 
       setTimeout(() => {
         router.replace({
-          pathname:"/login",
-          params:{
-            registered:"1",
-          }
+          pathname: "/login",
+          params: {
+            registered: "1",
+          },
         });
       }, 800);
     } catch (e: any) {
