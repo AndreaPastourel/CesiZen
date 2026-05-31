@@ -1,5 +1,5 @@
-#CESIZen — Guide d’installation
-##1. Présentation du projet
+# CESIZen — Guide d’installation
+## 1. Présentation du projet
 
 CESIZen est une application dédiée au bien-être, à la santé mentale et au suivi des émotions.
 
@@ -12,7 +12,7 @@ L’API gère les données et la sécurité. Le front web et l’application mob
 Toutes les branches de développement ont été fusionnées sur la branche main.
 L’installation du projet se fait donc directement depuis la branche main.
 
-##2. Prérequis
+## 2. Prérequis
 
 Avant de lancer le projet, il faut installer :
 
@@ -33,7 +33,8 @@ symfony -v
 node -v
 npm -v
 git --version
-##3. Récupérer le projet
+
+## 3. Récupérer le projet
 
 Cloner le dépôt :
 git clone git@github.com:AndreaPastourel/CesiZen.git
@@ -57,7 +58,7 @@ web-react
 CesiZen_Mobile
 Installation de l’API Symfony
 
-##4. Installer les dépendances
+## 4. Installer les dépendances
 
 Aller dans le dossier de l’API :
 cd CesiZen_API
@@ -68,7 +69,7 @@ composer install
 Si nécessaire :
 composer update
 
-##5. Configurer l’environnement
+## 5. Configurer l’environnement
 
 Créer ou vérifier le fichier .env.local dans CesiZen_API.
 Exemple avec MySQL / Laragon :
@@ -79,7 +80,7 @@ DATABASE_URL="mysql://root:@127.0.0.1:3306/cesi_zen?serverVersion=8.0&charset=ut
 
 Adapter le nom de la base, l’utilisateur et le mot de passe selon l’environnement local.
 
-##6. Créer la base de données
+## 6. Créer la base de données
 
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
@@ -87,7 +88,7 @@ php bin/console doctrine:fixtures:load
 
 Confirmer avec yes si Symfony demande de purger la base.
 
-##7. Générer les clés JWT
+## 7. Générer les clés JWT
 
 Si les clés JWT ne sont pas encore présentes :
 php bin/console lexik:jwt:generate-keypair
@@ -96,7 +97,7 @@ Les clés sont générées dans :
 config/jwt/private.pem
 config/jwt/public.pem
 
-##8. Lancer l’API
+## 8. Lancer l’API
 
 Avec Symfony CLI :
 symfony server:start
@@ -109,7 +110,7 @@ L’API est disponible ici :
 http://localhost:8000
 Installation du front web React
 
-##9. Installer le front web
+## 9. Installer le front web
 
 Depuis la racine du projet :
 cd web-react
@@ -125,7 +126,7 @@ Le front est généralement disponible ici :
 http://localhost:5173
 Installation de l’application mobile
 
-##10. Installer l’application mobile
+## 10. Installer l’application mobile
 
 Depuis la racine du projet :
 cd CesiZen_Mobile
@@ -136,7 +137,7 @@ npx expo start
 
 Scanner ensuite le QR code avec Expo Go ou lancer l’application sur un émulateur.
 
-##11. Configurer l’URL de l’API pour mobile
+## 11. Configurer l’URL de l’API pour mobile
 
 Sur mobile, il ne faut pas utiliser :
 http://localhost:8000
@@ -151,15 +152,15 @@ const API_URL = "http://192.168.1.155:8000";
 
 Le téléphone et le PC doivent être connectés au même réseau Wi-Fi.
 
-##Comptes de test
-###Administrateur
+## Comptes de test
+### Administrateur
 Email : admin@cesizen.fr
 Mot de passe : Password123!
 Utilisateur
 Email : alice@cesizen.fr
 Mot de passe : Password123!
 
-###Autres comptes utilisateurs :
+### Autres comptes utilisateurs :
 
 lucas@cesizen.fr
 emma@cesizen.fr
@@ -168,10 +169,10 @@ chloe@cesizen.fr
 nathan@cesizen.fr
 manon@cesizen.fr
 
-###Mot de passe commun :
+### Mot de passe commun :
 
 Password123!
-##Lancer les tests
+## Lancer les tests
 
 Depuis le dossier CesiZen_API, préparer la base de test :
 
@@ -179,10 +180,10 @@ php bin/console doctrine:database:create --env=test --if-not-exists
 php bin/console doctrine:migrations:migrate --env=test
 php bin/console doctrine:fixtures:load --env=test
 
-###Lancer les tests :
+### Lancer les tests :
 
 php bin/phpunit
-##Lancer tout le projet
+## Lancer tout le projet
 
 Ouvrir trois terminaux différents.
 
@@ -196,7 +197,7 @@ Terminal 3 — Application mobile
 cd CesiZen_Mobile
 npx expo start
 
-##Adresses utiles :
+## Adresses utiles :
 
 API Symfony : http://localhost:8000
 Front web   : http://localhost:5173
@@ -213,8 +214,8 @@ php bin/console app:check-inactive-users
 
 Cette commande permet d’avertir les utilisateurs inactifs depuis plus de 2 mois et de désactiver ceux inactifs depuis plus de 3 mois.
 
-##Problèmes fréquents
-###Erreur : Could not open input file: bin/console
+## Problèmes fréquents
+### Erreur : Could not open input file: bin/console
 
 La commande a été lancée dans le mauvais dossier.
 
@@ -242,7 +243,7 @@ http://192.168.1.155:8000
 Exemple incorrect sur mobile :
 
 http://localhost:8000
-###Erreur JWT Token not found
+### Erreur JWT Token not found
 
 Une route protégée est appelée sans token.
 
@@ -259,7 +260,7 @@ ou :
 
 /uploads/ressources/
 
-###Côté front ou mobile, ajouter l’URL de l’API devant le chemin de l’image :
+### Côté front ou mobile, ajouter l’URL de l’API devant le chemin de l’image :
 
 const imageUrl = `${API_URL}${cheminImage}`;
 Structure du dépôt
