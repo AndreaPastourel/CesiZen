@@ -40,24 +40,47 @@ security:
             jwt: ~
 
     access_control:
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-        - { path: ^/api/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
-        - { path: ^/api/logout, roles: PUBLIC_ACCESS }
-        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-    
-        - { path: ^/api/ressources$, roles: PUBLIC_ACCESS, methods: [GET] }
-        - { path: ^/api/ressource/id, roles: PUBLIC_ACCESS, methods: [GET] }
-        - { path: ^/api/ressources/slug, roles: PUBLIC_ACCESS, methods: [GET] }
+        - path: ^/api/token/refresh
+          roles: PUBLIC_ACCESS
 
-        - { path: ^/api/categories, roles: PUBLIC_ACCESS, methods: [GET] }
-        - { path: ^/api/types-ressources, roles: PUBLIC_ACCESS, methods: [GET] }
+        - path: ^/api/register
+          roles: PUBLIC_ACCESS
 
-        - {
-              path: ^/api/ressources,
-              roles: ROLE_ADMIN,
-              methods: [POST, PUT, PATCH, DELETE],
-          }
+        - path: ^/api/login_check
+          roles: PUBLIC_ACCESS
 
-        - { path: ^/api$, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - path: ^/api/logout
+          roles: PUBLIC_ACCESS
+
+        - path: ^/api/docs
+          roles: PUBLIC_ACCESS
+
+        - path: ^/api/ressources$
+          roles: PUBLIC_ACCESS
+          methods: [GET]
+
+        - path: ^/api/ressource/[^/]+$
+          roles: PUBLIC_ACCESS
+          methods: [GET]
+
+        - path: ^/api/ressource/id/[^/]+$
+          roles: PUBLIC_ACCESS
+          methods: [GET]
+
+        - path: ^/api/categories
+          roles: PUBLIC_ACCESS
+          methods: [GET]
+
+        - path: ^/api/types-ressources
+          roles: PUBLIC_ACCESS
+          methods: [GET]
+
+        - path: ^/api/ressources
+          roles: ROLE_ADMIN
+          methods: [POST, PUT, PATCH, DELETE]
+
+        - path: ^/api$
+          roles: PUBLIC_ACCESS
+
+        - path: ^/api
+          roles: IS_AUTHENTICATED_FULLY
