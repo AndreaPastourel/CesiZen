@@ -37,3 +37,4 @@ mobile-kotlin/local.properties
 # Logs
 # ========================
 *.log
+.env

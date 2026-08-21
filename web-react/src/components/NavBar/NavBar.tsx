@@ -51,6 +51,14 @@ export default function Navbar() {
           Ressources
         </NavLink>
 
+
+      <nav className={styles.navLinks} >
+
+        <NavLink to="/parametres" >
+        Parametres
+        </NavLink>
+      </nav>
+
         <NavLink
           to="/mentionLegal"
           className={({ isActive }) =>

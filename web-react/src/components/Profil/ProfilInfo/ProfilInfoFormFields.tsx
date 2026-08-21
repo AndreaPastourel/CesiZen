@@ -23,7 +23,7 @@ type Props= {
     photoFile: File | null;
 }
 
-export default function ProfilInfoFormFields({prenom,nom,pseudo,email,telephone,photo_profil,setPrenom,setNom,setPseudo,setEmail,setTelephone,photoPreview,handlePhotoChange,photoFile}:Props){
+export default function ProfilInfoFormFields({prenom,nom,pseudo,email,telephone,photo_profil,setPrenom,setNom,setPseudo,setEmail,setTelephone,photoPreview,handlePhotoChange,photoFile}:Readonly<Props>){
 
     return(
         <div className={styles.formGrid}>

@@ -1,0 +1,60 @@
+services:
+
+  # Base de données MySQL
+  db:
+    image: mysql:8.4
+    container_name: cesizen-db
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      - "${MYSQL_PORT}:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+  # API Symfony
+  back:
+    build:
+      context: ./CesiZen_API
+      dockerfile: Dockerfile
+
+    container_name: cesizen-api
+    restart: unless-stopped
+
+    depends_on:
+      - db
+
+    environment:
+      APP_ENV: ${APP_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+
+    ports:
+      - "${BACK_PORT}:8000"
+
+
+  # Front React / Vite
+  front:
+    build:
+      context: ./web-react
+      dockerfile: Dockerfile
+
+    container_name: cesizen-front
+    restart: unless-stopped
+
+    depends_on:
+      - back
+
+    ports:
+      - "${FRONT_PORT}:8080"
+
+
+# Volume persistant pour MySQL
+volumes:
+  mysql_data:

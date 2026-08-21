@@ -23,6 +23,7 @@ import AdminTypesRessourcesPage from "./pages/admin/Ressources/TypesRessources/A
 import CreateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/CreateTypesRessourcesPage';
 import CookieConsentPopup from "./components/Cookies/CookieConsentPopup";
 import MentionLegalPage from "./pages/mentionLegalPage";
+import ParametresPage from "./pages/ParametresPages";
 
 
 export default function App() {
@@ -43,6 +44,9 @@ export default function App() {
 
        <Route path="/journal" element={<JournalStatsPage />} />
        <Route path="/mentionLegal" element={<MentionLegalPage />} />
+
+
+       <Route path="/parametres" element={<ParametresPage/>}/>
 
 
      <Route path="admin/ressources/create" element={ 
