@@ -3,14 +3,14 @@ name: Front - Docker
 on:
   push:
     branches:
-      - dev
       - main
-      - "**/**"
+      - dev
+      - "**"
 
   pull_request:
     branches:
-      - dev
       - main
+      - dev
 
 jobs:
   docker-build:
@@ -27,8 +27,8 @@ jobs:
       - name: Build de l'image Docker
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
+          context: ./web-react
+          file: ./web-react/Dockerfile
           push: false
           tags: cesizen-front:ci
           cache-from: type=gha

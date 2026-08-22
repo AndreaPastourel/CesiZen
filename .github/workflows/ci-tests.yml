@@ -1,21 +1,25 @@
-name: Front - Quality
+name: Front - Tests
 
 on:
   push:
     branches:
-      - dev
       - main
-      - "**/**"
+      - dev
+      - "**"
 
   pull_request:
     branches:
-      - dev
       - main
+      - dev
 
 jobs:
-  quality:
-    name: Lint & Build
+  tests:
+    name: Tests unitaires Vitest
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
 
     steps:
       - name: Récupération du code
@@ -26,12 +30,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: web-react/package-lock.json
 
       - name: Installation des dépendances
         run: npm ci
 
-      - name: Vérification ESLint
-        run: npm run lint
-
-      - name: Build Vite
-        run: npm run build
+      - name: Tests unitaires
+        run: npm run test:ci

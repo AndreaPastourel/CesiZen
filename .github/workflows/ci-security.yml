@@ -3,20 +3,24 @@ name: Front - Security
 on:
   push:
     branches:
-      - dev
       - main
-      - "**/**"
+      - dev
+      - "**"
 
   pull_request:
     branches:
-      - dev
       - main
+      - dev
 
 jobs:
 
   dependency-scan:
     name: Analyse des dépendances
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
 
     steps:
       - name: Récupération du code
@@ -27,6 +31,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: web-react/package-lock.json
 
       - name: Installation des dépendances
         run: npm ci
@@ -68,4 +73,4 @@ jobs:
         run: pip install semgrep
 
       - name: Scan Semgrep
-        run: semgrep scan --config auto
+        run: semgrep scan --config auto web-react

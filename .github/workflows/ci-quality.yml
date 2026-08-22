@@ -1,21 +1,25 @@
-name: Front - Lighthouse
+name: Front - Quality
 
 on:
   push:
     branches:
-       - dev
-       - main
-       - "**/**"
+      - main
+      - dev
+      - "**"
 
   pull_request:
     branches:
-      - dev
       - main
+      - dev
 
 jobs:
-  lighthouse:
-    name: Audit Lighthouse
+  quality:
+    name: Lint & Build
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
 
     steps:
       - name: Récupération du code
@@ -26,9 +30,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: web-react/package-lock.json
 
       - name: Installation des dépendances
         run: npm ci
 
-      - name: Audit Lighthouse
-        run: npm run lighthouse
+      - name: Vérification ESLint
+        run: npm run lint
+
+      - name: Build Vite
+        run: npm run build
