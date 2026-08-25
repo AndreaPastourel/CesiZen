@@ -9,37 +9,42 @@ import CreateTypeEmotionHeader from "./CreateTypeEmotionHeader";
 import CreateTypeEmotionMessage from "./CreateTypeEmotionMessage";
 import CreateTypeEmotionAction from "./CreateTypeEmotionAction";
 import CreateTypeEmotionFields from "./CreateTypeEmotionFields";
-import {apiCreateTypeEmotion,apiGetTypeEmotionById,apiUpdateTypeEmotion,} from "../../../../services/emotionApi";
+
+import {
+  apiCreateTypeEmotion,
+  apiGetTypeEmotionById,
+  apiUpdateTypeEmotion,
+} from "../../../../services/emotionApi";
 
 type Props = {
   typeEmotionId?: number | null;
 };
 
-export default function CreateTypeEmotionForm({typeEmotionId = null,}: Readonly<Props>) {
+export default function CreateTypeEmotionForm({
+  typeEmotionId = null,
+}: Readonly<Props>) {
   const isEditMode = typeEmotionId !== null;
 
   const [nom, setNom] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [couleur, setCouleur] = useState<string>("#5D7052");
+
   const [message, setMessage] = useState<Message>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
   useEffect(() => {
-    if (isEditMode) {
-      loadTypeEmotion();
-    }
-  }, [typeEmotionId]);
+  if (!isEditMode || !typeEmotionId) {
+    return;
+  }
+
+  const currentTypeEmotionId = typeEmotionId;
 
   async function loadTypeEmotion() {
-    if (!typeEmotionId) return;
-
     setIsLoading(true);
     setMessage(null);
 
     try {
-      const response = await apiGetTypeEmotionById(typeEmotionId);
-
+      const response = await apiGetTypeEmotionById(currentTypeEmotionId);
       const typeEmotion = response.data;
 
       setNom(typeEmotion.nom);
@@ -59,6 +64,9 @@ export default function CreateTypeEmotionForm({typeEmotionId = null,}: Readonly<
       setIsLoading(false);
     }
   }
+
+  loadTypeEmotion();
+}, [isEditMode, typeEmotionId]);
 
   function resetForm() {
     setNom("");
@@ -150,7 +158,7 @@ export default function CreateTypeEmotionForm({typeEmotionId = null,}: Readonly<
         />
 
         <CreateTypeEmotionAction
-          isLoading={isLoading }
+          isLoading={isLoading}
           isEditMode={isEditMode}
         />
       </form>

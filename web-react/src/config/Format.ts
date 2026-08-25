@@ -1,5 +1,11 @@
 import { API_BASE_URL } from "./api";
 
+type ImageFile = {
+  uri: string;
+  name: string;
+  type: string;
+};
+
 export function formatDate(date: string | null) {
     if (!date) {
       return "Date non renseignée";
@@ -51,7 +57,7 @@ export function formatDate(date: string | null) {
     uri,
     name: fileName,
     type: mimeType,
-  } as any;
+  } as ImageFile;
 }
 
 

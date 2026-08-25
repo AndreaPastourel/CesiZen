@@ -11,18 +11,25 @@ import CreateEmotionMessage from "./CreateEmotionMessage";
 import CreateEmotionFields from "./CreateEmotionFields";
 import CreateEmotionAction from "./CreateEmotionAction";
 
-import {apiCreateEmotion, apiGetAllTypesEmotion, apiGetEmotionById,apiUpdateEmotion} from "../../../../services/emotionApi";
+import {
+  apiCreateEmotion,
+  apiGetAllTypesEmotion,
+  apiGetEmotionById,
+  apiUpdateEmotion,
+} from "../../../../services/emotionApi";
 
 type Props = {
   id_type?: number | null;
   emotionId?: number | null;
 };
 
-export default function CreateEmotionForm({id_type = null,emotionId = null,}: Readonly<Props>) {
+export default function CreateEmotionForm({
+  id_type = null,
+  emotionId = null,
+}: Readonly<Props>) {
   const isEditMode = emotionId !== null;
 
   const [typesEmotion, setTypesEmotion] = useState<TypeEmotion[]>([]);
-
   const [nom, setNom] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [couleur, setCouleur] = useState<string>("#5D7052");
@@ -38,87 +45,47 @@ export default function CreateEmotionForm({id_type = null,emotionId = null,}: Re
   const [iconeActuelle, setIconeActuelle] = useState<string | null>(null);
 
   const [message, setMessage] = useState<Message>(null);
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-
-
   useEffect(() => {
-      console.log("useEffect lancé");
-  console.log("emotionId :", emotionId);
-  console.log("id_type :", id_type);
-  console.log("isEditMode :", isEditMode);
-  
+    async function loadInitialData() {
+      setIsLoading(true);
+      setMessage(null);
+
+      try {
+        const typesResponse = await apiGetAllTypesEmotion();
+        setTypesEmotion(typesResponse.data);
+
+        if (isEditMode && emotionId) {
+          const emotionResponse = await apiGetEmotionById(emotionId);
+          const emotion = emotionResponse.data;
+
+          setNom(emotion.nom);
+          setDescription(emotion.description ?? "");
+          setCouleur(emotion.couleur ?? "#5D7052");
+          setTypeEmotionId(String(emotion.type_emotion?.id ?? ""));
+          setIntensiteMin(String(emotion.intensite_min));
+          setIntensiteMax(String(emotion.intensite_max));
+          setIconeActuelle(emotion.icone ?? null);
+          setIconeFile(null);
+        }
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Impossible de récupérer les données.";
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     loadInitialData();
-  }, [emotionId, id_type]);
-
-  async function loadInitialData() {
-    await loadTypesEmotion();
-
-    if (isEditMode) {
-      await loadEmotion();
-    }
-  }
-
-  async function loadTypesEmotion() {
-    setIsLoading(true);
-    setMessage(null);
-
-    try {
-      const response = await apiGetAllTypesEmotion();
-
-      setTypesEmotion(response.data);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer les types d’émotions.";
-
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
- async function loadEmotion() {
-  if (!emotionId) return;
-
-  setIsLoading(true);
-  setMessage(null);
-
-  try {
-    const response = await apiGetEmotionById(emotionId);
-
-    console.log("emotionId reçu :", emotionId);
-    console.log("Réponse émotion :", response);
-
-    const emotion = response.data;
-
-    setNom(emotion.nom);
-    setDescription(emotion.description ?? "");
-    setCouleur(emotion.couleur ?? "#5D7052");
-    setTypeEmotionId(String(emotion.type_emotion?.id ?? ""));
-    setIntensiteMin(String(emotion.intensite_min));
-    setIntensiteMax(String(emotion.intensite_max));
-    setIconeActuelle(emotion.icone ?? null);
-    setIconeFile(null);
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Impossible de récupérer l’émotion.";
-
-    setMessage({
-      type: "error",
-      text: errorMessage,
-    });
-  } finally {
-    setIsLoading(false);
-  }
-  }
+  }, [isEditMode, emotionId]);
 
   function handleIconeChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
@@ -253,7 +220,7 @@ export default function CreateEmotionForm({id_type = null,emotionId = null,}: Re
       <form className={styles.card} onSubmit={handleSubmit}>
         <CreateEmotionMessage message={message} />
 
-        {(isLoading) && (
+        {isLoading && (
           <p className={styles.loadingMessage}>
             Chargement des informations...
           </p>
