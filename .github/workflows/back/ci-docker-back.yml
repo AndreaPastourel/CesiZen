@@ -1,16 +1,20 @@
-name: Front - Docker
+name: Back - Docker
 
 on:
   push:
     branches:
-      - main
-      - dev
       - "**"
+    paths:
+      - "api-symfony/**"
+      - ".github/workflows/ci-docker-back.yml"
 
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      - "api-symfony/**"
+      - ".github/workflows/ci-docker-back.yml"
 
 jobs:
   docker-build:
@@ -27,9 +31,9 @@ jobs:
       - name: Build de l'image Docker
         uses: docker/build-push-action@v6
         with:
-          context: ./web-react
-          file: ./web-react/Dockerfile
+          context: ./api-symfony
+          file: ./api-symfony/Dockerfile
           push: false
-          tags: cesizen-front:ci
+          tags: cesizen-back:ci
           cache-from: type=gha
           cache-to: type=gha,mode=max

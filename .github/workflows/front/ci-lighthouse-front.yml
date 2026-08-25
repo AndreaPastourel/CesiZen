@@ -3,14 +3,18 @@ name: Front - Lighthouse
 on:
   push:
     branches:
-      - main
-      - dev
       - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
 jobs:
   lighthouse:

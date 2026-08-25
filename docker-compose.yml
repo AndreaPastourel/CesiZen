@@ -55,6 +55,56 @@ services:
       - "${FRONT_PORT}:8080"
 
 
-# Volume persistant pour MySQL
+  # Collecte des métriques
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cesizen-prometheus
+    restart: unless-stopped
+
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+    ports:
+      - "9090:9090"
+
+
+  # Métriques des conteneurs Docker
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cesizen-cadvisor
+    restart: unless-stopped
+
+    privileged: true
+
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+
+    ports:
+      - "8081:8080"
+
+
+  # Dashboard de supervision
+  grafana:
+    image: grafana/grafana:latest
+    container_name: cesizen-grafana
+    restart: unless-stopped
+
+    depends_on:
+      - prometheus
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+    ports:
+      - "3001:3000"
+
+
+# Volumes persistants
 volumes:
   mysql_data:
+  prometheus_data:
+  grafana_data:

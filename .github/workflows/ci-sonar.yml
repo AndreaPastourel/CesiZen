@@ -1,25 +1,29 @@
-name: Front - SonarCloud
+name: Global - SonarCloud
 
 on:
   push:
     branches:
-      - main
-      - dev
       - "**"
+    paths:
+      - "web-react/**"
+      - "api-symfony/**"
+      - "sonar-project.properties"
+      - ".github/workflows/ci-sonar.yml"
 
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      - "web-react/**"
+      - "api-symfony/**"
+      - "sonar-project.properties"
+      - ".github/workflows/ci-sonar.yml"
 
 jobs:
   sonar:
     name: Analyse SonarCloud
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: web-react
 
     steps:
       - name: Récupération du code
@@ -27,6 +31,7 @@ jobs:
         with:
           fetch-depth: 0
 
+      # FRONT
       - name: Installation de Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,15 +39,23 @@ jobs:
           cache: npm
           cache-dependency-path: web-react/package-lock.json
 
-      - name: Installation des dépendances
+      - name: Installation des dépendances front
+        working-directory: web-react
         run: npm ci
 
-      - name: Build du projet
-        run: npm run build
+      # BACK
+      - name: Installation de PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, intl
 
+      - name: Installation des dépendances back
+        working-directory: api-symfony
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      # SONAR
       - name: Analyse SonarCloud
         uses: SonarSource/sonarqube-scan-action@v6
-        with:
-          projectBaseDir: web-react
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

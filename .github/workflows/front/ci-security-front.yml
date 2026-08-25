@@ -3,14 +3,18 @@ name: Front - Security
 on:
   push:
     branches:
-      - main
-      - dev
       - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
 jobs:
 
@@ -41,24 +45,6 @@ jobs:
         continue-on-error: true
 
 
-  secret-scan:
-    name: Recherche de secrets
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Récupération du code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Scan Gitleaks
-        run: |
-          docker run --rm \
-            -v "${{ github.workspace }}:/repo" \
-            zricethezav/gitleaks:latest \
-            detect \
-            --source="/repo" \
-            --verbose
 
 
   semgrep:

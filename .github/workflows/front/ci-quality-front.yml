@@ -1,20 +1,24 @@
-name: Front - E2E
+name: Front - Quality
 
 on:
   push:
     branches:
-      - main
-      - dev
       - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
   pull_request:
     branches:
       - main
       - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
 
 jobs:
-  e2e:
-    name: Tests E2E Playwright
+  quality:
+    name: Lint & Build
     runs-on: ubuntu-latest
 
     defaults:
@@ -35,16 +39,8 @@ jobs:
       - name: Installation des dépendances
         run: npm ci
 
-      - name: Installation de Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Vérification ESLint
+        run: npm run lint
 
-      - name: Tests Playwright
-        run: npm run test:e2e
-
-      - name: Sauvegarde du rapport Playwright
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: web-react/playwright-report/
-          if-no-files-found: ignore
+      - name: Build Vite
+        run: npm run build
