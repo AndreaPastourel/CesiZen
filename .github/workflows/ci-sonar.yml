@@ -6,7 +6,7 @@ on:
       - "**"
     paths:
       - "web-react/**"
-      - "api-symfony/**"
+      - "CesiZen_API/**"
       - "sonar-project.properties"
       - ".github/workflows/ci-sonar.yml"
 
@@ -16,7 +16,7 @@ on:
       - dev
     paths:
       - "web-react/**"
-      - "api-symfony/**"
+      - "CesiZen_API/**"
       - "sonar-project.properties"
       - ".github/workflows/ci-sonar.yml"
 
@@ -47,11 +47,11 @@ jobs:
       - name: Installation de PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.4"
           extensions: mbstring, intl
 
       - name: Installation des dépendances back
-        working-directory: api-symfony
+        working-directory: CesiZen_API
         run: composer install --prefer-dist --no-progress --no-interaction
 
       # SONAR

@@ -23,7 +23,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: api-symfony
+        working-directory: CesiZen_API
 
     steps:
       - name: Récupération du code
@@ -32,7 +32,7 @@ jobs:
       - name: Installation de PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.3"
+          php-version: "8.4"
 
       - name: Installation des dépendances
         run: composer install --prefer-dist --no-progress --no-interaction
@@ -53,4 +53,4 @@ jobs:
         run: pip install semgrep
 
       - name: Scan Semgrep
-        run: semgrep scan --config auto api-symfony
+        run: semgrep scan --config auto CesiZen_API
