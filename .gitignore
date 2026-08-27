@@ -19,7 +19,7 @@ CesiZen_API/vendor/
 CesiZen_API/var/
 
 # Variables d'environnement locales / secrets
-CesiZen_API/.env
+
 CesiZen_API/.env.local
 CesiZen_API/.env.*.local
 
