@@ -26,11 +26,15 @@ RUN apt-get update && apt-get install -y \
     curl \
     libicu-dev \
     libzip-dev \
+    $PHPIZE_DEPS \
     && docker-php-ext-install \
     intl \
     pdo \
     pdo_mysql \
     zip \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && echo "apc.enable_cli=1" > /usr/local/etc/php/conf.d/99-apcu-cli.ini \
     && rm -rf /var/lib/apt/lists/*
 
 

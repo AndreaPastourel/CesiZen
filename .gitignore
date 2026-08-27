@@ -17,6 +17,7 @@ CesiZen_API# ========================
 CesiZen_API/var/
 CesiZen_API/.env.local
 CesiZen_API/.env.*.local
+CesiZen_API/.env.
 
 # ========================
 # React (Vite)
