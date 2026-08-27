@@ -35,6 +35,9 @@ export default function Navbar() {
       <NavLink to="/ressources" className={styles.logo}>
         CESI ZEN
       </NavLink>
+      <NavLink to="/ressources" className={styles.logo}>
+        CESI ZEN
+      </NavLink>
 
       <nav
         className={styles.navLinks}
