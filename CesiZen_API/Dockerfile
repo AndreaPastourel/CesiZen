@@ -23,6 +23,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    curl \
     libicu-dev \
     libzip-dev \
     && docker-php-ext-install \
@@ -64,5 +65,8 @@ USER www-data
 
 EXPOSE 8000
 
+
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
+    CMD curl -fsS http://127.0.0.1:8000/monitor/health/run || exit 1
 # Démarrage du serveur Symfony
 CMD ["symfony", "server:start", "--allow-http", "--no-tls", "--listen-ip=0.0.0.0"]

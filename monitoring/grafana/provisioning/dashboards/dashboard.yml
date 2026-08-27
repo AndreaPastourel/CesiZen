@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+  - name: CESIZen
+    orgId: 1
+    folder: CESIZen
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+
+    options:
+      path: /var/lib/grafana/dashboards

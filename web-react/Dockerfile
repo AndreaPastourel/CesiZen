@@ -1,7 +1,7 @@
 # Stage 1 : build de l'application React
 FROM node:22-alpine AS builder
 
-WORKDIR /app
+WORKDIR /app 
 
 
 COPY package.json package-lock.json ./
@@ -25,5 +25,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 8080
 
-
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=5 \
+    CMD wget -qO- http://127.0.0.1:8080/ > /dev/null || exit 1
+    
 CMD ["nginx", "-g", "daemon off;"]

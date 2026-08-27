@@ -1,0 +1,13 @@
+
+liip_monitor:
+    enable_controller: true
+    failure_status_code: 503
+
+    checks:
+        groups:
+            default:
+                php_extensions:
+                    - pdo_mysql
+
+                doctrine_dbal:
+                    - default
