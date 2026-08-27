@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from "react";
 
 import styles from "./module.ressourcesDetail.module.css";
+
 import DetailRetour from "./DetailRetour";
 import DetailLoading from "./DetailLoading";
 import DetailMessage from "./DetailMessage";
@@ -9,120 +9,104 @@ import DetailHeader from "./DetailHeader";
 import DetailInfo from "./DetailInfo";
 import DetailMedia from "./DetailMedia";
 import DetailText from "./DetailText";
+
 import { Ressource } from "../../../types/ressources";
+import { Message } from "../../../types/message";
+
 import { apiGetRessourceBySlug } from "../../../services/ressourcesApi";
-import { Message } from '../../../types/message';
 
+type Props = {
+  slug: string | null;
+};
 
-type Props ={
-    slug : string |null; 
-}
-
-export default function DetailCard({slug}:Props) {
-
-
+export default function DetailCard({ slug }: Readonly<Props>) {
   const [ressource, setRessource] = useState<Ressource | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [message, setMessage] = useState<Message>(null);
 
   useEffect(() => {
-   
-    loadRessource();
-  }, [slug]);
+    async function loadRessource() {
+      setIsLoading(true);
+      setMessage(null);
 
-
-  async function loadRessource() {
-  
-    setIsLoading(true);
-    setMessage(null);
-
-    if (!slug) {
-      setMessage({
-        type: "error",
-        text: "Ressource introuvable.",
-      });
-
-      setIsLoading(false);
-
-      return;
-    }
-
-
-    try {
-
-      const response = await apiGetRessourceBySlug(slug);
-
-  
-      const data = response.data;
-
-      if (!data.est_actif) {
-        setMessage({
-          type: "error",
-          text: "Cette ressource n’est pas disponible.",
-        });
-
-      
+      if (!slug) {
         setRessource(null);
 
-      
+        setMessage({
+          type: "error",
+          text: "Ressource introuvable.",
+        });
+
+        setIsLoading(false);
         return;
       }
 
-      setRessource(data);
-    } catch (error) {
-  
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer la ressource.";
+      const currentSlug = slug;
 
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-    
-      setIsLoading(false);
+      try {
+        const response = await apiGetRessourceBySlug(currentSlug);
+        const data = response.data;
+
+        if (!data.est_actif) {
+          setMessage({
+            type: "error",
+            text: "Cette ressource n’est pas disponible.",
+          });
+
+          setRessource(null);
+          return;
+        }
+
+        setRessource(data);
+      } catch (error) {
+        setRessource(null);
+
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Impossible de récupérer la ressource.";
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }
 
-  
-
+    loadRessource();
+  }, [slug]);
 
   return (
-   
     <main className={styles.detailPage}>
-        <DetailRetour/>
+      <DetailRetour />
 
-        <DetailLoading
+      <DetailLoading
         isLoading={isLoading}
-        />
-        
-        <DetailMessage
-        message={message}
-        />
+      />
 
+      <DetailMessage
+        message={message}
+      />
 
       {!isLoading && ressource && (
         <article className={styles.detailCard}>
-        
-            <DetailHeader
+          <DetailHeader
             ressource={ressource}
-            />
-          
-         <DetailInfo
+          />
+
+          <DetailInfo
             ressource={ressource}
-            />
-         
+          />
+
           <DetailMedia
             ressource={ressource}
-            />
-          
+          />
 
           <DetailText
             ressource={ressource}
-            />
-         
+          />
         </article>
       )}
     </main>

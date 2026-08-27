@@ -1,0 +1,54 @@
+name: Front - E2E
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+jobs:
+  e2e:
+    name: Tests E2E Playwright
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web-react/package-lock.json
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Installation de Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests Playwright
+        run: npm run test:e2e
+
+      - name: Sauvegarde du rapport Playwright
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: web-react/playwright-report/
+          if-no-files-found: ignore

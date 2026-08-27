@@ -150,7 +150,6 @@ export default function ProfileInfoForm({
         pseudo={pseudo}
         email={email}
         telephone={telephone}
-        photo_profil={photoProfil}
         setPrenom={setPrenom}
         setNom={setNom}
         setPseudo={setPseudo}

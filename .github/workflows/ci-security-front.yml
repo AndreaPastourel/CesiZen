@@ -1,0 +1,62 @@
+name: Front - Security
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+jobs:
+
+  dependency-scan:
+    name: Analyse des dépendances
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web-react/package-lock.json
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Audit npm
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+
+
+
+  semgrep:
+    name: Analyse Semgrep
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Semgrep
+        run: pip install semgrep
+
+      - name: Scan Semgrep
+        run: semgrep scan --config auto web-react

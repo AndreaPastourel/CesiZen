@@ -1,0 +1,74 @@
+name: Back - API
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "CesiZen_API/**"
+      - ".github/workflows/ci-api-back.yml"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - "CesiZen_API/**"
+      - ".github/workflows/ci-api-back.yml"
+
+jobs:
+  api:
+    name: Vérification API Symfony
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: CesiZen_API
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, intl
+
+      - name: Installation des dépendances
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Vérification des routes
+        run: php bin/console debug:router
+
+      - name: Démarrage de l'API
+        run: |
+          php -S 127.0.0.1:8000 -t public public/index.php > /tmp/api.log 2>&1 &
+          echo $! > /tmp/api.pid
+
+      - name: Attente du démarrage
+        run: |
+          for i in {1..30}; do
+            if curl -s http://127.0.0.1:8000 > /dev/null; then
+              echo "API disponible"
+              exit 0
+            fi
+
+            echo "Attente de l'API..."
+            sleep 2
+          done
+
+          cat /tmp/api.log
+          echo "L'API n'a pas démarré"
+          exit 1
+
+      - name: Test HTTP de l'API
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/api)
+
+          echo "Code HTTP : $STATUS"
+
+          if [ "$STATUS" -ge 500 ] || [ "$STATUS" -eq 000 ]; then
+            echo "Erreur lors de l'appel API"
+            exit 1
+          fi

@@ -21,13 +21,16 @@ import {
   apiGetRessourceById,
   apiUpdateRessource,
 } from "../../../../services/ressourcesApi";
+
 import { formatDate } from "../../../../config/Format";
 
 type Props = {
   ressourceId?: number;
 };
 
-export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
+export default function CreateRessourceForm({
+  ressourceId,
+}: Readonly<Props>) {
   const isEditMode = ressourceId !== undefined;
 
   const [titre, setTitre] = useState<string>("");
@@ -50,96 +53,115 @@ export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
 
   const [fichier, setFichier] = useState<File | null>(null);
 
-  const [isLoadingOptions, setIsLoadingOptions] = useState<boolean>(false);
-  const [isLoadingRessource, setIsLoadingRessource] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isLoadingOptions, setIsLoadingOptions] =
+    useState<boolean>(false);
+
+  const [isLoadingRessource, setIsLoadingRessource] =
+    useState<boolean>(false);
+
+  const [isSubmitting, setIsSubmitting] =
+    useState<boolean>(false);
 
   const [message, setMessage] = useState<Message>(null);
 
-  const isLoading = isLoadingOptions || isLoadingRessource || isSubmitting;
+  const isLoading =
+    isLoadingOptions ||
+    isLoadingRessource ||
+    isSubmitting;
 
   useEffect(() => {
+    async function loadInitialData() {
+      setMessage(null);
+
+      try {
+        setIsLoadingOptions(true);
+
+        const [categoriesResponse, typesResponse] =
+          await Promise.all([
+            apiGetAllCategories(),
+            apiGetAllTypes(),
+          ]);
+
+        setCategories(categoriesResponse.data ?? []);
+        setTypes(typesResponse.data ?? []);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Impossible de récupérer les catégories et les types.";
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsLoadingOptions(false);
+      }
+
+      if (!isEditMode || !ressourceId) {
+        return;
+      }
+
+      const currentRessourceId = ressourceId;
+
+      try {
+        setIsLoadingRessource(true);
+        setMessage(null);
+
+        const response =
+          await apiGetRessourceById(currentRessourceId);
+
+        const ressource = response.data;
+
+        setTitre(ressource.titre);
+        setSlug(ressource.slug);
+        setResume(ressource.resume);
+        setContenuTexte(ressource.contenu_texte ?? "");
+
+        setCategorieId(
+          String(ressource.categorie?.id ?? "")
+        );
+
+        setTypeId(
+          String(ressource.type?.id ?? "")
+        );
+
+        setEstActif(ressource.est_actif);
+
+        setDatePublication(
+          formatDate(ressource.date_publication)
+        );
+
+        setLargeurPx(
+          ressource.largeur_px?.toString() ?? ""
+        );
+
+        setHauteurPx(
+          ressource.hauteur_px?.toString() ?? ""
+        );
+
+        setDureeSeconde(
+          ressource.duree_seconde?.toString() ?? ""
+        );
+
+        setFichier(null);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Impossible de récupérer la ressource à modifier.";
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsLoadingRessource(false);
+      }
+    }
+
     loadInitialData();
-  }, [ressourceId]);
-
-  async function loadInitialData() {
-    await loadOptions();
-
-    if (isEditMode) {
-      await loadRessource();
-    }
-  }
-
-  async function loadOptions() {
-    setIsLoadingOptions(true);
-    setMessage(null);
-
-    try {
-      const [categoriesResponse, typesResponse] = await Promise.all([
-        apiGetAllCategories(),
-        apiGetAllTypes(),
-      ]);
-
-      setCategories(categoriesResponse.data ?? []);
-      setTypes(typesResponse.data ?? []);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer les catégories et les types.";
-
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      setIsLoadingOptions(false);
-    }
-  }
-
-  async function loadRessource() {
-    if (!ressourceId) {
-      return;
-    }
-
-    setIsLoadingRessource(true);
-    setMessage(null);
-
-    try {
-      const response = await apiGetRessourceById(ressourceId);
-
-      const ressource = response.data;
-
-      setTitre(ressource.titre);
-      setSlug(ressource.slug);
-      setResume(ressource.resume);
-      setContenuTexte(ressource.contenu_texte ?? "");
-
-      setCategorieId(String(ressource.categorie?.id ?? ""));
-      setTypeId(String(ressource.type?.id ?? ""));
-
-      setEstActif(ressource.est_actif);
-      setDatePublication(formatDate(ressource.date_publication));
-
-      setLargeurPx(ressource.largeur_px?.toString() ?? "");
-      setHauteurPx(ressource.hauteur_px?.toString() ?? "");
-      setDureeSeconde(ressource.duree_seconde?.toString() ?? "");
-
-      setFichier(null);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer la ressource à modifier.";
-
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      setIsLoadingRessource(false);
-    }
-  }
+  }, [isEditMode, ressourceId]);
 
   function generateSlug(value: string) {
     return value
@@ -153,11 +175,12 @@ export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
   function getCurrentDateTimeLocal() {
     const now = new Date();
 
-    const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    const localDate = new Date(
+      now.getTime() - now.getTimezoneOffset() * 60000
+    );
 
     return localDate.toISOString().slice(0, 16);
   }
-
 
   function handleTitreChange(value: string) {
     setTitre(value);
@@ -177,7 +200,9 @@ export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
     }
   }
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  function handleFileChange(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
     const selectedFile = event.target.files?.[0];
 
     if (!selectedFile) {
@@ -203,115 +228,136 @@ export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
     setFichier(null);
   }
 
-  const handleSubmit: ComponentProps<"form">["onSubmit"] = async (event) => {
-    event.preventDefault();
+  const handleSubmit: ComponentProps<"form">["onSubmit"] =
+    async (event) => {
+      event.preventDefault();
 
-    setMessage(null);
+      setMessage(null);
 
-    const cleanTitre = titre.trim();
-    const cleanSlug = slug.trim();
-    const cleanResume = resume.trim();
-    const cleanContenuTexte = contenuTexte.trim();
+      const cleanTitre = titre.trim();
+      const cleanSlug = slug.trim();
+      const cleanResume = resume.trim();
+      const cleanContenuTexte = contenuTexte.trim();
 
-    if (!cleanTitre || !cleanSlug || !cleanResume) {
-      setMessage({
-        type: "error",
-        text: "Le titre, le slug et le résumé sont obligatoires.",
-      });
+      if (!cleanTitre || !cleanSlug || !cleanResume) {
+        setMessage({
+          type: "error",
+          text: "Le titre, le slug et le résumé sont obligatoires.",
+        });
 
-      return;
-    }
+        return;
+      }
 
-    if (!categorieId || !typeId) {
-      setMessage({
-        type: "error",
-        text: "La catégorie et le type sont obligatoires.",
-      });
+      if (!categorieId || !typeId) {
+        setMessage({
+          type: "error",
+          text: "La catégorie et le type sont obligatoires.",
+        });
 
-      return;
-    }
+        return;
+      }
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    formData.append("titre", cleanTitre);
-    formData.append("slug", cleanSlug);
-    formData.append("resume", cleanResume);
-    formData.append("contenu_texte", cleanContenuTexte);
-    formData.append("est_actif", estActif ? "1" : "0");
-    formData.append("categorie_id", categorieId);
-    formData.append("type_id", typeId);
+      formData.append("titre", cleanTitre);
+      formData.append("slug", cleanSlug);
+      formData.append("resume", cleanResume);
+      formData.append("contenu_texte", cleanContenuTexte);
 
-    if (estActif && datePublication) {
-      formData.append("date_publication", datePublication);
-    }
-
-    if (largeurPx) {
-      formData.append("largeur_px", largeurPx);
-    }
-
-    if (hauteurPx) {
-      formData.append("hauteur_px", hauteurPx);
-    }
-
-    if (dureeSeconde) {
-      formData.append("duree_seconde", dureeSeconde);
-    }
-
-    if (fichier) {
-      formData.append("fichier", fichier);
-      formData.append("nom_fichier", fichier.name);
       formData.append(
-        "taille_fichier_ko",
-        Math.ceil(fichier.size / 1024).toString()
+        "est_actif",
+        estActif ? "1" : "0"
       );
-    }
 
-    try {
-      setIsSubmitting(true);
+      formData.append("categorie_id", categorieId);
+      formData.append("type_id", typeId);
 
-      const response =
-        isEditMode && ressourceId
-          ? await apiUpdateRessource(ressourceId, formData)
-          : await apiCreateRessource(formData);
-
-      setMessage({
-        type: "success",
-        text:
-          response.message ||
-          (isEditMode
-            ? "Ressource modifiée avec succès."
-            : "Ressource créée avec succès."),
-      });
-
-      if (!isEditMode) {
-        resetForm();
-      }
-    } catch (error) {
-      let errorMessage = isEditMode
-        ? "Impossible de modifier la ressource."
-        : "Impossible de créer la ressource.";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
+      if (estActif && datePublication) {
+        formData.append(
+          "date_publication",
+          datePublication
+        );
       }
 
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      if (largeurPx) {
+        formData.append("largeur_px", largeurPx);
+      }
+
+      if (hauteurPx) {
+        formData.append("hauteur_px", hauteurPx);
+      }
+
+      if (dureeSeconde) {
+        formData.append(
+          "duree_seconde",
+          dureeSeconde
+        );
+      }
+
+      if (fichier) {
+        formData.append("fichier", fichier);
+        formData.append("nom_fichier", fichier.name);
+
+        formData.append(
+          "taille_fichier_ko",
+          Math.ceil(fichier.size / 1024).toString()
+        );
+      }
+
+      try {
+        setIsSubmitting(true);
+
+        const response =
+          isEditMode && ressourceId
+            ? await apiUpdateRessource(
+                ressourceId,
+                formData
+              )
+            : await apiCreateRessource(formData);
+
+        setMessage({
+          type: "success",
+          text:
+            response.message ||
+            (isEditMode
+              ? "Ressource modifiée avec succès."
+              : "Ressource créée avec succès."),
+        });
+
+        if (!isEditMode) {
+          resetForm();
+        }
+      } catch (error) {
+        let errorMessage = isEditMode
+          ? "Impossible de modifier la ressource."
+          : "Impossible de créer la ressource.";
+
+        if (error instanceof Error) {
+          errorMessage = error.message;
+        }
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
   return (
     <main className={styles.createPage}>
       <CreateRessourceHeader />
 
-      <form className={styles.card} onSubmit={handleSubmit}>
+      <form
+        className={styles.card}
+        onSubmit={handleSubmit}
+      >
         <CreateRessourceMessage message={message} />
 
-        <CreateRessourceLoading isLoading={isLoading} />
+        <CreateRessourceLoading
+          isLoading={isLoading}
+        />
 
         <CreateRessourceFields
           titre={titre}
@@ -342,7 +388,9 @@ export default function CreateRessourceForm({ ressourceId }: Readonly<Props>) {
           setDureeSeconde={setDureeSeconde}
         />
 
-        <CreateRessourceAction isLoading={isLoading} />
+        <CreateRessourceAction
+          isLoading={isLoading}
+        />
       </form>
     </main>
   );

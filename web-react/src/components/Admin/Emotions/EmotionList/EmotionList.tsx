@@ -7,11 +7,12 @@ import { TypeEmotion } from "../../../../types/typesEmotion";
 import { Emotion } from "../../../../types/emotions";
 import { Message } from "../../../../types/message";
 import { apiGetAllEmotions, apiGetAllTypesEmotion } from "../../../../services/emotionApi";
-import { API_BASE_URL } from "../../../../config/api";
+
 import EmotionListHeader from "./EmotionListHeader";
 import EmotionListMessage from "./EmotionListMessage";
 import EmotionListLoading from "./EmotionListLoading";
 import EmotionListEmpty from "./EmotionListEmpty";
+import { API_BASE_URL } from "../../../../config/api";
 
 export default function EmotionList (){
   const [typesEmotion, setTypesEmotion] = useState<TypeEmotion[]>([]);

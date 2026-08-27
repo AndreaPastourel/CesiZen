@@ -1,0 +1,60 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+
+  # Prometheus
+  - job_name: "prometheus"
+    static_configs:
+      - targets:
+          - "localhost:9090"
+
+  # Métriques Docker
+  - job_name: "cadvisor"
+    static_configs:
+      - targets:
+          - "cadvisor:8080"
+
+  # Disponibilité HTTP
+  - job_name: "blackbox-http"
+    metrics_path: /probe
+
+    params:
+      module:
+        - http_2xx
+
+    static_configs:
+
+      - targets:
+          - "blackbox:9115"
+        labels:
+          target: "http://front:8080/"
+          service: "front"
+
+      - targets:
+          - "blackbox:9115"
+        labels:
+          target: "http://back:8000/monitor/health/run"
+          service: "api"
+
+      - targets:
+          - "blackbox:9115"
+        labels:
+          target: "http://prometheus:9090/-/ready"
+          service: "prometheus"
+
+      - targets:
+          - "blackbox:9115"
+        labels:
+          target: "http://grafana:3000/api/health"
+          service: "grafana"
+
+    relabel_configs:
+      - source_labels:
+          - target
+        target_label: __param_target
+
+      - source_labels:
+          - target
+        target_label: instance

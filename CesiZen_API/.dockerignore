@@ -1,0 +1,36 @@
+# Dépendances PHP
+vendor/
+
+# Cache et logs Symfony
+var/cache/
+var/log/
+
+# Cache PHPUnit
+.phpunit.cache/
+.phpunit.result.cache
+
+# Variables d'environnement locales / sensibles
+.env.local
+.env.*.local
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+compose.yml
+compose.yaml
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md

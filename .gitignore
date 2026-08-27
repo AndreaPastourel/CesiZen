@@ -12,10 +12,11 @@ Thumbs.db
 # ========================
 # Symfony (API)
 # ========================
-api-symfony/vendor/
-api-symfony/var/
-api-symfony/.env.local
-api-symfony/.env.*.local
+CesiZen_API# ========================
+/vendor/
+CesiZen_API/var/
+CesiZen_API/.env.local
+CesiZen_API/.env.*.local
 
 # ========================
 # React (Vite)
@@ -37,3 +38,4 @@ mobile-kotlin/local.properties
 # Logs
 # ========================
 *.log
+.env

@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 
-import styles from "./module.JournalStats.module.css"
-import { EntreeJournal } from '../../types/entreesJournal';
+import styles from "./module.JournalStats.module.css";
+
+import { EntreeJournal } from "../../types/entreesJournal";
 import { Message } from "../../types/message";
+
 import { apiGetAllJournalEntries } from "../../services/journalApi";
+
 import JournalHeader from "./JournalHeader";
 import JournalMessage from "./JournalMessage";
 import JournalLoading from "./JournalLoading";
@@ -26,54 +29,35 @@ export default function JournalEmotionStats() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    async function loadJournalEntries() {
+      setIsLoading(true);
+      setMessage(null);
+
+      try {
+        const response = await apiGetAllJournalEntries();
+
+        setEntries(response.data);
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Impossible de récupérer le journal d’émotions.";
+
+        setMessage({
+          type: "error",
+          text: errorMessage,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     loadJournalEntries();
   }, []);
 
-  async function loadJournalEntries() {
-    setIsLoading(true);
-    setMessage(null);
-
-    try {
-      const response = await apiGetAllJournalEntries();
-
-      setEntries(response.data);
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Impossible de récupérer le journal d’émotions.";
-
-      setMessage({
-        type: "error",
-        text: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  function isEntryInSelectedPeriod(entry: EntreeJournal) {
-    const rawDate = entry.date_ressentie;
-
-    if (!rawDate) {
-      return false;
-    }
-
-    const entryDate = new Date(rawDate);
-    const today = new Date();
-
-    const limitDate = new Date();
-
-    if (period === "week") {
-      limitDate.setDate(today.getDate() - 7);
-    } else {
-      limitDate.setMonth(today.getMonth() - 1);
-    }
-
-    return entryDate >= limitDate && entryDate <= today;
-  }
-
-  function buildRepartitionByType(filteredEntries: EntreeJournal[]) {
+  function buildRepartitionByType(
+    filteredEntries: EntreeJournal[]
+  ) {
     const map = new Map<number, StatItem>();
 
     filteredEntries.forEach((entry) => {
@@ -102,10 +86,14 @@ export default function JournalEmotionStats() {
       });
     });
 
-    return Array.from(map.values()).sort((a, b) => b.count - a.count);
+    return Array.from(map.values()).sort(
+      (a, b) => b.count - a.count
+    );
   }
 
-  function buildRepartitionByEmotion(filteredEntries: EntreeJournal[]) {
+  function buildRepartitionByEmotion(
+    filteredEntries: EntreeJournal[]
+  ) {
     const map = new Map<number, StatItem>();
 
     filteredEntries.forEach((entry) => {
@@ -134,11 +122,35 @@ export default function JournalEmotionStats() {
       });
     });
 
-    return Array.from(map.values()).sort((a, b) => b.count - a.count);
+    return Array.from(map.values()).sort(
+      (a, b) => b.count - a.count
+    );
   }
 
   const filteredEntries = useMemo(() => {
-    return entries.filter(isEntryInSelectedPeriod);
+    const today = new Date();
+    const limitDate = new Date();
+
+    if (period === "week") {
+      limitDate.setDate(today.getDate() - 7);
+    } else {
+      limitDate.setMonth(today.getMonth() - 1);
+    }
+
+    return entries.filter((entry) => {
+      const rawDate = entry.date_ressentie;
+
+      if (!rawDate) {
+        return false;
+      }
+
+      const entryDate = new Date(rawDate);
+
+      return (
+        entryDate >= limitDate &&
+        entryDate <= today
+      );
+    });
   }, [entries, period]);
 
   const typeStats = useMemo(() => {
@@ -154,9 +166,12 @@ export default function JournalEmotionStats() {
       return null;
     }
 
-    const total = filteredEntries.reduce((sum, entry) => {
-      return sum + Number(entry.intensite ?? 0);
-    }, 0);
+    const total = filteredEntries.reduce(
+      (sum, entry) => {
+        return sum + Number(entry.intensite ?? 0);
+      },
+      0
+    );
 
     return total / filteredEntries.length;
   }, [filteredEntries]);
@@ -167,8 +182,13 @@ export default function JournalEmotionStats() {
   const lastEntries = useMemo(() => {
     return [...filteredEntries]
       .sort((a, b) => {
-        const dateA = new Date(a.date_ressentie ?? "").getTime();
-        const dateB = new Date(b.date_ressentie ?? "").getTime();
+        const dateA = new Date(
+          a.date_ressentie ?? ""
+        ).getTime();
+
+        const dateB = new Date(
+          b.date_ressentie ?? ""
+        ).getTime();
 
         return dateB - dateA;
       })
@@ -183,19 +203,24 @@ export default function JournalEmotionStats() {
     return `${value.toFixed(1)} / 10`;
   }
 
-
   function getPeriodLabel() {
-    return period === "week" ? "sur les 7 derniers jours" : "sur le dernier mois";
+    return period === "week"
+      ? "sur les 7 derniers jours"
+      : "sur le dernier mois";
   }
 
   function renderStatList(items: StatItem[]) {
     if (items.length === 0) {
-      return <p className={styles.emptyText}>Aucune donnée disponible.</p>;
+      return (
+        <p className={styles.emptyText}>
+          Aucune donnée disponible.
+        </p>
+      );
     }
 
     return (
       <JournalItem
-      items={items}
+        items={items}
       />
     );
   }
@@ -203,21 +228,21 @@ export default function JournalEmotionStats() {
   return (
     <main className={styles.statsPage}>
       <JournalHeader
-      getPeriodLabel={getPeriodLabel}
-      period={period}
-      setPeriod={setPeriod}
+        getPeriodLabel={getPeriodLabel}
+        period={period}
+        setPeriod={setPeriod}
       />
 
-    <JournalMessage
-    message={message}
-    />
+      <JournalMessage
+        message={message}
+      />
 
+      <JournalLoading
+        isLoading={isLoading}
+      />
 
-    <JournalLoading
-    isLoading={isLoading}
-     />
       {!isLoading && (
-          <JournalCard
+        <JournalCard
           filteredEntries={filteredEntries}
           getPeriodLabel={getPeriodLabel}
           formatIntensity={formatIntensity}
@@ -228,7 +253,7 @@ export default function JournalEmotionStats() {
           typeStats={typeStats}
           emotionStats={emotionStats}
           lastEntries={lastEntries}
-          />
+        />
       )}
     </main>
   );
