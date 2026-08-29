@@ -32,12 +32,15 @@ services:
     build:
       context: ./CesiZen_API
       dockerfile: Dockerfile
+      args:
+        INSTALL_DEV_DEPENDENCIES: ${INSTALL_DEV_DEPENDENCIES:-false}
 
     container_name: cesizen-api
     restart: unless-stopped
 
     volumes:
       - back_logs:/app/var/log
+      - ./CesiZen_API/config/jwt:/app/config/jwt:ro
 
     depends_on:
       db:

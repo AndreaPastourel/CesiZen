@@ -6,12 +6,22 @@ WORKDIR /app
 COPY composer.json composer.lock symfony.lock ./
 
 
-RUN composer install \
-    --no-interaction \
-    --no-progress \
-    --prefer-dist \
-    --no-dev \
-    --no-scripts
+
+ARG INSTALL_DEV_DEPENDENCIES=false
+RUN if [ "$INSTALL_DEV_DEPENDENCIES" = "true" ]; then \
+        composer install \
+            --no-interaction \
+            --no-progress \
+            --prefer-dist \
+            --no-scripts; \
+    else \
+        composer install \
+            --no-interaction \
+            --no-progress \
+            --prefer-dist \
+            --no-dev \
+            --no-scripts; \
+    fi
 
 
 # Stage 2 : image finale de l'application
