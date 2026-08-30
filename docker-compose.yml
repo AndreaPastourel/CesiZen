@@ -32,9 +32,15 @@ services:
     build:
       context: ./CesiZen_API
       dockerfile: Dockerfile
+      args:
+        INSTALL_DEV_DEPENDENCIES: ${INSTALL_DEV_DEPENDENCIES:-false}
 
     container_name: cesizen-api
     restart: unless-stopped
+
+    volumes:
+      - back_logs:/app/var/log
+      - ./CesiZen_API/config/jwt:/app/config/jwt:ro
 
     depends_on:
       db:
@@ -42,7 +48,22 @@ services:
 
     environment:
       APP_ENV: ${APP_ENV}
+      APP_SECRET: ${APP_SECRET}
+      APP_SHARE_DIR: ${APP_SHARE_DIR}
+
+      DEFAULT_URI: ${DEFAULT_URI}
+
       DATABASE_URL: ${DATABASE_URL}
+      MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      MAILER_DSN: ${MAILER_DSN}
+
+      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+
+      APP_RUNTIME_OPTIONS: '{"disable_dotenv":true}'
 
     ports:
       - "${BACK_PORT}:8000"
@@ -145,6 +166,45 @@ services:
 
     ports:
       - "9115:9115"
+
+  # Collecteur de logs
+  loki:
+    image: grafana/loki:3.7.0
+    container_name: cesizen-loki
+    restart: unless-stopped
+
+    command:
+      - "-config.file=/etc/loki/loki-config.yml"
+
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+
+    ports:
+      - "3100:3100"
+
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: cesizen-alloy
+    restart: unless-stopped
+
+    depends_on:
+      - loki
+
+    volumes:
+      - ./monitoring/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - back_logs:/var/log/cesizen:ro
+      - alloy_data:/var/lib/alloy/data
+
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+
+    ports:
+      - "12345:12345"
   
 
 
@@ -154,3 +214,6 @@ volumes:
   mysql_data:
   prometheus_data:
   grafana_data:
+  back_logs:
+  loki_data:
+  alloy_data:
