@@ -52,8 +52,9 @@ jobs:
         run: npm ci
 
       - name: Audit Lighthouse
-        run: npm run lighthouse
+        run: npm run lighthouse:ci
         env:
+          # Indique à Lighthouse le chemin du Chrome installé précédemment.
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
 
