@@ -3,16 +3,24 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:ci": "vitest run --passWithNoTests",
-    "test:e2e": "playwright test",
-    "lighthouse": "lhci autorun"
-  },
+ "scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "test": "vitest",
+  "test:ci": "vitest run --passWithNoTests",
+  "test:e2e": "playwright test",
+  "preview:ci": "vite preview --host 127.0.0.1 --port 4173",
+  "lighthouse:audit": "lighthouse http://127.0.0.1:4173/ --output=json --output=html --output-path=./lighthouse-report --chrome-flags=\"--headless\"",
+  "lighthouse:audit:ci": "lighthouse http://127.0.0.1:4173/ --output=json --output=html --output-path=./lighthouse-report --chrome-flags=\"--headless --no-sandbox\"",
+  "lighthouse:check": "node scripts/check-lighthouse.mjs",
+  "lighthouse:run": "npm run lighthouse:audit && npm run lighthouse:check",
+  "lighthouse:run:ci": "npm run lighthouse:audit:ci && npm run lighthouse:check",
+  "lighthouse": "npm run build && start-server-and-test preview:ci http://127.0.0.1:4173 lighthouse:run",
+  "lighthouse:ci": "npm run build && start-server-and-test preview:ci http://127.0.0.1:4173 lighthouse:run:ci"
+},
+
   "dependencies": {
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
@@ -21,7 +29,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
@@ -33,6 +40,8 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "jsdom": "^30.0.1",
+    "lighthouse": "^13.4.1",
+    "start-server-and-test": "^3.0.12",
     "typescript-eslint": "^8.68.0",
     "vite": "^7.2.4",
     "vitest": "^4.1.11"
