@@ -39,11 +39,5 @@ mobile-kotlin/local.properties
 # ========================
 *.log
 /.env
-<<<<<<< HEAD
 =======
 
-
-
-web-react/lighthouse-report.report.html
-web-react/lighthouse-report.report.json
->>>>>>> dev
