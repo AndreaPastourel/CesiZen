@@ -1,4 +1,6 @@
+
 name: Front - Lighthouse
+
 
 on:
   push:
@@ -6,7 +8,7 @@ on:
       - "**"
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-lighthouse-front.yml"
 
   pull_request:
     branches:
@@ -14,30 +16,58 @@ on:
       - dev
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-lighthouse-front.yml"
+
+permissions:
+  contents: read
 
 jobs:
+
   lighthouse:
     name: Audit Lighthouse
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: web-react
 
+    
     steps:
+  
       - name: Récupération du code
         uses: actions/checkout@v4
 
       - name: Installation de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: "24.15.0"
           cache: npm
+
           cache-dependency-path: web-react/package-lock.json
+
+      - name: Installation de Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v2
 
       - name: Installation des dépendances
         run: npm ci
 
       - name: Audit Lighthouse
-        run: npm run lighthouse
+        run: npm run lighthouse:ci
+        env:
+          # Indique à Lighthouse le chemin du Chrome installé précédemment.
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+
+      - name: Conservation des rapports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-report
+
+          path: |
+            web-react/lighthouse-report.report.html
+            web-react/lighthouse-report.report.json
+
+          if-no-files-found: warn
+
+          retention-days: 14
