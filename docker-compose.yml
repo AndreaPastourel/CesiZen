@@ -1,0 +1,219 @@
+services:
+
+  # Base de données MySQL
+  db:
+    image: mysql:8.4
+    container_name: cesizen-db
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      - "${MYSQL_PORT}:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [ "CMD-SHELL","mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+
+  # API Symfony
+  back:
+    build:
+      context: ./CesiZen_API
+      dockerfile: Dockerfile
+      args:
+        INSTALL_DEV_DEPENDENCIES: ${INSTALL_DEV_DEPENDENCIES:-false}
+
+    container_name: cesizen-api
+    restart: unless-stopped
+
+    volumes:
+      - back_logs:/app/var/log
+      - ./CesiZen_API/config/jwt:/app/config/jwt:ro
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      APP_ENV: ${APP_ENV}
+      APP_SECRET: ${APP_SECRET}
+      APP_SHARE_DIR: ${APP_SHARE_DIR}
+
+      DEFAULT_URI: ${DEFAULT_URI}
+
+      DATABASE_URL: ${DATABASE_URL}
+      MESSENGER_TRANSPORT_DSN: ${MESSENGER_TRANSPORT_DSN}
+      MAILER_DSN: ${MAILER_DSN}
+
+      CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE}
+
+      APP_RUNTIME_OPTIONS: '{"disable_dotenv":true}'
+
+    ports:
+      - "${BACK_PORT}:8000"
+
+
+  # Front React / Vite
+  front:
+    build:
+      context: ./web-react
+      dockerfile: Dockerfile
+
+    container_name: cesizen-front
+    restart: unless-stopped
+
+    depends_on:
+      back:
+        condition: service_healthy
+
+    ports:
+      - "${FRONT_PORT}:8080"
+
+
+  # Collecte des métriques
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: cesizen-prometheus
+    restart: unless-stopped
+
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+    ports:
+      - "9090:9090"
+    
+    healthcheck:
+      test:
+        ["CMD-SHELL","wget -q --spider http://127.0.0.1:9090/-/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+
+  # Métriques des conteneurs Docker
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cesizen-cadvisor
+    restart: unless-stopped
+
+    privileged: true
+
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+
+    ports:
+      - "8081:8080"
+    
+    healthcheck:
+      test:
+        ["CMD-SHELL","wget -q --spider http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+
+  # Dashboard de supervision
+  grafana:
+    image: grafana/grafana:latest
+    container_name: cesizen-grafana
+    restart: unless-stopped
+
+    depends_on:
+      prometheus:
+        condition: service_healthy
+
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+    ports:
+      - "3001:3000"
+
+
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    container_name: cesizen-blackbox
+    restart: unless-stopped
+
+    volumes:
+      - ./monitoring/blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+
+    command:
+      - "--config.file=/etc/blackbox_exporter/config.yml"
+
+    ports:
+      - "9115:9115"
+
+  # Collecteur de logs
+  loki:
+    image: grafana/loki:3.7.0
+    container_name: cesizen-loki
+    restart: unless-stopped
+
+    command:
+      - "-config.file=/etc/loki/loki-config.yml"
+
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+
+    ports:
+      - "3100:3100"
+
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: cesizen-alloy
+    restart: unless-stopped
+
+    depends_on:
+      - loki
+
+    volumes:
+      - ./monitoring/alloy/config.alloy:/etc/alloy/config.alloy:ro
+      - back_logs:/var/log/cesizen:ro
+      - alloy_data:/var/lib/alloy/data
+
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
+
+    ports:
+      - "12345:12345"
+  
+
+
+
+# Volumes persistants
+volumes:
+  mysql_data:
+  prometheus_data:
+  grafana_data:
+  back_logs:
+  loki_data:
+  alloy_data:

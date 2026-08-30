@@ -1,0 +1,35 @@
+# Dépendances Node
+node_modules
+
+# Build Vite
+dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables d'environnement locales
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md

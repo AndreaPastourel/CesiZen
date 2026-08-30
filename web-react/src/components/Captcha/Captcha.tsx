@@ -4,20 +4,24 @@ import styles from "./module.Captcha.module.css";
 
 type Props = {
   onValidationChange: (isValid: boolean) => void;
-  resetKey: number;
 };
+
+function generateRandomNumber() {
+  return Math.floor(Math.random() * 9) + 1;
+}
 
 export default function Captcha({
   onValidationChange,
-  resetKey,
 }: Readonly<Props>) {
-  const [firstNumber, setFirstNumber] = useState<number>(0);
-  const [secondNumber, setSecondNumber] = useState<number>(0);
-  const [answer, setAnswer] = useState<string>("");
+  const [firstNumber, setFirstNumber] = useState<number>(
+    () => generateRandomNumber()
+  );
 
-  useEffect(() => {
-    generateCaptcha();
-  }, [resetKey]);
+  const [secondNumber, setSecondNumber] = useState<number>(
+    () => generateRandomNumber()
+  );
+
+  const [answer, setAnswer] = useState<string>("");
 
   useEffect(() => {
     const expectedAnswer = firstNumber + secondNumber;
@@ -32,11 +36,8 @@ export default function Captcha({
   }, [answer, firstNumber, secondNumber, onValidationChange]);
 
   function generateCaptcha() {
-    const randomFirstNumber = Math.floor(Math.random() * 9) + 1;
-    const randomSecondNumber = Math.floor(Math.random() * 9) + 1;
-
-    setFirstNumber(randomFirstNumber);
-    setSecondNumber(randomSecondNumber);
+    setFirstNumber(generateRandomNumber());
+    setSecondNumber(generateRandomNumber());
     setAnswer("");
 
     onValidationChange(false);
@@ -45,7 +46,9 @@ export default function Captcha({
   return (
     <div className={styles.captchaBox}>
       <div className={styles.captchaHeader}>
-        <label htmlFor="captcha">Vérification anti-robot</label>
+        <label htmlFor="captcha">
+          Vérification anti-robot
+        </label>
 
         <button
           type="button"

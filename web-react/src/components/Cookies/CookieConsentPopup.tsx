@@ -1,53 +1,50 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { acceptAllCookies, CookieConsent, getCookieConsent, refuseOptionalCookies, saveCookieConsent} from "../../services/cookieConsentService";
+import {
+  acceptAllCookies,
+  CookieConsent,
+  getCookieConsent,
+  refuseOptionalCookies,
+  saveCookieConsent,
+} from "../../services/cookieConsentService";
+
 import styles from "./module.PopUpCookie.module.css";
 
-
 export default function CookieConsentPopup() {
-  
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [initialConsent] = useState(() => getCookieConsent());
+
+  const [isVisible, setIsVisible] = useState<boolean>(
+    () => !initialConsent
+  );
+
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [analytics, setAnalytics] = useState<boolean>(false);
-  const [preferences, setPreferences] = useState<boolean>(false);
 
- 
-  useEffect(() => {
-    
-    const savedConsent = getCookieConsent();
-    if (!savedConsent) {
-      
-      setIsVisible(true);
-      return;
-    }
+  const [analytics, setAnalytics] = useState<boolean>(
+    () => initialConsent?.analytics ?? false
+  );
 
-    setAnalytics(savedConsent.analytics);
+  const [preferences, setPreferences] = useState<boolean>(
+    () => initialConsent?.preferences ?? false
+  );
 
-    setPreferences(savedConsent.preferences);
-  }, []);
-
- 
   function handleAcceptAll() {
-   
     acceptAllCookies();
+
     setAnalytics(true);
     setPreferences(true);
     setIsVisible(false);
   }
 
-
   function handleRefuseAll() {
-   
     refuseOptionalCookies();
+
     setAnalytics(false);
     setPreferences(false);
     setIsVisible(false);
   }
 
-  
   function handleSaveSettings() {
-   
     const consent: CookieConsent = {
       necessary: true,
       analytics,
@@ -57,6 +54,8 @@ export default function CookieConsentPopup() {
     saveCookieConsent(consent);
     setIsVisible(false);
   }
+ 
+  
 
 
   if (!isVisible) {

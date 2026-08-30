@@ -1,0 +1,4 @@
+
+_monitor:
+    resource: "@LiipMonitorBundle/Resources/config/routing.yaml"
+    prefix: /monitor/health

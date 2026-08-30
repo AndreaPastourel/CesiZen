@@ -104,7 +104,10 @@ export default function LoginForm() {
         setPassword={setPassword}
       />
 
-      <Captcha onValidationChange={setIsCaptchaValid}  resetKey={captchaResetKey} />
+      <Captcha
+          key={captchaResetKey}
+          onValidationChange={setIsCaptchaValid}
+        />
 
       <LoginAction isLoading={isLoading} />
     </form>

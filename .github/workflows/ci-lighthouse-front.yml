@@ -1,0 +1,43 @@
+name: Front - Lighthouse
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+  pull_request:
+    branches:
+      - main
+      - dev
+    paths:
+      - "web-react/**"
+      - ".github/workflows/ci-tests-front.yml"
+
+jobs:
+  lighthouse:
+    name: Audit Lighthouse
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: web-react
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web-react/package-lock.json
+
+      - name: Installation des dépendances
+        run: npm ci
+
+      - name: Audit Lighthouse
+        run: npm run lighthouse

@@ -64,7 +64,7 @@ export async function apiUpdateUser(
     );
   }
 
-  const response = await fetch(`${API_BASE_URL}/me`, {
+  const response = await fetch(`${API_BASE_URL}/me/update`, {
     method: "POST",
     headers: {
       Accept: "application/json",

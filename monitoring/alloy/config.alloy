@@ -1,0 +1,29 @@
+
+loki.source.file "honeypot" {
+
+    targets = [
+        {
+            __path__ = "/var/log/cesizen/honeypot.log",
+            job      = "cesizen-honeypot",
+            service  = "api",
+            project  = "cesizen",
+        },
+    ]
+
+    
+    forward_to = [loki.write.local.receiver]
+
+    
+    file_match {
+        enabled     = true
+        sync_period = "5s"
+    }
+}
+
+
+loki.write "local" {
+
+    endpoint {
+        url = "http://loki:3100/loki/api/v1/push"
+    }
+}

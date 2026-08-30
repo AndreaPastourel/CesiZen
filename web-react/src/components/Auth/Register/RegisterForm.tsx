@@ -150,7 +150,9 @@ export default function RegisterForm() {
         setConfirmMotDePasse={setConfirmMotDePasse}
       />
 
-      <Captcha onValidationChange={setIsCaptchaValid} />
+      <Captcha
+        onValidationChange={setIsCaptchaValid}
+      />
 
       <RegisterAction isLoading={isLoading} />
     </form>

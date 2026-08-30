@@ -1900,6 +1900,164 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     return_expiration_parameter_name?: scalar|Param|null, // The default response parameter name containing the refresh token expiration timestamp // Default: "refresh_token_expiration"
  *     default_invalid_batch_size?: int|Param, // The default batch size when clearing invalid tokens // Default: 1000
  * }
+ * @psalm-type LiipMonitorConfig = array{
+ *     enable_controller?: bool|Param, // Default: false
+ *     view_template?: scalar|Param|null, // Default: null
+ *     failure_status_code?: int|Param, // Default: 502
+ *     mailer?: bool|array{
+ *         enabled?: bool|Param, // Default: false
+ *         recipient?: string|list<scalar|Param|null>,
+ *         sender?: scalar|Param|null,
+ *         subject?: scalar|Param|null,
+ *         send_on_warning?: bool|Param, // Default: true
+ *     },
+ *     default_group?: scalar|Param|null, // Default: "default"
+ *     checks?: array{
+ *         groups?: array<string, array{ // Default: []
+ *             php_extensions?: list<scalar|Param|null>,
+ *             php_flags?: array<string, scalar|Param|null>,
+ *             php_version?: array<string, scalar|Param|null>,
+ *             process_running?: mixed, // Process name/pid or an array of process names/pids
+ *             readable_directory?: list<scalar|Param|null>,
+ *             writable_directory?: list<scalar|Param|null>,
+ *             class_exists?: list<scalar|Param|null>,
+ *             cpu_performance?: scalar|Param|null, // Benchmark CPU performance and return failure if it is below the given ratio
+ *             disk_usage?: array{ // Checks to see if the disk usage is below warning/critical percent thresholds
+ *                 warning?: int|Param, // Default: 70
+ *                 critical?: int|Param, // Default: 90
+ *                 path?: scalar|Param|null, // Default: "%kernel.cache_dir%"
+ *             },
+ *             symfony_requirements?: array{ // Checks Symfony2 requirements file
+ *                 file?: scalar|Param|null, // Default: "%kernel.root_dir%/SymfonyRequirements.php"
+ *             },
+ *             opcache_memory?: array{ // Checks to see if the OpCache memory usage is below warning/critical thresholds
+ *                 warning?: int|Param, // Default: 70
+ *                 critical?: int|Param, // Default: 90
+ *             },
+ *             apc_memory?: array{ // Checks to see if the APC memory usage is below warning/critical thresholds
+ *                 warning?: int|Param, // Default: 70
+ *                 critical?: int|Param, // Default: 90
+ *             },
+ *             apc_fragmentation?: array{ // Checks to see if the APC fragmentation is below warning/critical thresholds
+ *                 warning?: int|Param, // Default: 70
+ *                 critical?: int|Param, // Default: 90
+ *             },
+ *             doctrine_dbal?: mixed, // Connection name or an array of connection names // Default: null
+ *             doctrine_mongodb?: mixed, // Connection name or an array of connection names // Default: null
+ *             doctrine_migrations?: string|array<string, string|array{ // Default: []
+ *                 configuration_file?: scalar|Param|null, // Absolute path to doctrine migrations configuration
+ *                 connection?: scalar|Param|null, // Connection name from doctrine DBAL configuration
+ *             }>,
+ *             memcache?: array<string, array{ // Default: []
+ *                 host?: scalar|Param|null, // Default: "localhost"
+ *                 port?: int|Param, // Default: 11211
+ *             }>,
+ *             memcached?: array<string, array{ // Default: []
+ *                 host?: scalar|Param|null, // Default: "localhost"
+ *                 port?: int|Param, // Default: 11211
+ *             }>,
+ *             redis?: string|array<string, array{ // Default: []
+ *                 host?: scalar|Param|null, // Default: "localhost"
+ *                 port?: int|Param, // Default: 6379
+ *                 password?: scalar|Param|null, // Default: null
+ *                 dsn?: scalar|Param|null, // Default: null
+ *             }>,
+ *             http_service?: array<string, array{ // Default: []
+ *                 host?: scalar|Param|null, // Default: "localhost"
+ *                 port?: int|Param, // Default: 80
+ *                 path?: scalar|Param|null, // Default: "/"
+ *                 status_code?: int|Param, // Default: 200
+ *                 content?: scalar|Param|null, // Default: null
+ *             }>,
+ *             guzzle_http_service?: array<string, array{ // Default: []
+ *                 url?: scalar|Param|null, // Default: "localhost"
+ *                 headers?: mixed, // Default: []
+ *                 options?: mixed, // Default: []
+ *                 status_code?: int|Param, // Default: 200
+ *                 content?: scalar|Param|null, // Default: null
+ *                 method?: scalar|Param|null, // Default: "GET"
+ *                 body?: scalar|Param|null, // Default: null
+ *             }>,
+ *             rabbit_mq?: string|array<string, array{ // Default: []
+ *                 host?: scalar|Param|null, // Default: "localhost"
+ *                 port?: int|Param, // Default: 5672
+ *                 user?: scalar|Param|null, // Default: "guest"
+ *                 password?: scalar|Param|null, // Default: "guest"
+ *                 vhost?: scalar|Param|null, // Default: "/"
+ *                 dsn?: scalar|Param|null, // Default: null
+ *             }>,
+ *             symfony_version?: bool|Param, // Checks the version of this app against the latest stable release
+ *             custom_error_pages?: array{ // Checks if error pages have been customized for given error codes
+ *                 error_codes?: list<scalar|Param|null>,
+ *                 path?: scalar|Param|null, // The directory where your custom error page twig templates are located. Keep as "%kernel.project_dir%" to use default location. // Default: "%kernel.project_dir%"
+ *                 controller?: scalar|Param|null, // Deprecated: The custom error page controller option is no longer used; the corresponding config parameter was deprecated in 2.13 and will be dropped in 3.0. // Default: null
+ *             },
+ *             security_advisory?: array{ // Checks installed composer dependencies against the Security Advisory database
+ *                 lock_file?: scalar|Param|null, // Default: "%kernel.project_dir%/composer.lock"
+ *             },
+ *             stream_wrapper_exists?: list<scalar|Param|null>,
+ *             file_ini?: list<scalar|Param|null>,
+ *             file_json?: list<scalar|Param|null>,
+ *             file_xml?: list<scalar|Param|null>,
+ *             file_yaml?: list<scalar|Param|null>,
+ *             pdo_connections?: array<string, array{ // Default: []
+ *                 dsn?: scalar|Param|null, // Default: null
+ *                 username?: scalar|Param|null, // Default: null
+ *                 password?: scalar|Param|null, // Default: null
+ *                 timeout?: int|Param, // Default: 1
+ *             }>,
+ *             messenger_transports?: array<string, array{ // Default: []
+ *                 critical_threshold?: int|Param,
+ *                 warning_threshold?: int|Param, // Default: null
+ *                 service?: scalar|Param|null, // Default: null
+ *             }>,
+ *             expressions?: array<string, array{ // Default: []
+ *                 label?: scalar|Param|null,
+ *                 warning_expression?: scalar|Param|null, // Default: null
+ *                 critical_expression?: scalar|Param|null, // Default: null
+ *                 warning_message?: scalar|Param|null, // Default: null
+ *                 critical_message?: scalar|Param|null, // Default: null
+ *             }>,
+ *         }>,
+ *     },
+ * }
+ * @psalm-type ArtprimaPrometheusMetricsConfig = array{
+ *     namespace?: scalar|Param|null,
+ *     type?: scalar|Param|null, // Deprecated: The type config parameter was deprecated in 1.14 and will be dropped in 2.0. // Default: "in_memory"
+ *     redis?: array{ // Deprecated: The redis config parameter was deprecated in 1.14 and will be dropped in 2.0.
+ *         host?: scalar|Param|null,
+ *         port?: int|Param, // Default: 6379
+ *         timeout?: float|Param,
+ *         read_timeout?: float|Param,
+ *         persistent_connections?: bool|Param,
+ *         password?: scalar|Param|null,
+ *         database?: int|Param,
+ *         prefix?: scalar|Param|null,
+ *     },
+ *     storage?: string|array{
+ *         url?: scalar|Param|null, // DSN of the storage. All parsed values will override explicitly set parameters. Ex: redis://127.0.0.1?timeout=0.1
+ *         type?: scalar|Param|null, // The type of storage provide by factories. Default factories are ["in_memory","apcu","apcng","redis"]
+ *         host?: scalar|Param|null, // Use by some factory like redis. Default value should be managed by the factory at runtime.
+ *         port?: int|Param, // Use by some factory like redis. Default value should be managed by the factory at runtime.
+ *         timeout?: float|Param, // Connection timeout used by some factory like redis.
+ *         read_timeout?: float|Param,
+ *         persistent_connections?: bool|Param,
+ *         password?: scalar|Param|null,
+ *         database?: int|Param,
+ *         prefix?: scalar|Param|null, // Internal prefix used by the storage. Available for redis and apcu type.
+ *         options?: array<string, mixed>,
+ *     },
+ *     ignored_routes?: list<scalar|Param|null>,
+ *     disable_default_metrics?: bool|Param, // Default: false
+ *     disable_default_promphp_metrics?: bool|Param, // Default: false
+ *     enable_console_metrics?: bool|Param, // Default: false
+ *     labels?: list<array{ // Default: []
+ *         name?: scalar|Param|null, // Name of the label that will appear in the metric
+ *         type?: "request_attribute"|"request_header"|Param, // Type of the label value. Where the value will be collected: in the request attribute or in the request header
+ *         value?: scalar|Param|null, // Name of the attribute or header in the Request
+ *     }>,
+ *     buckets?: list<float|Param>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1917,6 +2075,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     api_platform?: ApiPlatformConfig,
  *     lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
  *     gesdinet_jwt_refresh_token?: GesdinetJwtRefreshTokenConfig,
+ *     liip_monitor?: LiipMonitorConfig,
+ *     artprima_prometheus_metrics?: ArtprimaPrometheusMetricsConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1937,6 +2097,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         api_platform?: ApiPlatformConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
  *         gesdinet_jwt_refresh_token?: GesdinetJwtRefreshTokenConfig,
+ *         liip_monitor?: LiipMonitorConfig,
+ *         artprima_prometheus_metrics?: ArtprimaPrometheusMetricsConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1955,6 +2117,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         api_platform?: ApiPlatformConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
  *         gesdinet_jwt_refresh_token?: GesdinetJwtRefreshTokenConfig,
+ *         liip_monitor?: LiipMonitorConfig,
+ *         artprima_prometheus_metrics?: ArtprimaPrometheusMetricsConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1974,6 +2138,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         api_platform?: ApiPlatformConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
  *         gesdinet_jwt_refresh_token?: GesdinetJwtRefreshTokenConfig,
+ *         liip_monitor?: LiipMonitorConfig,
+ *         artprima_prometheus_metrics?: ArtprimaPrometheusMetricsConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

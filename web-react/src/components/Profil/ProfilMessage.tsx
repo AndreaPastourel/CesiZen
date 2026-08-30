@@ -5,7 +5,7 @@ type Props = {
     message: Message
 }
 
-export default function ProfilMessage({message}:Props) {
+export default function ProfilMessage({message}:Readonly<Props>) {
     if(!message) return null;
 
     return(

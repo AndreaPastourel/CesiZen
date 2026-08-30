@@ -13,6 +13,19 @@
             "./src/ApiResource/.gitignore"
         ]
     },
+    "artprima/prometheus-metrics-bundle": {
+        "version": "1.22",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.21",
+            "ref": "744712c8112617ad624db495c3dd45336d737377"
+        },
+        "files": [
+            "./config/packages/prometheus_metrics.yaml",
+            "./config/routes/metrics.yaml"
+        ]
+    },
     "doctrine/annotations": {
         "version": "2.0",
         "recipe": {
@@ -94,6 +107,18 @@
         },
         "files": [
             "./config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
+    "liip/monitor-bundle": {
+        "version": "2.25",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.6",
+            "ref": "02c7cd93304dead890f9042fc2670dd9b0e0c091"
+        },
+        "files": [
+            "./config/packages/monitor.yaml"
         ]
     },
     "nelmio/cors-bundle": {
