@@ -12,7 +12,6 @@
         "api-platform/doctrine-orm": "^4.3.1",
         "api-platform/symfony": "^4.3.1",
         "artprima/prometheus-metrics-bundle": "^1.22",
-        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^3.2.2",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6.2",

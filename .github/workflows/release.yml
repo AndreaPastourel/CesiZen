@@ -1,0 +1,100 @@
+
+name: Release - Version et images Docker
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: write
+
+jobs:
+ 
+  release:
+    name: Préparer ou publier la release
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+      major: ${{ steps.release.outputs.major }}
+      minor: ${{ steps.release.outputs.minor }}
+      sha: ${{ steps.release.outputs.sha }}
+
+    steps:
+      - name: Exécuter Release Please
+        id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish-docker:
+    needs: release
+    if: needs.release.outputs.release_created == 'true'
+    name: Publier ${{ matrix.image }}
+    runs-on: ubuntu-latest
+
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: cesizen-api
+            context: ./CesiZen_API
+            dockerfile: ./CesiZen_API/Dockerfile
+          - image: cesizen-front
+            context: ./web-react
+            dockerfile: ./web-react/Dockerfile
+
+    steps:
+      - name: Récupérer le code de la release
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.sha }}
+
+      - name: Configurer Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Se connecter à GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Préparer les tags Docker
+        id: metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/andreapastourel/${{ matrix.image }}
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ needs.release.outputs.tag_name }}
+            type=raw,value=${{ needs.release.outputs.version }}
+            type=raw,value=${{ needs.release.outputs.major }}.${{ needs.release.outputs.minor }}
+            type=raw,value=${{ needs.release.outputs.major }}
+            type=sha,prefix=sha-,format=short
+
+      - name: Construire et publier l'image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
