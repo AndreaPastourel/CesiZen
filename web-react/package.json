@@ -13,9 +13,12 @@
   "test:e2e": "playwright test",
   "preview:ci": "vite preview --host 127.0.0.1 --port 4173",
   "lighthouse:audit": "lighthouse http://127.0.0.1:4173/ --output=json --output=html --output-path=./lighthouse-report --chrome-flags=\"--headless\"",
+  "lighthouse:audit:ci": "lighthouse http://127.0.0.1:4173/ --output=json --output=html --output-path=./lighthouse-report --chrome-flags=\"--headless --no-sandbox\"",
   "lighthouse:check": "node scripts/check-lighthouse.mjs",
   "lighthouse:run": "npm run lighthouse:audit && npm run lighthouse:check",
-  "lighthouse": "npm run build && start-server-and-test preview:ci http://127.0.0.1:4173 lighthouse:run"
+  "lighthouse:run:ci": "npm run lighthouse:audit:ci && npm run lighthouse:check",
+  "lighthouse": "npm run build && start-server-and-test preview:ci http://127.0.0.1:4173 lighthouse:run",
+  "lighthouse:ci": "npm run build && start-server-and-test preview:ci http://127.0.0.1:4173 lighthouse:run:ci"
 },
 
   "dependencies": {
