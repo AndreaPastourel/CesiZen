@@ -6,7 +6,7 @@ on:
       - "**"
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-zap-front.yml"
 
   pull_request:
     branches:
@@ -14,7 +14,7 @@ on:
       - dev
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-zap-front.yml"
 
 jobs:
   zap-scan:
@@ -67,4 +67,4 @@ jobs:
         with:
           target: "http://127.0.0.1:4173"
           allow_issue_writing: false
-          fail_action: false
+          fail_action: true
