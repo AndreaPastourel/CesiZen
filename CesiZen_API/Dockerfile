@@ -30,7 +30,7 @@ FROM php:8.4-cli AS runner
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
     curl \

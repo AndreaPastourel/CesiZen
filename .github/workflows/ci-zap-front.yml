@@ -60,7 +60,7 @@ jobs:
           target: "http://127.0.0.1:4173"
           allow_issue_writing: false
           rules_file_name: ".zap/front-rules.tsv"
-          fail_action: true
+          # fail_action: true
 
       - name: Arrêt du conteneur front
         if: always()

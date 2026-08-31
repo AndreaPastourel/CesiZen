@@ -7,7 +7,10 @@ type Props = {
 };
 
 function generateRandomNumber() {
-  return Math.floor(Math.random() * 9) + 1;
+  const values = new Uint32Array(1);
+  crypto.getRandomValues(values);
+
+  return (values[0] % 9) + 1;
 }
 
 export default function Captcha({
