@@ -28,24 +28,16 @@ jobs:
     steps:
       - name: Récupération du code
         uses: actions/checkout@v4
+      - name: Construction de l’image Docker
+        run: docker build --tag cesizen-front-zap .
 
-      - name: Installation de Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: web-react/package-lock.json
-
-      - name: Installation des dépendances
-        run: npm ci
-
-      - name: Build du front
-        run: npm run build
-
-      - name: Démarrage du front
+      - name: Démarrage du conteneur front
         run: |
-          npm run preview -- --host 0.0.0.0 --port 4173 &
-          echo $! > front.pid
+          docker run \
+            --detach \
+            --name cesizen-front-zap \
+            --publish 4173:8080 \
+            cesizen-front-zap
 
       - name: Attente du démarrage
         run: |
@@ -68,3 +60,7 @@ jobs:
           target: "http://127.0.0.1:4173"
           allow_issue_writing: false
           fail_action: true
+
+      - name: Arrêt du conteneur front
+        if: always()
+        run: docker rm --force cesizen-front-zap || true
