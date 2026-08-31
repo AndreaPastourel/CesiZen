@@ -6,7 +6,7 @@ on:
       - "**"
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-security-front.yml"
 
   pull_request:
     branches:
@@ -14,7 +14,7 @@ on:
       - dev
     paths:
       - "web-react/**"
-      - ".github/workflows/ci-tests-front.yml"
+      - ".github/workflows/ci-security-front.yml"
 
 jobs:
 
@@ -42,7 +42,6 @@ jobs:
 
       - name: Audit npm
         run: npm audit --audit-level=high
-        continue-on-error: true
 
 
 
@@ -59,4 +58,4 @@ jobs:
         run: pip install semgrep
 
       - name: Scan Semgrep
-        run: semgrep scan --config auto web-react
+        run: semgrep scan --config auto --error web-react
