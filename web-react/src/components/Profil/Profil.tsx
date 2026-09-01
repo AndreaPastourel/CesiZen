@@ -15,6 +15,7 @@ import ProfilLoading from "./ProfilLoading";
 import ProfileInfoForm from "./ProfilInfo/ProfilInfoForm";
 import ProfilPasswordForm from "./ProfilPasswordForm/ProfilPasswordForm";
 import ProfilLogoutButton from "./ProfilLogoutButton";
+import ProfilDataExport from "./ProfilDataExport";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -90,6 +91,7 @@ export default function Profil() {
           />
 
           <ProfilPasswordForm />
+           <ProfilDataExport />
         </section>
       )}
     </main>

@@ -62,3 +62,10 @@ export async function apiChangePassword(payload : ChangePasswordPayload) : Promi
     })   
 }
 
+export async function apiExportPersonalData(): Promise<Blob> {
+  return httpRequest<Blob>({
+    method: "GET",
+    path: "/me/export",
+    responseType: "blob",
+  });
+}
