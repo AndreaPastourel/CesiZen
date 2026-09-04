@@ -69,3 +69,24 @@ export async function apiExportPersonalData(): Promise<Blob> {
     responseType: "blob",
   });
 }
+
+
+export type DeleteAccountPayload = {
+  motDePasse: string;
+};
+
+export type DeleteAccountResponse = {
+  message: string;
+  data: null;
+};
+
+
+export async function apiDeleteAccount(
+  payload: DeleteAccountPayload
+): Promise<DeleteAccountResponse> {
+  return httpRequest<DeleteAccountResponse>({
+    method: "DELETE",
+    path: "/me",
+    body: payload,
+  });
+}
