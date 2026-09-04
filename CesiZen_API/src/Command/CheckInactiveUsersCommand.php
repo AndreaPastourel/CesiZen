@@ -35,7 +35,7 @@ class CheckInactiveUsersCommand extends Command
             ->andWhere('u.dateDerniereConnexion IS NOT NULL')
             ->andWhere('u.dateDerniereConnexion < :dateAlerte')
             ->andWhere('u.dateDerniereConnexion >= :dateDesactivation')
-            ->andWhere('u.date_alerte_inactivi IS NULL')
+            ->andWhere('u.date_alerte_inactivite IS NULL')
             ->setParameter('actif', true)
             ->setParameter('dateAlerte', $dateAlerte)
             ->setParameter('dateDesactivation', $dateDesactivation)
