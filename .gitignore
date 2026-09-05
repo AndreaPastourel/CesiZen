@@ -44,3 +44,10 @@ mobile-kotlin/local.properties
 
 web-react/lighthouse-report.report.html
 web-react/lighthouse-report.report.json
+
+
+
+
+/backups/database/*
+
+!/backups/database/.gitkeep

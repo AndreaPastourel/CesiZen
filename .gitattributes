@@ -1,0 +1,2 @@
+# Les scripts exécutés dans Docker doivent utiliser les fins de ligne Linux.
+*.sh text eol=lf
