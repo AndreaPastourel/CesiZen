@@ -39,5 +39,15 @@ mobile-kotlin/local.properties
 # ========================
 *.log
 /.env
-=======
 
+
+
+web-react/lighthouse-report.report.html
+web-react/lighthouse-report.report.json
+
+
+
+
+/backups/database/*
+
+!/backups/database/.gitkeep

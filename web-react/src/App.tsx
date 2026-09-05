@@ -24,6 +24,7 @@ import CreateTypesRessourcesPage from './pages/admin/Ressources/TypesRessources/
 import CookieConsentPopup from "./components/Cookies/CookieConsentPopup";
 import MentionLegalPage from "./pages/mentionLegalPage";
 import ParametresPage from "./pages/ParametresPages";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 
 export default function App() {
@@ -142,10 +143,23 @@ export default function App() {
       <CreateTypesRessourcesPage />
     </RequireAdmin>
   }
-/>
-    </Routes>
 
-    <CookieConsentPopup />
+/>
+   
+
+   
+
+    <Route
+  path="/politique-confidentialite"
+  element={<PrivacyPolicyPage />}
+/>
+
+ </Routes>
+
+  <CookieConsentPopup />
     </>
+
+
+    
   );
 }

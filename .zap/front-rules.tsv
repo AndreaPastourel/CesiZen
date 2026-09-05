@@ -1,0 +1,3 @@
+10049	IGNORE	(Contenu statique public du front : aucune donnée personnelle n’est servie par Nginx)
+10109	IGNORE	(Application React moderne détectée : information attendue et non vulnérable)
+10055	IGNORE	(CSP : unsafe-inline conservé temporairement pour les styles React dynamiques)

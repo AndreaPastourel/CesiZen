@@ -15,6 +15,8 @@ import ProfilLoading from "./ProfilLoading";
 import ProfileInfoForm from "./ProfilInfo/ProfilInfoForm";
 import ProfilPasswordForm from "./ProfilPasswordForm/ProfilPasswordForm";
 import ProfilLogoutButton from "./ProfilLogoutButton";
+import ProfilDataExport from "./ProfilDataExport";
+import ProfilAccountDeletion from "./ProfilAccountDeletion";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -65,6 +67,14 @@ export default function Profil() {
     }
   }
 
+  function handleAccountDeleted() {
+  setUser(null);
+
+  navigate("/login", {
+    replace: true,
+  });
+}
+
   return (
     <main className={styles.profilePage}>
       <ProfileHeader />
@@ -90,6 +100,8 @@ export default function Profil() {
           />
 
           <ProfilPasswordForm />
+           <ProfilDataExport />
+           <ProfilAccountDeletion onAccountDeleted={handleAccountDeleted} />
         </section>
       )}
     </main>

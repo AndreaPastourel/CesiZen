@@ -62,3 +62,31 @@ export async function apiChangePassword(payload : ChangePasswordPayload) : Promi
     })   
 }
 
+export async function apiExportPersonalData(): Promise<Blob> {
+  return httpRequest<Blob>({
+    method: "GET",
+    path: "/me/export",
+    responseType: "blob",
+  });
+}
+
+
+export type DeleteAccountPayload = {
+  motDePasse: string;
+};
+
+export type DeleteAccountResponse = {
+  message: string;
+  data: null;
+};
+
+
+export async function apiDeleteAccount(
+  payload: DeleteAccountPayload
+): Promise<DeleteAccountResponse> {
+  return httpRequest<DeleteAccountResponse>({
+    method: "DELETE",
+    path: "/me",
+    body: payload,
+  });
+}

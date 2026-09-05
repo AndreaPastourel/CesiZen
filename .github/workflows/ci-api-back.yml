@@ -41,6 +41,14 @@ jobs:
       - name: Vérification des routes
         run: php bin/console debug:router
 
+      - name: Génération des clés JWT temporaires
+        run: |
+          PASSPHRASE="$(openssl rand -base64 32)"
+          echo "JWT_PASSPHRASE=$PASSPHRASE" >> "$GITHUB_ENV"
+
+          JWT_PASSPHRASE="$PASSPHRASE" \
+            php bin/console lexik:jwt:generate-keypair --overwrite
+
       - name: Démarrage de l'API
         run: |
           php -S 127.0.0.1:8000 -t public public/index.php > /tmp/api.log 2>&1 &

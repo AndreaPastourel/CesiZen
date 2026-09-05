@@ -73,6 +73,15 @@ export default function Navbar() {
           Mentions légales
         </NavLink>
 
+        <NavLink
+            to="/politique-confidentialite"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            Confidentialité
+          </NavLink>
+
         {isAdmin && (
           <>
             <NavLink

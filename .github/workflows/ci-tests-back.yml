@@ -21,6 +21,29 @@ jobs:
     name: Tests PHPUnit
     runs-on: ubuntu-latest
 
+    env:
+      APP_ENV: test
+      APP_SECRET: secret-utilise-uniquement-par-la-ci
+      DATABASE_URL: "mysql://root:root@127.0.0.1:3306/cesizen?serverVersion=8.4&charset=utf8mb4"
+      JWT_PASSPHRASE: test-jwt-passphrase
+
+    services:
+      mysql:
+        image: mysql:8.4
+
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: cesizen_test
+
+        ports:
+          - 3306:3306
+
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     defaults:
       run:
         working-directory: CesiZen_API
@@ -33,11 +56,35 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
-          extensions: mbstring, intl
+          extensions: mbstring, intl, pdo_mysql
           coverage: none
 
       - name: Installation des dépendances
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Tests unitaires
-        run: php bin/phpunit
+      - name: Génération des clés JWT de test
+        run: |
+          mkdir -p config/jwt
+          php bin/console lexik:jwt:generate-keypair --skip-if-exists
+
+     
+      - name: Préparation de la base de test
+        run: |
+          php bin/console doctrine:database:create --env=test --if-not-exists
+          php bin/console doctrine:migrations:migrate --env=test --no-interaction
+          php bin/console doctrine:fixtures:load --env=test --no-interaction
+
+      - name: Création du dossier de résultats
+        run: mkdir -p var/test-results
+
+      - name: Exécution des tests PHPUnit
+        run: php bin/phpunit --log-junit var/test-results/phpunit.xml
+
+      - name: Conservation du rapport PHPUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpunit-back-results
+          path: CesiZen_API/var/test-results/phpunit.xml
+          if-no-files-found: warn
+          retention-days: 30

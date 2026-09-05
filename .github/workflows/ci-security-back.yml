@@ -39,7 +39,7 @@ jobs:
 
       - name: Audit Composer
         run: composer audit
-        continue-on-error: true
+       
 
   semgrep:
     name: Analyse Semgrep
@@ -53,4 +53,4 @@ jobs:
         run: pip install semgrep
 
       - name: Scan Semgrep
-        run: semgrep scan --config auto CesiZen_API
+        run: semgrep scan --config auto --error CesiZen_API

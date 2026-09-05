@@ -6,7 +6,9 @@ import { check, fail, group, sleep } from "k6";
 
 
 const BASE_URL = __ENV.CESIZEN_BASE_URL || "http://localhost:8000";
-const CLEAN_BASE_URL = BASE_URL.replace(/\/+$/, "");
+const CLEAN_BASE_URL = BASE_URL.endsWith("/")
+  ? BASE_URL.slice(0, -1)
+  : BASE_URL;
 
 
 //Valeur de tests
@@ -161,7 +163,7 @@ function loginVirtualUser() {
 
 
 // Parcours d'un utilisateur
-export default function () {
+export default function  cesiZenScenario()  {
   let resourceSlug = null;
   group("01 - Consultation publique", function () {
     sendGetRequest(
