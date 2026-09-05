@@ -19,6 +19,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 #[Route('/api/me', name: 'api_me_')]
 #[IsGranted('ROLE_USER')]
@@ -26,7 +29,8 @@ final class MeController extends AbstractController
 {
     public function __construct(
         private readonly PersonalDataExportService $personalDataExportService,
-        private readonly SerializerInterface $serializer
+        private readonly SerializerInterface $serializer,
+        private readonly Filesystem $filesystem,
     ) {
     }
 
@@ -210,31 +214,64 @@ public function deleteAccount(
 }
 
 private function deleteProfilePhoto(
-        ?string $photoProfil,
-        LoggerInterface $logger
-    ): void {
-        
-        if (
-            $photoProfil === null
-            || !str_starts_with($photoProfil, '/uploads/profils/')
-        ) {
-            return;
-        }
+    ?string $photoProfil,
+    LoggerInterface $logger
+): void {
+    if (
+        $photoProfil === null
+        || !str_starts_with($photoProfil, '/uploads/profils/')
+    ) {
+        return;
+    }
 
-        $filename = basename($photoProfil);
+    /*
+     * basename() supprime les éventuels chemins transmis avec le nom.
+     * L'expression régulière limite ensuite les caractères acceptés.
+     */
+    $filename = basename($photoProfil);
 
-        $absolutePath = sprintf(
-            '%s/public/uploads/profils/%s',
-            $this->getParameter('kernel.project_dir'),
-            $filename
+    if (
+        $filename === ''
+        || $filename === '.'
+        || $filename === '..'
+        || preg_match('/\A[a-zA-Z0-9._-]+\z/D', $filename) !== 1
+    ) {
+        $logger->warning(
+            'Nom de fichier de profil invalide pendant l’anonymisation.'
         );
 
-        if (is_file($absolutePath) && !unlink($absolutePath)) {
-            $logger->warning(
-                'Impossible de supprimer la photo de profil pendant l’anonymisation.',
-                ['path' => $absolutePath]
-            );
-        }
+        return;
     }
+
+    $uploadDirectory = sprintf(
+        '%s/public/uploads/profils',
+        $this->getParameter('kernel.project_dir')
+    );
+
+    $absolutePath = $uploadDirectory
+        . DIRECTORY_SEPARATOR
+        . $filename;
+
+    if (!is_file($absolutePath)) {
+        return;
+    }
+
+    try {
+        /*
+         * Symfony Filesystem centralise la suppression et évite
+         * l'utilisation directe de unlink() signalée par Semgrep.
+         */
+        $this->filesystem->remove($absolutePath);
+    } catch (IOExceptionInterface $exception) {
+        $logger->warning(
+            'Impossible de supprimer la photo pendant l’anonymisation.',
+            [
+                'filename' => $filename,
+                'exception' => $exception,
+            ]
+        );
+    }
+}
+
 
 }
