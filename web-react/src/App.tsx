@@ -145,14 +145,18 @@ export default function App() {
   }
 
 />
-    </Routes>
+   
 
-    <CookieConsentPopup />
+   
 
     <Route
   path="/politique-confidentialite"
   element={<PrivacyPolicyPage />}
 />
+
+ </Routes>
+
+  <CookieConsentPopup />
     </>
 
 
