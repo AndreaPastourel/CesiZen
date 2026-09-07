@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/AndreaPastourel/CesiZen/compare/v1.1.0...v1.1.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* divers ([#32](https://github.com/AndreaPastourel/CesiZen/issues/32)) ([119012b](https://github.com/AndreaPastourel/CesiZen/commit/119012b447552be72a5f8d3de9352ab746ec94bb))
+
 ## [1.1.0](https://github.com/AndreaPastourel/CesiZen/compare/v1.0.0...v1.1.0) (2026-09-05)
 
 
