@@ -51,3 +51,4 @@ web-react/lighthouse-report.report.json
 /backups/database/*
 
 !/backups/database/.gitkeep
+CesiZen_API/config/jwt/*.pem.bak
