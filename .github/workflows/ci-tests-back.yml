@@ -21,15 +21,12 @@ jobs:
     name: Tests PHPUnit
     runs-on: ubuntu-latest
 
-    # Variables réservées à l'environnement de test.
-    # Elles ne contiennent aucun secret de production.
     env:
       APP_ENV: test
       APP_SECRET: secret-utilise-uniquement-par-la-ci
       DATABASE_URL: "mysql://root:root@127.0.0.1:3306/cesizen?serverVersion=8.4&charset=utf8mb4"
       JWT_PASSPHRASE: test-jwt-passphrase
 
-    # Démarre une base MySQL isolée pour les tests.
     services:
       mysql:
         image: mysql:8.4
@@ -65,14 +62,12 @@ jobs:
       - name: Installation des dépendances
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      # Les vraies clés JWT ne sont jamais stockées dans Git.
-      # La CI génère sa propre paire de clés temporaire.
       - name: Génération des clés JWT de test
         run: |
           mkdir -p config/jwt
           php bin/console lexik:jwt:generate-keypair --skip-if-exists
 
-      # Doctrine ajoute automatiquement le suffixe "_test".
+     
       - name: Préparation de la base de test
         run: |
           php bin/console doctrine:database:create --env=test --if-not-exists
@@ -85,8 +80,6 @@ jobs:
       - name: Exécution des tests PHPUnit
         run: php bin/phpunit --log-junit var/test-results/phpunit.xml
 
-      # Le rapport sera téléchargeable depuis l'exécution GitHub Actions,
-      # même lorsqu'un test échoue.
       - name: Conservation du rapport PHPUnit
         if: always()
         uses: actions/upload-artifact@v4

@@ -40,7 +40,7 @@ services:
 
     volumes:
       - back_logs:/app/var/log
-      - ./CesiZen_API/config/jwt:/app/config/jwt:ro
+      - ./CesiZen_API/config/jwt:/app/config/jwt
 
     depends_on:
       db:
